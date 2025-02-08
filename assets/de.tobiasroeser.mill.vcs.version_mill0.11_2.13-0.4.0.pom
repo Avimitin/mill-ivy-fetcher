@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project 
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <name>de.tobiasroeser.mill.vcs.version_mill0.11_2.13</name>
+    <groupId>de.tototec</groupId>
+    <artifactId>de.tobiasroeser.mill.vcs.version_mill0.11_2.13</artifactId>
+    <packaging>jar</packaging>
+    <description>Mill plugin to derive a version from (last) git tag and edit state</description>
+    <version>0.4.0</version>
+    <url>https://github.com/lefou/mill-vcs-version</url>
+    <licenses>
+        <license>
+            <name>Apache-2.0</name>
+            <url>https://spdx.org/licenses/Apache-2.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:git:git://github.com/lefou/mill-vcs-version.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:lefou/mill-vcs-version.git</developerConnection>
+        <url>https://github.com/lefou/mill-vcs-version</url>
+    </scm>
+    <developers>
+        <developer>
+            <id>lefou</id>
+            <name>Tobias Roeser</name>
+            <url>https.//github.com/lefou</url>
+        </developer>
+    </developers>
+    <properties>
+        <info.versionScheme>early-semver</info.versionScheme>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>2.13.11</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lihaoyi</groupId>
+            <artifactId>mill-main_2.13</artifactId>
+            <version>0.11.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>
