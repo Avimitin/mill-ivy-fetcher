@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 from os.path import basename
 import subprocess
