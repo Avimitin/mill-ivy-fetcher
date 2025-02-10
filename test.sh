@@ -12,17 +12,17 @@ mill --version >/dev/null
 exe=$(realpath ../mill_ivy_fetcher.py)
 "$exe" --help >/dev/null
 
-if [[ ! -d "chisel/.git" ]]; then
-  git clone --depth=1 https://github.com/chipsalliance/chisel.git
+if [[ ! -d "rvdecoderdb/.git" ]]; then
+  git clone --depth=1 https://github.com/chipsalliance/rvdecoderdb.git
 fi
-pushd chisel >/dev/null
+pushd rvdecoderdb >/dev/null
 if [[ -d "out" ]]; then
   rm -rf out
 fi
 mkdir -p out/.javaHome
 
 javaHome=$(realpath out/.javaHome)
-"$exe" fetch --home "$javaHome" --targets "unipublish"
+"$exe" fetch --home "$javaHome" --targets "rvdecoderdb.jvm"
 
 nvfetchKey=$(realpath ../nvfetcher.toml)
 "$exe" dump --coursier-dir "$javaHome/.cache/coursier" --dump-path "$nvfetcherKey"
