@@ -3,12 +3,12 @@
 set -e
 
 mkdir -p tests
-cd tests
+pushd tests >/dev/null
 
 export PATH="$(nix build '.#nvfetcher.out' --print-out-paths --no-link)/bin:$PATH"
 export PATH="$(nix build '.#mill.out' --print-out-paths --no-link)/bin:$PATH"
 
-mill --version >/dev/null
+mill --no-server --version >/dev/null
 exe=$(realpath ../mill_ivy_fetcher.py)
 "$exe" --help >/dev/null
 
@@ -24,11 +24,14 @@ mkdir -p out/.javaHome
 javaHome=$(realpath out/.javaHome)
 "$exe" fetch --home "$javaHome" --targets "rvdecoderdb.jvm"
 
-nvfetchKey=$(realpath ../nvfetcher.toml)
-"$exe" dump --coursier-dir "$javaHome/.cache/coursier" --dump-path "$nvfetcherKey"
-nvfetcher -k "$nvfetcherKey"
+nvfetcherCfg="../nvfetcher.toml"
+"$exe" dump --coursier-dir "$javaHome/.cache/coursier" --dump-path "$nvfetcherCfg"
+nvfetcher -c "$nvfetcherCfg"
 
 if [[ ! -d "$HOME/.cache/coursier" ]]; then
   cp -r "$javaHome/.cache/coursier" "$HOME/.cache/coursier"
 fi
+popd >/dev/null
+popd >/dev/null
+
 python3 ./test.py
