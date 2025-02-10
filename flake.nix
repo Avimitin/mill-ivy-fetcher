@@ -10,7 +10,7 @@
   outputs = inputs@{ self, nixpkgs, flake-utils, chisel-nix }:
     { inherit inputs; } // flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs { overlays = [ chisel-nix.overlays.mill-flows ]; inherit system; };
+        pkgs = import nixpkgs { overlays = [ (import ./overlay.nix) chisel-nix.overlays.mill-flows ]; inherit system; };
       in
       {
         formatter = pkgs.nixpkgs-fmt;

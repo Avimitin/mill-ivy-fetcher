@@ -21,6 +21,9 @@ jobs:
     - uses: DeterminateSystems/nix-installer-action@main
     - name: Integration test
       run: |
+        export PATH="$(nix build '.#nvfetcher.out' --print-out-paths --no-link)/bin:$PATH"
+        export PATH="$(nix build '.#mill.out' --print-out-paths --no-link)/bin:$PATH"
+        mill --version
         ./mill_ivy_fetcher.py --help
         exe=$(realpath ./mill_ivy_fetcher.py)
         git clone --depth=1 https://github.com/chipsalliance/chisel.git
@@ -29,7 +32,7 @@ jobs:
         "$exe" fetch --home "$javaHome" --targets "unipublish"
         nvfetchKey=$(mktemp)
         "$exe" dump --coursier-dir "$javaHome/.cache/coursier" --dump-path "$nvfetcherKey"
-        nix run '.#nvfetcher' -- -k "$nvfetcherKey"
+        nvfetcher -k "$nvfetcherKey"
         cp -r "$javaHome/.cache/coursier" "$HOME/.cache/coursier"
     - name: Unit test
       run: |
