@@ -47,13 +47,17 @@ class Pom:
     group_id: str
     artifact_id: str
     description: str
+    packaging: str
     version: str
-    jar_name: str
+    last_name: str
 
     def __init__(self, pom_path: str) -> None:
         self._pom_path = pom_path
         self._tree = ET.parse(self._pom_path)
-        self.jar_name = basename(self._pom_path).strip(".pom") + ".jar"
+        self.packaging = self._get_str("packaging", "pom:packaging", fallback="jar")
+        self.last_name = (
+            basename(self._pom_path).removesuffix(".pom") + self._guess_suffix()
+        )
         self.group_id = self._get_str(
             "groupId", "pom:groupId", "pom:parent/pom:groupId"
         )
@@ -62,6 +66,13 @@ class Pom:
             "description", "pom:description", fallback=self.artifact_id
         )
         self.version = self._get_str("version", "pom:version", "pom:parent/pom:version")
+
+    def _guess_suffix(self) -> str:
+        match self.packaging:
+            case "bundle":
+                return ".jar"
+            case ext:
+                return "." + ext
 
     def _get_str(
         self,
@@ -99,7 +110,7 @@ class Pom:
             self.group_id.replace(".", "/"),
             self.artifact_id,
             self.version,
-            self.jar_name,
+            self.last_name,
         )
         return urlparse.urljoin("https://repo1.maven.org", segment)
 
