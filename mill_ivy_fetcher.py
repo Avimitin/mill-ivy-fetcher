@@ -180,11 +180,12 @@ def mill_prepare_offline(
 
 
 def fetch_handler(args):
-    mill_prepare_offline(
+    dir = mill_prepare_offline(
         args.targets or ["__"],
         args.home,
         args.java_opts,
     )
+    info(f"Downloaded into {dir}")
 
 
 def dump_handler(args):
