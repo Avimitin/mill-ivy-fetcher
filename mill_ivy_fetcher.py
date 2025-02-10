@@ -118,7 +118,6 @@ class Pom:
 
 class LocalCoursierRepo:
     _coursier_dir: str | None = None
-    _pom_xmlns = "{http://maven.apache.org/POM/4.0.0}"
 
     def __init__(self, coursier_dir: str | None = None) -> None:
         if coursier_dir is None:
