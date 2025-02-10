@@ -34,6 +34,7 @@ class PomSearcher:
         while p is None:
             p = self.next_pom()
 
+        assert p != ""
         return p
 
 
