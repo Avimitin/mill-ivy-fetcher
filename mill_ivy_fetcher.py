@@ -213,7 +213,7 @@ def dump_handler(args):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(format="[%(levelname)s] %(message)s")
+    logging.basicConfig(format="[%(levelname)s] %(message)s", level=logging.INFO)
 
     parser = argparse.ArgumentParser(
         prog="mill-ivy-fetcher", usage="%(prog)s [options]"
