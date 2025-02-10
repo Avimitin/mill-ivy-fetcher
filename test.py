@@ -31,7 +31,7 @@ class TestPom(unittest.TestCase):
             "Mill plugin to derive a version from (last) git tag and edit state",
         )
         self.assertEqual(
-            pom.to_maven(),
+            pom.to_maven(".jar"),
             "https://repo1.maven.org/maven2/de/tototec/de.tobiasroeser.mill.vcs.version_mill0.11_2.13/0.4.0/de.tobiasroeser.mill.vcs.version_mill0.11_2.13-0.4.0.jar",
         )
         tomllib.loads(pom.to_nvfetcher_cfg())

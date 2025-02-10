@@ -55,16 +55,11 @@ class Pom:
         self._pom_path = pom_path
         self._tree = ET.parse(self._pom_path)
         self.packaging = self._get_str("packaging", "pom:packaging", fallback="jar")
-        self.last_name = (
-            basename(self._pom_path).removesuffix(".pom") + self._guess_suffix()
-        )
+        self.last_name = basename(self._pom_path).removesuffix(".pom")
         self.group_id = self._get_str(
             "groupId", "pom:groupId", "pom:parent/pom:groupId"
         )
         self.artifact_id = self._get_str("artifactId", "pom:artifactId")
-        self.description = self._get_str(
-            "description", "pom:description", fallback=self.artifact_id
-        )
         self.version = self._get_str("version", "pom:version", "pom:parent/pom:version")
 
     def _guess_suffix(self) -> str:
@@ -104,26 +99,36 @@ class Pom:
 
         return element
 
-    def to_maven(self) -> str:
+    def to_maven(self, suffix: str) -> str:
         segment = os.path.join(
             "maven2",
             self.group_id.replace(".", "/"),
             self.artifact_id,
             self.version,
-            self.last_name,
+            self.last_name + suffix,
         )
         return urlparse.urljoin("https://repo1.maven.org", segment)
 
     def to_nvfetcher_cfg(self) -> str:
-        unique_name = self.artifact_id + "-" + self.version
-        safe_desc = re.sub('[\\n\\s\\t"]+', " ", self.description)
+        unique_name = (self.artifact_id + "-" + self.version).strip()
+        safe_ver = self.version.strip()
+        bundle_url = self.to_maven(self._guess_suffix())
+        pom_url = self.to_maven(".pom")
+        safe_pkgname = self.artifact_id.strip()
+
         return textwrap.dedent(
             f"""\
-        ["{unique_name.strip()}"]
-        src.manual = "{self.version.strip()}"
-        fetch.url = "{self.to_maven()}"
+        ["{unique_name}-bundle"]
+        src.manual = "{safe_ver}"
+        fetch.url = "{bundle_url}"
         fetch.force = true
-        passthru.description = "{safe_desc}"
+        passthru.pkgname = "{safe_pkgname}"
+
+        ["{unique_name}-pom"]
+        src.manual = "{safe_ver}"
+        fetch.url = "{pom_url}"
+        fetch.force = true
+        passthru.pkgname = "{safe_pkgname}"
         """
         )
 
