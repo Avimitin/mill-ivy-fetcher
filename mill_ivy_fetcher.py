@@ -8,6 +8,7 @@ import textwrap
 import re
 import xml.etree.ElementTree as ET
 import argparse
+import shutil
 import logging
 from logging import info, error
 import tempfile
@@ -134,8 +135,11 @@ class LocalCoursierRepo:
         info(f"Searching in {self._coursier_dir}")
 
     def find_repo_roots(self) -> None:
+        jvav = shutil.which("java")
+        if jvav is None:
+            raise FileNotFoundError("java exeutable not found")
         jvav_output = subprocess.run(
-            ["java", "-XshowSettings:properties", "-version"],
+            [jvav, "-XshowSettings:properties", "-version"],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
@@ -168,8 +172,11 @@ def mill_prepare_offline(
     with open(mill_opt_file, "w") as mf:
         mf.write(java_opt.replace(" ", "\n"))
 
+    mill = shutil.which("mill")
+    if mill is None:
+        raise FileNotFoundError("Mill executable not found")
     subprocess.check_call(
-        ["mill", "-i"] + [target + ".prepareOffline" for target in prepare_targets],
+        [mill, "-i"] + [target + ".prepareOffline" for target in prepare_targets],
         env={
             # Java doens't respect $HOME, we need to change the user.home property
             "JAVA_OPTS": java_opt,
