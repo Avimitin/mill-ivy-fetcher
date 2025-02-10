@@ -202,9 +202,10 @@ def dump_handler(args):
         repo = LocalCoursierRepo(args.coursier_dir)
         content = repo.to_nvfetcher_cfg_file()
         dp = args.dump_path
-        if dp is None:
+        if dp is None or dp == "":
             print(content)
         else:
+            info(f"nvfetcher config save to {dp}")
             with open(dp, "w") as f:
                 f.write(content)
     except Exception as inst:
