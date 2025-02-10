@@ -13,7 +13,7 @@ class PomSearcher:
     def __iter__(self):
         return self
 
-    def next_pom(self):
+    def next_pom(self) -> str | None:
         root, _, files = next(self._traverser)
         for name in files:
             if name.endswith(".pom"):
@@ -21,7 +21,7 @@ class PomSearcher:
 
         return None
 
-    def __next__(self):
+    def __next__(self) -> str:
         p = None
         while p is None:
             p = self.next_pom()
