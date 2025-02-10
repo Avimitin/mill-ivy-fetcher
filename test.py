@@ -1,9 +1,10 @@
 from mill_ivy_fetcher import *
 import unittest
 from pathlib import Path
+import toml
 
 
-class TestFetcher(unittest.TestCase):
+class TestLocalCoursierRepo(unittest.TestCase):
     def test_repo_init(self):
         repo = LocalCoursierRepo()
         self.assertIsNotNone(repo._coursier_dir)
@@ -11,7 +12,7 @@ class TestFetcher(unittest.TestCase):
         self.assertEqual(
             repo._coursier_dir, os.path.join(home_dir, ".cache", "coursier")
         )
-        self.assertGreater(len(repo._jar_urls), 0)
+        toml.loads(repo.to_nvfetcher_key_file())
 
 
 class TestPom(unittest.TestCase):

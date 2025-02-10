@@ -95,8 +95,9 @@ class Pom:
         return urlparse.urljoin("https://repo1.maven.org", segment)
 
     def to_nvfetcher_key(self) -> str:
+        unique_name = self.artifact_id + "-" + self.version
         key = {
-            self.artifact_id: {
+            unique_name: {
                 "src": {"manual": self.version},
                 "fetch": {"url": self.to_maven(), "force": True},
                 "passthru": {"description": self.description},
