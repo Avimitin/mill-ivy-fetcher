@@ -4,6 +4,9 @@ import subprocess
 from urllib import parse as urlparse
 import xml.etree.ElementTree as ET
 import toml
+import argparse
+import logging
+from logging import info, error
 
 
 class PomSearcher:
@@ -110,8 +113,19 @@ class LocalCoursierRepo:
     _coursier_dir: str | None = None
     _pom_xmlns = "{http://maven.apache.org/POM/4.0.0}"
 
-    def __init__(self) -> None:
-        self.find_repo_roots()
+    def __init__(self, coursier_dir: str | None = None) -> None:
+        if coursier_dir is None:
+            self.find_repo_roots()
+        else:
+            self._coursier_dir = coursier_dir
+
+        if self._coursier_dir is None:
+            raise Exception("No coursier directory was found or given")
+
+        if not os.path.exists(self._coursier_dir):
+            raise Exception(f"No such directory '{self._coursier_dir}'")
+
+        info(f"Searching in {self._coursier_dir}")
 
     def find_repo_roots(self) -> None:
         jvav_output = subprocess.run(
@@ -134,4 +148,21 @@ class LocalCoursierRepo:
 
 
 if __name__ == "__main__":
-    print(LocalCoursierRepo().to_nvfetcher_key_file())
+    parser = argparse.ArgumentParser(
+        prog="mill-ivy-fetcher", usage="%(prog)s [options]"
+    )
+    parser.add_argument(
+        "-c",
+        "--coursier-dir",
+        nargs="?",
+        help="Use other path instead of ~/.cache/coursier to search poms",
+    )
+    args = parser.parse_args()
+
+    logging.basicConfig(format="[%(levelname)s] %(message)s")
+
+    try:
+        repo = LocalCoursierRepo(args.coursier_dir)
+        print(repo.to_nvfetcher_key_file())
+    except Exception as inst:
+        error(inst)
