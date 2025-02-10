@@ -4,8 +4,9 @@ import os
 from os.path import basename
 import subprocess
 from urllib import parse as urlparse
+import textwrap
+import re
 import xml.etree.ElementTree as ET
-import toml
 import argparse
 import logging
 from logging import info, error
@@ -102,14 +103,16 @@ class Pom:
 
     def to_nvfetcher_key(self) -> str:
         unique_name = self.artifact_id + "-" + self.version
-        key = {
-            unique_name: {
-                "src": {"manual": self.version},
-                "fetch": {"url": self.to_maven(), "force": True},
-                "passthru": {"description": self.description},
-            }
-        }
-        return toml.dumps(key)
+        safe_desc = re.sub('[\\n\\s\\t"]+', " ", self.description)
+        return textwrap.dedent(
+            f"""\
+        ["{unique_name.strip()}"]
+        src.manual = "{self.version.strip()}"
+        fetch.url = "{self.to_maven()}"
+        fetch.force = true
+        passthru.description = "{safe_desc}"
+        """
+        )
 
 
 class LocalCoursierRepo:

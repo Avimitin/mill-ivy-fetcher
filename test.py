@@ -1,7 +1,7 @@
 from mill_ivy_fetcher import *
 import unittest
 from pathlib import Path
-import toml
+import tomllib
 
 
 class TestLocalCoursierRepo(unittest.TestCase):
@@ -12,7 +12,7 @@ class TestLocalCoursierRepo(unittest.TestCase):
         self.assertEqual(
             repo._coursier_dir, os.path.join(home_dir, ".cache", "coursier")
         )
-        toml.loads(repo.to_nvfetcher_key_file())
+        tomllib.loads(repo.to_nvfetcher_key_file())
 
 
 class TestPom(unittest.TestCase):
@@ -34,7 +34,7 @@ class TestPom(unittest.TestCase):
             pom.to_maven(),
             "https://repo1.maven.org/maven2/de/tototec/de.tobiasroeser.mill.vcs.version_mill0.11_2.13/0.4.0/de.tobiasroeser.mill.vcs.version_mill0.11_2.13-0.4.0.jar",
         )
-        toml.loads(pom.to_nvfetcher_key())
+        tomllib.loads(pom.to_nvfetcher_key())
 
 
 class TestPomSearcher(unittest.TestCase):
