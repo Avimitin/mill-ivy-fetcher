@@ -172,11 +172,13 @@ def mill_prepare_offline(
     with open(mill_opt_file, "w") as mf:
         mf.write(java_opt.replace(" ", "\n"))
 
+    info("Preparing Ivy dependencies")
     mill = shutil.which("mill")
     if mill is None:
         raise FileNotFoundError("Mill executable not found")
     subprocess.check_call(
-        [mill, "-i"] + [target + ".prepareOffline" for target in prepare_targets],
+        [mill, "--no-server"]
+        + [target + ".prepareOffline" for target in prepare_targets],
         env={
             # Java doens't respect $HOME, we need to change the user.home property
             "JAVA_OPTS": java_opt,
@@ -186,6 +188,7 @@ def mill_prepare_offline(
             "MILL_JVM_OPTS_PATH": mill_opt_file,
         },
     )
+    info("Ivy dependencies resolved")
     return os.path.join(home_dir, ".cache", "coursier")
 
 
