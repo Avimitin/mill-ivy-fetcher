@@ -157,12 +157,25 @@ if __name__ == "__main__":
         nargs="?",
         help="Use other path instead of ~/.cache/coursier to search poms",
     )
+    parser.add_argument(
+        "-d",
+        "--dump-path",
+        nargs="?",
+        help="Path to dump final key file instead of printing to stdout",
+    )
     args = parser.parse_args()
 
     logging.basicConfig(format="[%(levelname)s] %(message)s")
 
     try:
         repo = LocalCoursierRepo(args.coursier_dir)
-        print(repo.to_nvfetcher_key_file())
+        content = repo.to_nvfetcher_key_file()
+        dp = args.dump_path
+        if dp is None:
+            print(content)
+        else:
+            with open(dp, "w") as f:
+                f.write(content)
     except Exception as inst:
         error(inst)
+        exit(1)
