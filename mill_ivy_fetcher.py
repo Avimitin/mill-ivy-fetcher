@@ -102,7 +102,7 @@ class Pom:
         )
         return urlparse.urljoin("https://repo1.maven.org", segment)
 
-    def to_nvfetcher_key(self) -> str:
+    def to_nvfetcher_cfg(self) -> str:
         unique_name = self.artifact_id + "-" + self.version
         safe_desc = re.sub('[\\n\\s\\t"]+', " ", self.description)
         return textwrap.dedent(
@@ -149,10 +149,10 @@ class LocalCoursierRepo:
                 self._coursier_dir = os.path.join(homedir, ".cache", "coursier")
                 break
 
-    def to_nvfetcher_key_file(self) -> str:
+    def to_nvfetcher_cfg_file(self) -> str:
         assert self._coursier_dir is not None
         return "\n\n".join(
-            [Pom(f).to_nvfetcher_key() for f in PomSearcher(self._coursier_dir)]
+            [Pom(f).to_nvfetcher_cfg() for f in PomSearcher(self._coursier_dir)]
         )
 
 
@@ -200,7 +200,7 @@ def fetch_handler(args):
 def dump_handler(args):
     try:
         repo = LocalCoursierRepo(args.coursier_dir)
-        content = repo.to_nvfetcher_key_file()
+        content = repo.to_nvfetcher_cfg_file()
         dp = args.dump_path
         if dp is None:
             print(content)
@@ -230,7 +230,7 @@ if __name__ == "__main__":
         "-d",
         "--dump-path",
         nargs="?",
-        help="Path to dump final key file instead of printing to stdout",
+        help="Path to dump nvfetcher config file instead of printing to stdout",
     )
     dump_parser.set_defaults(func=dump_handler)
 
