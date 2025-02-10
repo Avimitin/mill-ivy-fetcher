@@ -9,6 +9,7 @@ import toml
 import argparse
 import logging
 from logging import info, error
+import tempfile
 
 
 class PomSearcher:
@@ -149,26 +150,44 @@ class LocalCoursierRepo:
         )
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        prog="mill-ivy-fetcher", usage="%(prog)s [options]"
-    )
-    parser.add_argument(
-        "-c",
-        "--coursier-dir",
-        nargs="?",
-        help="Use other path instead of ~/.cache/coursier to search poms",
-    )
-    parser.add_argument(
-        "-d",
-        "--dump-path",
-        nargs="?",
-        help="Path to dump final key file instead of printing to stdout",
-    )
-    args = parser.parse_args()
+def mill_prepare_offline(
+    prepare_targets: list[str],
+    user_home: str | None = None,
+    extra_java_opts: list[str] | None = None,
+) -> str:
+    home_dir = user_home or tempfile.gettempdir()
+    mill_opt_file = tempfile.mktemp()
 
-    logging.basicConfig(format="[%(levelname)s] %(message)s")
+    java_opt = f"-Duser.home={home_dir} "
+    if extra_java_opts is not None:
+        java_opt += " ".join(extra_java_opts)
 
+    with open(mill_opt_file, "w") as mf:
+        mf.write(java_opt.replace(" ", "\n"))
+
+    subprocess.check_call(
+        ["mill", "-i"] + [target + ".prepareOffline" for target in prepare_targets],
+        env={
+            # Java doens't respect $HOME, we need to change the user.home property
+            "JAVA_OPTS": java_opt,
+            # Maven mirror sometime contains invalid dependency and make us hard to debug the problem, use maven central only.
+            "COURSIER_REPOSITORIES": "ivy2local|central",
+            # Mill will fork process without inherit the JAVA_OPTS env, so we need "MILL JVM OPT" file to help us modify home dir.
+            "MILL_JVM_OPTS_PATH": mill_opt_file,
+        },
+    )
+    return os.path.join(home_dir, ".cache", "coursier")
+
+
+def fetch_handler(args):
+    mill_prepare_offline(
+        args.targets or ["__"],
+        args.home,
+        args.java_opts,
+    )
+
+
+def dump_handler(args):
     try:
         repo = LocalCoursierRepo(args.coursier_dir)
         content = repo.to_nvfetcher_key_file()
@@ -181,3 +200,50 @@ if __name__ == "__main__":
     except Exception as inst:
         error(inst)
         exit(1)
+
+
+if __name__ == "__main__":
+    logging.basicConfig(format="[%(levelname)s] %(message)s")
+
+    parser = argparse.ArgumentParser(
+        prog="mill-ivy-fetcher", usage="%(prog)s [options]"
+    )
+    subparser = parser.add_subparsers(required=True)
+    dump_parser = subparser.add_parser("dump", help="%(prog)s dump help")
+    dump_parser.add_argument(
+        "-c",
+        "--coursier-dir",
+        nargs="?",
+        help="Use other path instead of ~/.cache/coursier to search poms",
+    )
+    dump_parser.add_argument(
+        "-d",
+        "--dump-path",
+        nargs="?",
+        help="Path to dump final key file instead of printing to stdout",
+    )
+    dump_parser.set_defaults(func=dump_handler)
+
+    fetch_parser = subparser.add_parser("fetch", help="%(prog)s fetch help")
+    fetch_parser.add_argument(
+        "-o",
+        "--home",
+        nargs="?",
+        help="Use the specify directory as HOME directory, default using temporary directory",
+    )
+    fetch_parser.add_argument(
+        "-j",
+        "--java-opts",
+        action="append",
+        help="Set custom Java options. Can be used multiple time to append options.",
+    )
+    fetch_parser.add_argument(
+        "-t",
+        "--targets",
+        action="append",
+        help="Set custom object target to fetch Ivy dependencies. Can be used multiple time to append options.",
+    )
+    fetch_parser.set_defaults(func=fetch_handler)
+
+    args = parser.parse_args()
+    args.func(args)
