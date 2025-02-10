@@ -57,7 +57,7 @@ into small pieces.
 * Fetch mill dependencies with extra Java options
 
 ```bash
-./mill_ivy_fetcher.py fetch --java-opts "-Dhttp.proxyHost=127.0.0.1" -j "-Dhttp.proxyPort=1234"
+./mill_ivy_fetcher.py fetch --java-opts="-Dhttp.proxyHost=127.0.0.1" -j="-Dhttp.proxyPort=1234"
 ```
 
 ## Implementation Details
