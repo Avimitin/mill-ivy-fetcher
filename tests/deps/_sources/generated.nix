@@ -91,6 +91,26 @@
     install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.7";
     pkgname = "compiler-interface";
   };
+  "compiler-interface-1.9.3-bundle" = {
+    pname = "compiler-interface-1.9.3-bundle";
+    version = "1.9.3";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.9.3/compiler-interface-1.9.3.jar";
+      sha256 = "sha256-+lhrSxvbYcSIIc+VaFB8Hk1X3jdj0nrCIUUjsAoXMRU=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.9.3";
+    pkgname = "compiler-interface";
+  };
+  "compiler-interface-1.9.3-pom" = {
+    pname = "compiler-interface-1.9.3-pom";
+    version = "1.9.3";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.9.3/compiler-interface-1.9.3.pom";
+      sha256 = "sha256-yV9td4MXhKKJk0IZJHOSl3vLUsxggLiyrTBko3Aw7X4=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.9.3";
+    pkgname = "compiler-interface";
+  };
   "core-macros_2.13-1.10.7-bundle" = {
     pname = "core-macros_2.13-1.10.7-bundle";
     version = "1.10.7";
@@ -411,6 +431,16 @@
     install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-native/3.27.1";
     pkgname = "jline-native";
   };
+  "jline-parent-3.19.0-pom" = {
+    pname = "jline-parent-3.19.0-pom";
+    version = "3.19.0";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/jline/jline-parent/3.19.0/jline-parent-3.19.0.pom";
+      sha256 = "sha256-3CgHIlNZrf/Vk8YKfRNSlpVUEToKWiCWLyOhz9ZTn/w=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-parent/3.19.0";
+    pkgname = "jline-parent";
+  };
   "jline-parent-3.27.1-pom" = {
     pname = "jline-parent-3.27.1-pom";
     version = "3.27.1";
@@ -420,6 +450,46 @@
     };
     install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-parent/3.27.1";
     pkgname = "jline-parent";
+  };
+  "jline-reader-3.19.0-bundle" = {
+    pname = "jline-reader-3.19.0-bundle";
+    version = "3.19.0";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/jline/jline-reader/3.19.0/jline-reader-3.19.0.jar";
+      sha256 = "sha256-WnlMFYhFOMMSo3wbSc8CWgE9gwOtMerbU9T4rgke81U=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-reader/3.19.0";
+    pkgname = "jline-reader";
+  };
+  "jline-reader-3.19.0-pom" = {
+    pname = "jline-reader-3.19.0-pom";
+    version = "3.19.0";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/jline/jline-reader/3.19.0/jline-reader-3.19.0.pom";
+      sha256 = "sha256-F6b0HPfUJbunpen+Cc7cKEYY38PgGaJKSB/SZr1fXhg=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-reader/3.19.0";
+    pkgname = "jline-reader";
+  };
+  "jline-terminal-3.19.0-bundle" = {
+    pname = "jline-terminal-3.19.0-bundle";
+    version = "3.19.0";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/jline/jline-terminal/3.19.0/jline-terminal-3.19.0.jar";
+      sha256 = "sha256-q9vq+jjEzNgleMHz0I6kivQ57/GU0jqjuuGPvpO03PA=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal/3.19.0";
+    pkgname = "jline-terminal";
+  };
+  "jline-terminal-3.19.0-pom" = {
+    pname = "jline-terminal-3.19.0-pom";
+    version = "3.19.0";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/jline/jline-terminal/3.19.0/jline-terminal-3.19.0.pom";
+      sha256 = "sha256-219Q0GFetCO/Rq75e/Di/8+W8TX/9gKPtvj/pt8oC5g=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal/3.19.0";
+    pkgname = "jline-terminal";
   };
   "jline-terminal-3.27.1-bundle" = {
     pname = "jline-terminal-3.27.1-bundle";
@@ -440,6 +510,26 @@
     };
     install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal/3.27.1";
     pkgname = "jline-terminal";
+  };
+  "jline-terminal-jna-3.19.0-bundle" = {
+    pname = "jline-terminal-jna-3.19.0-bundle";
+    version = "3.19.0";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/jline/jline-terminal-jna/3.19.0/jline-terminal-jna-3.19.0.jar";
+      sha256 = "sha256-SoaXW6lHVur3DepkLY1MMlNbZUeQULVsR23IxrBRkzE=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal-jna/3.19.0";
+    pkgname = "jline-terminal-jna";
+  };
+  "jline-terminal-jna-3.19.0-pom" = {
+    pname = "jline-terminal-jna-3.19.0-pom";
+    version = "3.19.0";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/jline/jline-terminal-jna/3.19.0/jline-terminal-jna-3.19.0.pom";
+      sha256 = "sha256-kXuGKijv/m2KPEwRMv/ttxBFgz7YPbvExyRSjVKuuFc=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal-jna/3.19.0";
+    pkgname = "jline-terminal-jna";
   };
   "jline-terminal-jni-3.27.1-bundle" = {
     pname = "jline-terminal-jni-3.27.1-bundle";
@@ -479,6 +569,26 @@
       sha256 = "sha256-4E4llRUB3yWtx7Hc22xTNzyUiXuE0+FJISknY+4Hrj0=";
     };
     install_path = "v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.14.0";
+    pkgname = "jna";
+  };
+  "jna-5.3.1-bundle" = {
+    pname = "jna-5.3.1-bundle";
+    version = "5.3.1";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1/jna-5.3.1.jar";
+      sha256 = "sha256-ActQXAaY0Pes81JMfnOst9xCSluuXpyGzkQHWrMrxO4=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1";
+    pkgname = "jna";
+  };
+  "jna-5.3.1-pom" = {
+    pname = "jna-5.3.1-pom";
+    version = "5.3.1";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1/jna-5.3.1.pom";
+      sha256 = "sha256-sLIsPuOskvg6JO4hJnJIujQ5Mn4xXKwp5MAf6iTg5Ic=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1";
     pkgname = "jna";
   };
   "junit-bom-5.10.3-pom" = {
@@ -821,6 +931,16 @@
     install_path = "v1/https/repo1.maven.org/maven2/com/fasterxml/oss-parent/58";
     pkgname = "oss-parent";
   };
+  oss-parent-9-pom = {
+    pname = "oss-parent-9-pom";
+    version = "9";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/sonatype/oss/oss-parent/9/oss-parent-9.pom";
+      sha256 = "sha256-+0AmX5glSCEv+C42LllzKyGH7G8NgBgohcFO8fmCgno=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/sonatype/oss/oss-parent/9";
+    pkgname = "oss-parent";
+  };
   "pprint_2.13-0.9.0-bundle" = {
     pname = "pprint_2.13-0.9.0-bundle";
     version = "0.9.0";
@@ -900,6 +1020,26 @@
     };
     install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/sbinary_2.13/0.5.1";
     pkgname = "sbinary_2.13";
+  };
+  "scala-asm-9.5.0-scala-1-bundle" = {
+    pname = "scala-asm-9.5.0-scala-1-bundle";
+    version = "9.5.0-scala-1";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.5.0-scala-1/scala-asm-9.5.0-scala-1.jar";
+      sha256 = "sha256-+lgvc1L17lwkTX/pPCodldraLSgeGvmlNfC1FTx1CIw=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.5.0-scala-1";
+    pkgname = "scala-asm";
+  };
+  "scala-asm-9.5.0-scala-1-pom" = {
+    pname = "scala-asm-9.5.0-scala-1-pom";
+    version = "9.5.0-scala-1";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.5.0-scala-1/scala-asm-9.5.0-scala-1.pom";
+      sha256 = "sha256-FKe/gr9PIRk9eeK5xdlY60oCKoUBDtYi5rnMH4wf4Ag=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.5.0-scala-1";
+    pkgname = "scala-asm";
   };
   "scala-collection-compat_2.13-2.12.0-bundle" = {
     pname = "scala-collection-compat_2.13-2.12.0-bundle";
@@ -1080,6 +1220,46 @@
     };
     install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.13/2.3.0";
     pkgname = "scala-xml_2.13";
+  };
+  "scala3-compiler_3-3.3.3-bundle" = {
+    pname = "scala3-compiler_3-3.3.3-bundle";
+    version = "3.3.3";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.3.3/scala3-compiler_3-3.3.3.jar";
+      sha256 = "sha256-8ivZknL3Y0kZuSb3eL4ZpEfn0MHpbluKtGDyh8/+H1w=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.3.3";
+    pkgname = "scala3-compiler_3";
+  };
+  "scala3-compiler_3-3.3.3-pom" = {
+    pname = "scala3-compiler_3-3.3.3-pom";
+    version = "3.3.3";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.3.3/scala3-compiler_3-3.3.3.pom";
+      sha256 = "sha256-g88OgwO/mujob6bUyy2Nj50S7qbZO0tkYNSX5YS9CDU=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.3.3";
+    pkgname = "scala3-compiler_3";
+  };
+  "scala3-interfaces-3.3.3-bundle" = {
+    pname = "scala3-interfaces-3.3.3-bundle";
+    version = "3.3.3";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.3.3/scala3-interfaces-3.3.3.jar";
+      sha256 = "sha256-nYV2hmOhiU65x8+3O+/hbsp2DVNu7UQfZmCluOjcDGo=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.3.3";
+    pkgname = "scala3-interfaces";
+  };
+  "scala3-interfaces-3.3.3-pom" = {
+    pname = "scala3-interfaces-3.3.3-pom";
+    version = "3.3.3";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.3.3/scala3-interfaces-3.3.3.pom";
+      sha256 = "sha256-P5ozH9KIlyA29UkPx03HaOi4agBVD6glEeGPKBfglMk=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.3.3";
+    pkgname = "scala3-interfaces";
   };
   "scala3-library_3-3.3.3-bundle" = {
     pname = "scala3-library_3-3.3.3-bundle";
@@ -1310,6 +1490,26 @@
     };
     install_path = "v1/https/repo1.maven.org/maven2/org/springframework/spring-framework-bom/5.3.39";
     pkgname = "spring-framework-bom";
+  };
+  "tasty-core_3-3.3.3-bundle" = {
+    pname = "tasty-core_3-3.3.3-bundle";
+    version = "3.3.3";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.3.3/tasty-core_3-3.3.3.jar";
+      sha256 = "sha256-oSajp2AivuuRM+enQAuBpc5pEPeGbMXoT6gTPKkHhKU=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.3.3";
+    pkgname = "tasty-core_3";
+  };
+  "tasty-core_3-3.3.3-pom" = {
+    pname = "tasty-core_3-3.3.3-pom";
+    version = "3.3.3";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.3.3/tasty-core_3-3.3.3.pom";
+      sha256 = "sha256-/5NA0jBXsQDBXFDd56rjicCHzNmmc6Xns6Tgka672jY=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.3.3";
+    pkgname = "tasty-core_3";
   };
   "test-interface-1.0-bundle" = {
     pname = "test-interface-1.0-bundle";
@@ -1589,6 +1789,26 @@
       sha256 = "sha256-1JRwyBXgcORPlQERbIPzWxeUE/Wq/pXimsKTxnzBYpc=";
     };
     install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.7";
+    pkgname = "util-interface";
+  };
+  "util-interface-1.9.2-bundle" = {
+    pname = "util-interface-1.9.2-bundle";
+    version = "1.9.2";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/scala-sbt/util-interface/1.9.2/util-interface-1.9.2.jar";
+      sha256 = "sha256-y/bA2wkiPkxsQa/ExdgxxH41ZOgzYd9Lo8sE5Dn4NnU=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.9.2";
+    pkgname = "util-interface";
+  };
+  "util-interface-1.9.2-pom" = {
+    pname = "util-interface-1.9.2-pom";
+    version = "1.9.2";
+    src = fetchurl {
+      url = "https://repo1.maven.org/maven2/org/scala-sbt/util-interface/1.9.2/util-interface-1.9.2.pom";
+      sha256 = "sha256-HWCo05atQxKnzXYXSzH74BiVlgPmUA1YBdC/35ytX5Y=";
+    };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.9.2";
     pkgname = "util-interface";
   };
   "util-logging_2.13-1.10.7-bundle" = {

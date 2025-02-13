@@ -161,6 +161,42 @@
         },
         "version": "1.10.7"
     },
+    "compiler-interface-1.9.3-bundle": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "compiler-interface-1.9.3-bundle",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.9.3",
+            "pkgname": "compiler-interface"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-+lhrSxvbYcSIIc+VaFB8Hk1X3jdj0nrCIUUjsAoXMRU=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.9.3/compiler-interface-1.9.3.jar"
+        },
+        "version": "1.9.3"
+    },
+    "compiler-interface-1.9.3-pom": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "compiler-interface-1.9.3-pom",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.9.3",
+            "pkgname": "compiler-interface"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-yV9td4MXhKKJk0IZJHOSl3vLUsxggLiyrTBko3Aw7X4=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.9.3/compiler-interface-1.9.3.pom"
+        },
+        "version": "1.9.3"
+    },
     "core-macros_2.13-1.10.7-bundle": {
         "cargoLocks": null,
         "date": null,
@@ -737,6 +773,24 @@
         },
         "version": "3.27.1"
     },
+    "jline-parent-3.19.0-pom": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "jline-parent-3.19.0-pom",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-parent/3.19.0",
+            "pkgname": "jline-parent"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-3CgHIlNZrf/Vk8YKfRNSlpVUEToKWiCWLyOhz9ZTn/w=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/jline/jline-parent/3.19.0/jline-parent-3.19.0.pom"
+        },
+        "version": "3.19.0"
+    },
     "jline-parent-3.27.1-pom": {
         "cargoLocks": null,
         "date": null,
@@ -754,6 +808,78 @@
             "url": "https://repo1.maven.org/maven2/org/jline/jline-parent/3.27.1/jline-parent-3.27.1.pom"
         },
         "version": "3.27.1"
+    },
+    "jline-reader-3.19.0-bundle": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "jline-reader-3.19.0-bundle",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-reader/3.19.0",
+            "pkgname": "jline-reader"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-WnlMFYhFOMMSo3wbSc8CWgE9gwOtMerbU9T4rgke81U=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/jline/jline-reader/3.19.0/jline-reader-3.19.0.jar"
+        },
+        "version": "3.19.0"
+    },
+    "jline-reader-3.19.0-pom": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "jline-reader-3.19.0-pom",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-reader/3.19.0",
+            "pkgname": "jline-reader"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-F6b0HPfUJbunpen+Cc7cKEYY38PgGaJKSB/SZr1fXhg=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/jline/jline-reader/3.19.0/jline-reader-3.19.0.pom"
+        },
+        "version": "3.19.0"
+    },
+    "jline-terminal-3.19.0-bundle": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "jline-terminal-3.19.0-bundle",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal/3.19.0",
+            "pkgname": "jline-terminal"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-q9vq+jjEzNgleMHz0I6kivQ57/GU0jqjuuGPvpO03PA=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/jline/jline-terminal/3.19.0/jline-terminal-3.19.0.jar"
+        },
+        "version": "3.19.0"
+    },
+    "jline-terminal-3.19.0-pom": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "jline-terminal-3.19.0-pom",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal/3.19.0",
+            "pkgname": "jline-terminal"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-219Q0GFetCO/Rq75e/Di/8+W8TX/9gKPtvj/pt8oC5g=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/jline/jline-terminal/3.19.0/jline-terminal-3.19.0.pom"
+        },
+        "version": "3.19.0"
     },
     "jline-terminal-3.27.1-bundle": {
         "cargoLocks": null,
@@ -790,6 +916,42 @@
             "url": "https://repo1.maven.org/maven2/org/jline/jline-terminal/3.27.1/jline-terminal-3.27.1.pom"
         },
         "version": "3.27.1"
+    },
+    "jline-terminal-jna-3.19.0-bundle": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "jline-terminal-jna-3.19.0-bundle",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal-jna/3.19.0",
+            "pkgname": "jline-terminal-jna"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-SoaXW6lHVur3DepkLY1MMlNbZUeQULVsR23IxrBRkzE=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/jline/jline-terminal-jna/3.19.0/jline-terminal-jna-3.19.0.jar"
+        },
+        "version": "3.19.0"
+    },
+    "jline-terminal-jna-3.19.0-pom": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "jline-terminal-jna-3.19.0-pom",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal-jna/3.19.0",
+            "pkgname": "jline-terminal-jna"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-kXuGKijv/m2KPEwRMv/ttxBFgz7YPbvExyRSjVKuuFc=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/jline/jline-terminal-jna/3.19.0/jline-terminal-jna-3.19.0.pom"
+        },
+        "version": "3.19.0"
     },
     "jline-terminal-jni-3.27.1-bundle": {
         "cargoLocks": null,
@@ -862,6 +1024,42 @@
             "url": "https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.14.0/jna-5.14.0.pom"
         },
         "version": "5.14.0"
+    },
+    "jna-5.3.1-bundle": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "jna-5.3.1-bundle",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1",
+            "pkgname": "jna"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-ActQXAaY0Pes81JMfnOst9xCSluuXpyGzkQHWrMrxO4=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1/jna-5.3.1.jar"
+        },
+        "version": "5.3.1"
+    },
+    "jna-5.3.1-pom": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "jna-5.3.1-pom",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1",
+            "pkgname": "jna"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-sLIsPuOskvg6JO4hJnJIujQ5Mn4xXKwp5MAf6iTg5Ic=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1/jna-5.3.1.pom"
+        },
+        "version": "5.3.1"
     },
     "junit-bom-5.10.3-pom": {
         "cargoLocks": null,
@@ -1475,6 +1673,24 @@
         },
         "version": "58"
     },
+    "oss-parent-9-pom": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "oss-parent-9-pom",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/sonatype/oss/oss-parent/9",
+            "pkgname": "oss-parent"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-+0AmX5glSCEv+C42LllzKyGH7G8NgBgohcFO8fmCgno=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/sonatype/oss/oss-parent/9/oss-parent-9.pom"
+        },
+        "version": "9"
+    },
     "pprint_2.13-0.9.0-bundle": {
         "cargoLocks": null,
         "date": null,
@@ -1618,6 +1834,42 @@
             "url": "https://repo1.maven.org/maven2/org/scala-sbt/sbinary_2.13/0.5.1/sbinary_2.13-0.5.1.pom"
         },
         "version": "0.5.1"
+    },
+    "scala-asm-9.5.0-scala-1-bundle": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "scala-asm-9.5.0-scala-1-bundle",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.5.0-scala-1",
+            "pkgname": "scala-asm"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-+lgvc1L17lwkTX/pPCodldraLSgeGvmlNfC1FTx1CIw=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.5.0-scala-1/scala-asm-9.5.0-scala-1.jar"
+        },
+        "version": "9.5.0-scala-1"
+    },
+    "scala-asm-9.5.0-scala-1-pom": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "scala-asm-9.5.0-scala-1-pom",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.5.0-scala-1",
+            "pkgname": "scala-asm"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-FKe/gr9PIRk9eeK5xdlY60oCKoUBDtYi5rnMH4wf4Ag=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.5.0-scala-1/scala-asm-9.5.0-scala-1.pom"
+        },
+        "version": "9.5.0-scala-1"
     },
     "scala-collection-compat_2.13-2.12.0-bundle": {
         "cargoLocks": null,
@@ -1942,6 +2194,78 @@
             "url": "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.13/2.3.0/scala-xml_2.13-2.3.0.pom"
         },
         "version": "2.3.0"
+    },
+    "scala3-compiler_3-3.3.3-bundle": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "scala3-compiler_3-3.3.3-bundle",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.3.3",
+            "pkgname": "scala3-compiler_3"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-8ivZknL3Y0kZuSb3eL4ZpEfn0MHpbluKtGDyh8/+H1w=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.3.3/scala3-compiler_3-3.3.3.jar"
+        },
+        "version": "3.3.3"
+    },
+    "scala3-compiler_3-3.3.3-pom": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "scala3-compiler_3-3.3.3-pom",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.3.3",
+            "pkgname": "scala3-compiler_3"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-g88OgwO/mujob6bUyy2Nj50S7qbZO0tkYNSX5YS9CDU=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.3.3/scala3-compiler_3-3.3.3.pom"
+        },
+        "version": "3.3.3"
+    },
+    "scala3-interfaces-3.3.3-bundle": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "scala3-interfaces-3.3.3-bundle",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.3.3",
+            "pkgname": "scala3-interfaces"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-nYV2hmOhiU65x8+3O+/hbsp2DVNu7UQfZmCluOjcDGo=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.3.3/scala3-interfaces-3.3.3.jar"
+        },
+        "version": "3.3.3"
+    },
+    "scala3-interfaces-3.3.3-pom": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "scala3-interfaces-3.3.3-pom",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.3.3",
+            "pkgname": "scala3-interfaces"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-P5ozH9KIlyA29UkPx03HaOi4agBVD6glEeGPKBfglMk=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.3.3/scala3-interfaces-3.3.3.pom"
+        },
+        "version": "3.3.3"
     },
     "scala3-library_3-3.3.3-bundle": {
         "cargoLocks": null,
@@ -2356,6 +2680,42 @@
             "url": "https://repo1.maven.org/maven2/org/springframework/spring-framework-bom/5.3.39/spring-framework-bom-5.3.39.pom"
         },
         "version": "5.3.39"
+    },
+    "tasty-core_3-3.3.3-bundle": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "tasty-core_3-3.3.3-bundle",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.3.3",
+            "pkgname": "tasty-core_3"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-oSajp2AivuuRM+enQAuBpc5pEPeGbMXoT6gTPKkHhKU=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.3.3/tasty-core_3-3.3.3.jar"
+        },
+        "version": "3.3.3"
+    },
+    "tasty-core_3-3.3.3-pom": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "tasty-core_3-3.3.3-pom",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.3.3",
+            "pkgname": "tasty-core_3"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-/5NA0jBXsQDBXFDd56rjicCHzNmmc6Xns6Tgka672jY=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.3.3/tasty-core_3-3.3.3.pom"
+        },
+        "version": "3.3.3"
     },
     "test-interface-1.0-bundle": {
         "cargoLocks": null,
@@ -2860,6 +3220,42 @@
             "url": "https://repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.7/util-interface-1.10.7.pom"
         },
         "version": "1.10.7"
+    },
+    "util-interface-1.9.2-bundle": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "util-interface-1.9.2-bundle",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.9.2",
+            "pkgname": "util-interface"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-y/bA2wkiPkxsQa/ExdgxxH41ZOgzYd9Lo8sE5Dn4NnU=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/scala-sbt/util-interface/1.9.2/util-interface-1.9.2.jar"
+        },
+        "version": "1.9.2"
+    },
+    "util-interface-1.9.2-pom": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "util-interface-1.9.2-pom",
+        "passthru": {
+            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.9.2",
+            "pkgname": "util-interface"
+        },
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-HWCo05atQxKnzXYXSzH74BiVlgPmUA1YBdC/35ytX5Y=",
+            "type": "url",
+            "url": "https://repo1.maven.org/maven2/org/scala-sbt/util-interface/1.9.2/util-interface-1.9.2.pom"
+        },
+        "version": "1.9.2"
     },
     "util-logging_2.13-1.10.7-bundle": {
         "cargoLocks": null,

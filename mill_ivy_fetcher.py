@@ -216,6 +216,17 @@ def mill_prepare_offline(
             "MILL_JVM_OPTS_PATH": mill_opt_file,
         },
     )
+    subprocess.check_call(
+        [mill, "--no-server", "__.scalaCompilerClasspath"],
+        env={
+            # Java doens't respect $HOME, we need to change the user.home property
+            "JAVA_OPTS": java_opt,
+            # Maven mirror sometime contains invalid dependency and make us hard to debug the problem, use maven central only.
+            "COURSIER_REPOSITORIES": "ivy2local|central",
+            # Mill will fork process without inherit the JAVA_OPTS env, so we need "MILL JVM OPT" file to help us modify home dir.
+            "MILL_JVM_OPTS_PATH": mill_opt_file,
+        },
+    )
     info("Ivy dependencies resolved")
     return os.path.join(home_dir, ".cache", "coursier")
 

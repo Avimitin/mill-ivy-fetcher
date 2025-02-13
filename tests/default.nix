@@ -1,4 +1,4 @@
-{ lib, stdenvNoCC, mill, jdk21, callPackage }:
+{ lib, stdenvNoCC, mill, jdk21, callPackage, makeWrapper }:
 let
   deps = (callPackage ./deps/_sources { }).ivyDeps;
 in
@@ -13,7 +13,7 @@ stdenvNoCC.mkDerivation {
     ];
   };
 
-  nativeBuildInputs = [ mill ];
+  nativeBuildInputs = [ mill makeWrapper ];
 
   buildInputs = lib.attrValues deps;
 
@@ -28,11 +28,11 @@ stdenvNoCC.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    mkdir -p "$out/share/java/foo.jar" "$out/bin"
+    mkdir -p "$out/share/java" "$out/bin"
 
     cp out/foo/assembly.dest/out.jar "$out/share/java/foo.jar"
     makeWrapper ${jdk21}/bin/java $out/bin/foo \
-      --add-flags "-cp $out/share/java/foo.jar"
+      --add-flags "-jar $out/share/java/foo.jar"
 
     runHook postInstall
   '';
