@@ -1,6 +1,7 @@
-{ lib, stdenvNoCC, lndir, fetchgit, fetchurl, fetchFromGitHub, dockerTools }:
+{ lib, stdenvNoCC, lndir, fetchgit, fetchurl, fetchFromGitHub, dockerTools, configure-mill-home-hook }:
+nvfetcherNixSrcPath:
 let
-  sources = (import ./generated.nix) { inherit fetchgit fetchurl fetchFromGitHub dockerTools; };
+  sources = (import nvfetcherNixSrcPath) { inherit fetchgit fetchurl fetchFromGitHub dockerTools; };
   uniqSources = lib.groupBy (x: x.pkgname) (lib.attrValues sources);
   ivyDepBuilder = ivyName: ivySources: stdenvNoCC.mkDerivation
     {
@@ -8,7 +9,7 @@ let
       passthru = { inherit ivySources; };
       dontUnpack = true;
 
-      propagatedBuildInputs = [ lndir ];
+      propagatedBuildInputs = [ lndir configure-mill-home-hook ];
 
       configurePhase = ''
         runHook preConfigure
@@ -19,7 +20,12 @@ let
       '';
 
       buildPhase = "runHook preBuild\n"
-        + lib.concatMapStringsSep "\n" (x: ''ln -s ${x.src} "$out"/.cache/coursier/${x.install_path}'') ivySources
+        + lib.concatMapStringsSep "\n"
+        (x: ''
+          mkdir -p "$out/.cache/coursier/${x.install_path}"
+          ln -s ${x.src} "$out"/.cache/coursier/${x.install_path}/$(stripHash ${x.src})
+        '')
+        ivySources
         + "\nrunHook postBuild";
 
       installPhase = ''
@@ -28,7 +34,8 @@ let
         mkdir -p "$out"/nix-support
         tee "$out/nix-support/setup-hook" <<EOF
         install_ivy_${ivyName}_to_repo() {
-          lndir "$out/.cache/coursier" "$NIX_MILL_HOME"/.cache/coursier
+          mkdir -p "\$NIX_MILL_HOME/.cache/coursier"
+          lndir "$out/.cache/coursier" "\$NIX_MILL_HOME"/.cache/coursier
         }
 
         prePatchHooks+=(install_ivy_${ivyName}_to_repo)
