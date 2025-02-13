@@ -8,7 +8,9 @@ class TestLocalCoursierRepo(unittest.TestCase):
     def test_repo_init(self):
         repo = LocalCoursierRepo()
         self.assertIsNotNone(repo._coursier_dir)
-        home_dir = Path.home()
+        home_dir = os.getenv("MILL_HOME")
+        if home_dir is None:
+            home_dir = Path.home()
         self.assertEqual(
             repo._coursier_dir, os.path.join(home_dir, ".cache", "coursier")
         )
@@ -18,8 +20,8 @@ class TestLocalCoursierRepo(unittest.TestCase):
 class TestPom(unittest.TestCase):
     def test_pom_init(self):
         pom = Pom(
-            "./assets/dot-cache/coursier/v1/https/repo1.maven.org/maven2/de/tototec/de.tobiasroeser.mill.vcs.version_mill0.11_2.13/0.4.0/de.tobiasroeser.mill.vcs.version_mill0.11_2.13-0.4.0.pom",
-            "./assets/dot-cache/coursier",
+            "./assets/.cache/coursier/v1/https/repo1.maven.org/maven2/de/tototec/de.tobiasroeser.mill.vcs.version_mill0.11_2.13/0.4.0/de.tobiasroeser.mill.vcs.version_mill0.11_2.13-0.4.0.pom",
+            "./assets/.cache/coursier",
         )
         self.assertEqual(
             pom.last_name, "de.tobiasroeser.mill.vcs.version_mill0.11_2.13-0.4.0"
@@ -43,10 +45,10 @@ class TestPom(unittest.TestCase):
 
 class TestPomSearcher(unittest.TestCase):
     def test_search(self):
-        root = PomSearcher("./assets/dot-cache/coursier")
+        root = PomSearcher("./assets/.cache/coursier")
         self.assertEqual(
             next(root),
-            "./assets/dot-cache/coursier/v1/https/repo1.maven.org/maven2/de/tototec/de.tobiasroeser.mill.vcs.version_mill0.11_2.13/0.4.0/de.tobiasroeser.mill.vcs.version_mill0.11_2.13-0.4.0.pom",
+            "./assets/.cache/coursier/v1/https/repo1.maven.org/maven2/de/tototec/de.tobiasroeser.mill.vcs.version_mill0.11_2.13/0.4.0/de.tobiasroeser.mill.vcs.version_mill0.11_2.13-0.4.0.pom",
         )
         self.assertRaises(StopIteration, lambda: next(root))
 

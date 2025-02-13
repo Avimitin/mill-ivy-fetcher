@@ -2,6 +2,7 @@
 
 set -e
 
+export PATH="$(nix build '.#jdk21.out' --print-out-paths --no-link)/bin:$PATH"
 export PATH="$(nix build '.#nvfetcher.out' --print-out-paths --no-link)/bin:$PATH"
 export PATH="$(nix build '.#mill.out' --print-out-paths --no-link)/bin:$PATH"
 
@@ -23,9 +24,8 @@ nvfetcherCfg="deps/nvfetcher.toml"
 cd deps
 nvfetcher
 
-if [[ ! -d "$HOME/.cache/coursier" ]]; then
-  cp -r "$javaHome/.cache/coursier" "$HOME/.cache/coursier"
-fi
 popd >/dev/null
 
+export JAVA_OPTS="-Duser.home=$(realpath ./assets)"
+export MILL_HOME="$(realpath ./assets)"
 python3 ./test.py
