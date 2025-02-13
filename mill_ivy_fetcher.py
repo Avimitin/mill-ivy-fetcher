@@ -43,6 +43,7 @@ POM_XMLNS = {"pom": "http://maven.apache.org/POM/4.0.0"}
 class Pom:
     _tree: ET.ElementTree
     _pom_path: str
+    _install_path: str
     group_id: str
     artifact_id: str
     description: str
@@ -50,8 +51,9 @@ class Pom:
     version: str
     last_name: str
 
-    def __init__(self, pom_path: str) -> None:
+    def __init__(self, pom_path: str, root_dir: str) -> None:
         self._pom_path = pom_path
+        self._install_path = os.path.dirname(os.path.relpath(pom_path, root_dir))
         self._tree = ET.parse(self._pom_path)
         self.packaging = self._get_str("packaging", "pom:packaging", fallback="jar")
         self.last_name = basename(self._pom_path).removesuffix(".pom")
@@ -117,29 +119,26 @@ class Pom:
         pom_url = self.to_maven(".pom")
         safe_pkgname = self.artifact_id.strip()
 
-        def optional_dedent(expr: bool, s: str):
-            return textwrap.dedent(s) if expr else ""
+        def optional_str(expr: bool, s: str):
+            return s if expr else ""
 
-        return (
-            textwrap.dedent(
+        def to_nvfetcher_raw(name: str, url: str):
+            return textwrap.dedent(
                 f"""\
-        ["{unique_name}-pom"]
+        ["{name}"]
         src.manual = "{safe_ver}"
-        fetch.url = "{pom_url}"
+        fetch.url = "{url}"
         fetch.force = true
         passthru.pkgname = "{safe_pkgname}"
+        passthru.install_path = "{self._install_path}"
         """
             )
-            + optional_dedent(
-                not is_pom,
-                f"""\
-        ["{unique_name}-bundle"]
-        src.manual = "{safe_ver}"
-        fetch.url = "{bundle_url}"
-        fetch.force = true
-        passthru.pkgname = "{safe_pkgname}"
-        """,
-            )
+
+        return to_nvfetcher_raw(
+            f"{unique_name}-pom",
+            pom_url,
+        ) + optional_str(
+            not is_pom, to_nvfetcher_raw(f"{unique_name}-bundle", bundle_url)
         )
 
 
@@ -179,7 +178,10 @@ class LocalCoursierRepo:
     def to_nvfetcher_cfg_file(self) -> str:
         assert self._coursier_dir is not None
         return "\n\n".join(
-            [Pom(f).to_nvfetcher_cfg() for f in PomSearcher(self._coursier_dir)]
+            [
+                Pom(f, self._coursier_dir).to_nvfetcher_cfg()
+                for f in PomSearcher(self._coursier_dir)
+            ]
         )
 
 

@@ -17,9 +17,16 @@ class TestLocalCoursierRepo(unittest.TestCase):
 
 class TestPom(unittest.TestCase):
     def test_pom_init(self):
-        pom = Pom("./assets/de.tobiasroeser.mill.vcs.version_mill0.11_2.13-0.4.0.pom")
+        pom = Pom(
+            "./assets/dot-cache/coursier/v1/https/repo1.maven.org/maven2/de/tototec/de.tobiasroeser.mill.vcs.version_mill0.11_2.13/0.4.0/de.tobiasroeser.mill.vcs.version_mill0.11_2.13-0.4.0.pom",
+            "./assets/dot-cache/coursier",
+        )
         self.assertEqual(
             pom.last_name, "de.tobiasroeser.mill.vcs.version_mill0.11_2.13-0.4.0"
+        )
+        self.assertEqual(
+            pom._install_path,
+            "v1/https/repo1.maven.org/maven2/de/tototec/de.tobiasroeser.mill.vcs.version_mill0.11_2.13/0.4.0",
         )
         self.assertEqual(pom.group_id, "de.tototec")
         self.assertEqual(pom.version, "0.4.0")
@@ -36,10 +43,10 @@ class TestPom(unittest.TestCase):
 
 class TestPomSearcher(unittest.TestCase):
     def test_search(self):
-        root = PomSearcher("./assets")
+        root = PomSearcher("./assets/dot-cache/coursier")
         self.assertEqual(
             next(root),
-            "./assets/de.tobiasroeser.mill.vcs.version_mill0.11_2.13-0.4.0.pom",
+            "./assets/dot-cache/coursier/v1/https/repo1.maven.org/maven2/de/tototec/de.tobiasroeser.mill.vcs.version_mill0.11_2.13/0.4.0/de.tobiasroeser.mill.vcs.version_mill0.11_2.13-0.4.0.pom",
         )
         self.assertRaises(StopIteration, lambda: next(root))
 
