@@ -112,7 +112,7 @@ class Pom:
         unique_name = (self.artifact_id + "-" + self.version).strip()
         safe_ver = self.version.strip()
         suffix = self._guess_suffix()
-        is_pom = suffix == "pom"
+        is_pom = "pom" in suffix
         bundle_url = self.to_maven(suffix)
         pom_url = self.to_maven(".pom")
         safe_pkgname = self.artifact_id.strip()
