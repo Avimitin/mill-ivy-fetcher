@@ -1,21 +1,4 @@
 {
-    "apache-33-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "apache-33-bundle",
-        "passthru": {
-            "pkgname": "apache"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-14vYUkxfg4ChkKZSVoZimpXf5RLfIRETg6bYwJI6RBU=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/org/apache/apache/33/apache-33.pom"
-        },
-        "version": "33"
-    },
     "apache-33-pom": {
         "cargoLocks": null,
         "date": null,
@@ -305,23 +288,6 @@
         },
         "version": "2.1.12"
     },
-    "fusesource-pom-1.12-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "fusesource-pom-1.12-bundle",
-        "passthru": {
-            "pkgname": "fusesource-pom"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-xA2WDarc73sBwbHGZXr7rE//teUxaPj8sLKLhOb9zKE=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/org/fusesource/fusesource-pom/1.12/fusesource-pom-1.12.pom"
-        },
-        "version": "1.12"
-    },
     "fusesource-pom-1.12-pom": {
         "cargoLocks": null,
         "date": null,
@@ -407,23 +373,6 @@
         },
         "version": "1.1.0"
     },
-    "groovy-bom-4.0.22-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "groovy-bom-4.0.22-bundle",
-        "passthru": {
-            "pkgname": "groovy-bom"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-Hh9rQiKue/1jMgA+33AgGDWZDb1GEGsWzduopT4832U=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/org/apache/groovy/groovy-bom/4.0.22/groovy-bom-4.0.22.pom"
-        },
-        "version": "4.0.22"
-    },
     "groovy-bom-4.0.22-pom": {
         "cargoLocks": null,
         "date": null,
@@ -475,23 +424,6 @@
         },
         "version": "1.10.3"
     },
-    "jackson-bom-2.17.2-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "jackson-bom-2.17.2-bundle",
-        "passthru": {
-            "pkgname": "jackson-bom"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-H0crC8IATVz0IaxIhxQX+EGJ5481wElxg4f9i0T7nzI=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/com/fasterxml/jackson/jackson-bom/2.17.2/jackson-bom-2.17.2.pom"
-        },
-        "version": "2.17.2"
-    },
     "jackson-bom-2.17.2-pom": {
         "cargoLocks": null,
         "date": null,
@@ -508,23 +440,6 @@
             "url": "https://repo1.maven.org/maven2/com/fasterxml/jackson/jackson-bom/2.17.2/jackson-bom-2.17.2.pom"
         },
         "version": "2.17.2"
-    },
-    "jackson-parent-2.17-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "jackson-parent-2.17-bundle",
-        "passthru": {
-            "pkgname": "jackson-parent"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-rubeSpcoOwQOQ/Ta1XXnt0eWzZhNiSdvfsdWc4DIop0=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/com/fasterxml/jackson/jackson-parent/2.17/jackson-parent-2.17.pom"
-        },
-        "version": "2.17"
     },
     "jackson-parent-2.17-pom": {
         "cargoLocks": null,
@@ -543,23 +458,6 @@
         },
         "version": "2.17"
     },
-    "jakarta.jakartaee-bom-9.1.0-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "jakarta.jakartaee-bom-9.1.0-bundle",
-        "passthru": {
-            "pkgname": "jakarta.jakartaee-bom"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-35jgJmIZ/buCVigm15o6IHdqi6Aqp4fw8HZaU4ZUyKQ=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/jakarta/platform/jakarta.jakartaee-bom/9.1.0/jakarta.jakartaee-bom-9.1.0.pom"
-        },
-        "version": "9.1.0"
-    },
     "jakarta.jakartaee-bom-9.1.0-pom": {
         "cargoLocks": null,
         "date": null,
@@ -574,23 +472,6 @@
             "sha256": "sha256-35jgJmIZ/buCVigm15o6IHdqi6Aqp4fw8HZaU4ZUyKQ=",
             "type": "url",
             "url": "https://repo1.maven.org/maven2/jakarta/platform/jakarta.jakartaee-bom/9.1.0/jakarta.jakartaee-bom-9.1.0.pom"
-        },
-        "version": "9.1.0"
-    },
-    "jakartaee-api-parent-9.1.0-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "jakartaee-api-parent-9.1.0-bundle",
-        "passthru": {
-            "pkgname": "jakartaee-api-parent"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-p3AsSHAmgCeEtXl7YjMKi41lkr8PRzeyXGel6sgmWcA=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/jakarta/platform/jakartaee-api-parent/9.1.0/jakartaee-api-parent-9.1.0.pom"
         },
         "version": "9.1.0"
     },
@@ -679,23 +560,6 @@
         },
         "version": "4.12"
     },
-    "java-diff-utils-parent-4.12-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "java-diff-utils-parent-4.12-bundle",
-        "passthru": {
-            "pkgname": "java-diff-utils-parent"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-2BHPnxGMwsrRMMlCetVcF01MCm8aAKwa4cm8vsXESxk=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/io/github/java-diff-utils/java-diff-utils-parent/4.12/java-diff-utils-parent-4.12.pom"
-        },
-        "version": "4.12"
-    },
     "java-diff-utils-parent-4.12-pom": {
         "cargoLocks": null,
         "date": null,
@@ -712,23 +576,6 @@
             "url": "https://repo1.maven.org/maven2/io/github/java-diff-utils/java-diff-utils-parent/4.12/java-diff-utils-parent-4.12.pom"
         },
         "version": "4.12"
-    },
-    "java-parent-pom-1.1.28-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "java-parent-pom-1.1.28-bundle",
-        "passthru": {
-            "pkgname": "java-parent-pom"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-AhmcNHqdK55vXb+OE9TDTo/r+rkMm4H7oToW6CCICb8=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/net/openhft/java-parent-pom/1.1.28/java-parent-pom-1.1.28.pom"
-        },
-        "version": "1.1.28"
     },
     "java-parent-pom-1.1.28-pom": {
         "cargoLocks": null,
@@ -846,23 +693,6 @@
             "sha256": "sha256-n/4orsyfVG7JaV8tUh9nRZtLNpFxSMCNFvRVazg9Mo8=",
             "type": "url",
             "url": "https://repo1.maven.org/maven2/org/jline/jline-native/3.27.1/jline-native-3.27.1.pom"
-        },
-        "version": "3.27.1"
-    },
-    "jline-parent-3.27.1-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "jline-parent-3.27.1-bundle",
-        "passthru": {
-            "pkgname": "jline-parent"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-6WT9B2wgziTdtI3XN6CNYFA0cAXj5u7IL/XrBD1WFYE=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/org/jline/jline-parent/3.27.1/jline-parent-3.27.1.pom"
         },
         "version": "3.27.1"
     },
@@ -985,23 +815,6 @@
         },
         "version": "5.14.0"
     },
-    "junit-bom-5.10.3-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "junit-bom-5.10.3-bundle",
-        "passthru": {
-            "pkgname": "junit-bom"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-EJN9RMQlmEy4c5Il00cS4aMUVkHKk6w/fvGG+iX2urw=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/org/junit/junit-bom/5.10.3/junit-bom-5.10.3.pom"
-        },
-        "version": "5.10.3"
-    },
     "junit-bom-5.10.3-pom": {
         "cargoLocks": null,
         "date": null,
@@ -1053,23 +866,6 @@
         },
         "version": "1.4.4"
     },
-    "log4j-2.24.3-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "log4j-2.24.3-bundle",
-        "passthru": {
-            "pkgname": "log4j"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-wUG0hj/AzqtYOJShPh+eUsAfwtdYcn1nR/a5nVBA87E=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j/2.24.3/log4j-2.24.3.pom"
-        },
-        "version": "2.24.3"
-    },
     "log4j-2.24.3-pom": {
         "cargoLocks": null,
         "date": null,
@@ -1118,23 +914,6 @@
             "sha256": "sha256-vAXeM1M6Elmtusv8yCbNZjdqLZxO5T+4NgCfRKRbgjk=",
             "type": "url",
             "url": "https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.24.3/log4j-api-2.24.3.pom"
-        },
-        "version": "2.24.3"
-    },
-    "log4j-bom-2.24.3-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "log4j-bom-2.24.3-bundle",
-        "passthru": {
-            "pkgname": "log4j-bom"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-sXq38yj0WGt+cfjJT8NaXaK86AcFpdYwBAIsGSiDNVg=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-bom/2.24.3/log4j-bom-2.24.3.pom"
         },
         "version": "2.24.3"
     },
@@ -1188,23 +967,6 @@
             "url": "https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.24.3/log4j-core-2.24.3.pom"
         },
         "version": "2.24.3"
-    },
-    "logging-parent-11.3.0-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "logging-parent-11.3.0-bundle",
-        "passthru": {
-            "pkgname": "logging-parent"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-pcmFtW/hxYQzOTtQkabznlufeFGN2PySE0aQWZtk19A=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/org/apache/logging/logging-parent/11.3.0/logging-parent-11.3.0.pom"
-        },
-        "version": "11.3.0"
     },
     "logging-parent-11.3.0-pom": {
         "cargoLocks": null,
@@ -1529,23 +1291,6 @@
         },
         "version": "0.12.5-173-15dded"
     },
-    "mockito-bom-4.11.0-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "mockito-bom-4.11.0-bundle",
-        "passthru": {
-            "pkgname": "mockito-bom"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-2FMadGyYj39o7V8YjN6pRQBq6pk+xd+eUk4NJ9YUkdo=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/org/mockito/mockito-bom/4.11.0/mockito-bom-4.11.0.pom"
-        },
-        "version": "4.11.0"
-    },
     "mockito-bom-4.11.0-pom": {
         "cargoLocks": null,
         "date": null,
@@ -1631,23 +1376,6 @@
         },
         "version": "0.10.0"
     },
-    "oss-parent-58-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "oss-parent-58-bundle",
-        "passthru": {
-            "pkgname": "oss-parent"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-VnDmrBxN3MnUE8+HmXpdou+qTSq+Q5Njr57xAqCgnkA=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/com/fasterxml/oss-parent/58/oss-parent-58.pom"
-        },
-        "version": "58"
-    },
     "oss-parent-58-pom": {
         "cargoLocks": null,
         "date": null,
@@ -1699,23 +1427,6 @@
         },
         "version": "0.9.0"
     },
-    "project-1.0.7-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "project-1.0.7-bundle",
-        "passthru": {
-            "pkgname": "project"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-IFwDmkLLrjVW776wSkg+s6PPlVC9db+EJg3I8oIY8QU=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/org/eclipse/ee4j/project/1.0.7/project-1.0.7.pom"
-        },
-        "version": "1.0.7"
-    },
     "project-1.0.7-pom": {
         "cargoLocks": null,
         "date": null,
@@ -1766,23 +1477,6 @@
             "url": "https://repo1.maven.org/maven2/com/lihaoyi/requests_3/0.9.0/requests_3-0.9.0.pom"
         },
         "version": "0.9.0"
-    },
-    "root-parent-pom-1.2.12-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "root-parent-pom-1.2.12-bundle",
-        "passthru": {
-            "pkgname": "root-parent-pom"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-MYArTIZCLZGsUzfa1wURNTXKmG9817wjlwG5+d+WfM8=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/net/openhft/root-parent-pom/1.2.12/root-parent-pom-1.2.12.pom"
-        },
-        "version": "1.2.12"
     },
     "root-parent-pom-1.2.12-pom": {
         "cargoLocks": null,
@@ -2514,23 +2208,6 @@
             "url": "https://repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.4.0/sourcecode_2.13-0.4.0.pom"
         },
         "version": "0.4.0"
-    },
-    "spring-framework-bom-5.3.39-bundle": {
-        "cargoLocks": null,
-        "date": null,
-        "extract": null,
-        "name": "spring-framework-bom-5.3.39-bundle",
-        "passthru": {
-            "pkgname": "spring-framework-bom"
-        },
-        "pinned": false,
-        "src": {
-            "name": null,
-            "sha256": "sha256-9tSBCT51dny6Gsfh2zj49pLL4+OHRGkzcada6yHGFIs=",
-            "type": "url",
-            "url": "https://repo1.maven.org/maven2/org/springframework/spring-framework-bom/5.3.39/spring-framework-bom-5.3.39.pom"
-        },
-        "version": "5.3.39"
     },
     "spring-framework-bom-5.3.39-pom": {
         "cargoLocks": null,
