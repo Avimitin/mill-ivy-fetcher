@@ -1,6 +1,6 @@
 { lib, stdenvNoCC, mill, jdk21, callPackage, makeWrapper }:
 let
-  deps = (callPackage ./deps/_sources { }).ivyDeps;
+  deps = (callPackage ./deps { }).ivyDeps;
 in
 stdenvNoCC.mkDerivation {
   name = "foo-deps";

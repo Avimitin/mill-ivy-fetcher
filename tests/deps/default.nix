@@ -1,6 +1,6 @@
 { lib, stdenvNoCC, lndir, fetchgit, fetchurl, fetchFromGitHub, dockerTools, configure-mill-home-hook }:
 let
-  sources = (import ./generated.nix) { inherit fetchgit fetchurl fetchFromGitHub dockerTools; };
+  sources = (import ./_sources/generated.nix) { inherit fetchgit fetchurl fetchFromGitHub dockerTools; };
   uniqSources = lib.groupBy (x: x.pkgname) (lib.attrValues sources);
   ivyDepBuilder = ivyName: ivySources: stdenvNoCC.mkDerivation
     {

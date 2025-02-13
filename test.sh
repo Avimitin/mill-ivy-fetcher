@@ -2,6 +2,13 @@
 
 set -e
 
+echo "Running unit tests"
+export JAVA_OPTS="-Duser.home=$(realpath ./assets)"
+export MILL_HOME="$(realpath ./assets)"
+python3 ./test.py
+
+
+echo "Running integration tests"
 export PATH="$(nix build '.#jdk21.out' --print-out-paths --no-link)/bin:$PATH"
 export PATH="$(nix build '.#nvfetcher.out' --print-out-paths --no-link)/bin:$PATH"
 export PATH="$(nix build '.#mill.out' --print-out-paths --no-link)/bin:$PATH"
@@ -26,6 +33,4 @@ nvfetcher
 
 popd >/dev/null
 
-export JAVA_OPTS="-Duser.home=$(realpath ./assets)"
-export MILL_HOME="$(realpath ./assets)"
-python3 ./test.py
+nix build '.#test-foo'
