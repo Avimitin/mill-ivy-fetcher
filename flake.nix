@@ -16,6 +16,7 @@
         formatter = pkgs.nixpkgs-fmt;
         legacyPackages = pkgs;
         packages.default = pkgs.callPackage ./package.nix { };
+        packages.test-foo = pkgs.callPackage ./tests/default.nix { };
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [
             python3

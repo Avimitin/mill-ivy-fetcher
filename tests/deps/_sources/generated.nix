@@ -8,6 +8,7 @@
       url = "https://repo1.maven.org/maven2/org/apache/apache/33/apache-33.pom";
       sha256 = "sha256-14vYUkxfg4ChkKZSVoZimpXf5RLfIRETg6bYwJI6RBU=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/apache/apache/33";
     pkgname = "apache";
   };
   "collections_2.13-1.10.7-bundle" = {
@@ -17,6 +18,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/collections_2.13/1.10.7/collections_2.13-1.10.7.jar";
       sha256 = "sha256-hZFhciTk9m7ipAxhkLZN5JbWPuKp4BuDWPxSlziyTDk=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/collections_2.13/1.10.7";
     pkgname = "collections_2.13";
   };
   "collections_2.13-1.10.7-pom" = {
@@ -26,6 +28,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/collections_2.13/1.10.7/collections_2.13-1.10.7.pom";
       sha256 = "sha256-rOlIQmmpRLFAmO21KjzlCfUmrofZFVmALgzSQfHZ2UA=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/collections_2.13/1.10.7";
     pkgname = "collections_2.13";
   };
   "compiler-bridge_2.13-1.10.7-bundle" = {
@@ -35,6 +38,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/compiler-bridge_2.13/1.10.7/compiler-bridge_2.13-1.10.7.jar";
       sha256 = "sha256-4ml4ho2EraIfc9JrPtR13ZYH5XB9KMqxTOsOqM7OEOI=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-bridge_2.13/1.10.7";
     pkgname = "compiler-bridge_2.13";
   };
   "compiler-bridge_2.13-1.10.7-pom" = {
@@ -44,6 +48,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/compiler-bridge_2.13/1.10.7/compiler-bridge_2.13-1.10.7.pom";
       sha256 = "sha256-tki5hhlGYh7dhgiXDaRDixibWPL/0uv/uU+GtSaDSPg=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-bridge_2.13/1.10.7";
     pkgname = "compiler-bridge_2.13";
   };
   "compiler-interface-1.10.3-bundle" = {
@@ -53,6 +58,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.3/compiler-interface-1.10.3.jar";
       sha256 = "sha256-12ZpOW3aLwNqNR1NRVxAur0//3/M0Rh76/xqMPK1+10=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.3";
     pkgname = "compiler-interface";
   };
   "compiler-interface-1.10.3-pom" = {
@@ -62,6 +68,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.3/compiler-interface-1.10.3.pom";
       sha256 = "sha256-Ffe8HBunAu5qXvTbk6PRfSKphbJO1dQCQ5037ePcsP8=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.3";
     pkgname = "compiler-interface";
   };
   "compiler-interface-1.10.7-bundle" = {
@@ -71,6 +78,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.7/compiler-interface-1.10.7.jar";
       sha256 = "sha256-K6zFdh4DkgoijlydILM9nFHUOq8vUuj4OezmMJZuuIA=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.7";
     pkgname = "compiler-interface";
   };
   "compiler-interface-1.10.7-pom" = {
@@ -80,6 +88,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.7/compiler-interface-1.10.7.pom";
       sha256 = "sha256-O3sNqL9YIKpQ9ESOGQId4RgxZPdKGAvQto59kvMATjE=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.7";
     pkgname = "compiler-interface";
   };
   "core-macros_2.13-1.10.7-bundle" = {
@@ -89,6 +98,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/core-macros_2.13/1.10.7/core-macros_2.13-1.10.7.jar";
       sha256 = "sha256-z96fLn2IXns+qBtUuMtXnxClmc8IAqBvGJkkP+4rIYk=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/core-macros_2.13/1.10.7";
     pkgname = "core-macros_2.13";
   };
   "core-macros_2.13-1.10.7-pom" = {
@@ -98,6 +108,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/core-macros_2.13/1.10.7/core-macros_2.13-1.10.7.pom";
       sha256 = "sha256-liNQvw5uQXwF4VUoIrILMx2IbRgT2g6ThmkPVJe38Es=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/core-macros_2.13/1.10.7";
     pkgname = "core-macros_2.13";
   };
   "disruptor-3.4.2-bundle" = {
@@ -107,6 +118,7 @@
       url = "https://repo1.maven.org/maven2/com/lmax/disruptor/3.4.2/disruptor-3.4.2.jar";
       sha256 = "sha256-9BLsuyNcJGC0XmNYQQlyPeqNlLgZx4yb/Dj1DLqFRsA=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lmax/disruptor/3.4.2";
     pkgname = "disruptor";
   };
   "disruptor-3.4.2-pom" = {
@@ -116,6 +128,7 @@
       url = "https://repo1.maven.org/maven2/com/lmax/disruptor/3.4.2/disruptor-3.4.2.pom";
       sha256 = "sha256-cxHl4mHKYvJZstFObW8c43WmRxhzGnMP187AIo1Q9do=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lmax/disruptor/3.4.2";
     pkgname = "disruptor";
   };
   "fansi_2.13-0.5.0-bundle" = {
@@ -125,6 +138,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/fansi_2.13/0.5.0/fansi_2.13-0.5.0.jar";
       sha256 = "sha256-/K4mWA99bnKtvW5cUEuxcV++P1+4FNcOhLxUJ6g15Cw=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.13/0.5.0";
     pkgname = "fansi_2.13";
   };
   "fansi_2.13-0.5.0-pom" = {
@@ -134,6 +148,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/fansi_2.13/0.5.0/fansi_2.13-0.5.0.pom";
       sha256 = "sha256-TKF7Hlv3660AHWsvbCzVqcsuPlAmPPjlibjq5plrvo0=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.13/0.5.0";
     pkgname = "fansi_2.13";
   };
   "file-tree-views-2.1.12-bundle" = {
@@ -143,6 +158,7 @@
       url = "https://repo1.maven.org/maven2/com/swoval/file-tree-views/2.1.12/file-tree-views-2.1.12.jar";
       sha256 = "sha256-/XNziJt6ks8+l9s2ySC6JyrsFYqTh7Mln8qfLfrtqRQ=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/swoval/file-tree-views/2.1.12";
     pkgname = "file-tree-views";
   };
   "file-tree-views-2.1.12-pom" = {
@@ -152,6 +168,7 @@
       url = "https://repo1.maven.org/maven2/com/swoval/file-tree-views/2.1.12/file-tree-views-2.1.12.pom";
       sha256 = "sha256-7dJw3HdtHYXdMA5BXP+eBgl1fXr+siOmsYe61bCr50Y=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/swoval/file-tree-views/2.1.12";
     pkgname = "file-tree-views";
   };
   "fusesource-pom-1.12-pom" = {
@@ -161,6 +178,7 @@
       url = "https://repo1.maven.org/maven2/org/fusesource/fusesource-pom/1.12/fusesource-pom-1.12.pom";
       sha256 = "sha256-xA2WDarc73sBwbHGZXr7rE//teUxaPj8sLKLhOb9zKE=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/fusesource/fusesource-pom/1.12";
     pkgname = "fusesource-pom";
   };
   "geny_2.13-1.1.1-bundle" = {
@@ -170,6 +188,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/geny_2.13/1.1.1/geny_2.13-1.1.1.jar";
       sha256 = "sha256-IK8jHCIvxxwp4Gs82NkZCha0EtqDzEn7C3eM8txvlNI=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/geny_2.13/1.1.1";
     pkgname = "geny_2.13";
   };
   "geny_2.13-1.1.1-pom" = {
@@ -179,6 +198,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/geny_2.13/1.1.1/geny_2.13-1.1.1.pom";
       sha256 = "sha256-hI92BOaF6vKlsR84uLXeBpNKdp8+nRfAdyYEItMu01o=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/geny_2.13/1.1.1";
     pkgname = "geny_2.13";
   };
   "geny_3-1.1.0-bundle" = {
@@ -188,6 +208,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/geny_3/1.1.0/geny_3-1.1.0.jar";
       sha256 = "sha256-RWY3k1A7sqz0RzbXTx27y2nJU7psC/kaULZAyzv9abU=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/geny_3/1.1.0";
     pkgname = "geny_3";
   };
   "geny_3-1.1.0-pom" = {
@@ -197,6 +218,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/geny_3/1.1.0/geny_3-1.1.0.pom";
       sha256 = "sha256-WJGnQ3VMibsYlUxVnN4h3LAbMYxFGoQllRqU0/+yl3c=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/geny_3/1.1.0";
     pkgname = "geny_3";
   };
   "groovy-bom-4.0.22-pom" = {
@@ -206,6 +228,7 @@
       url = "https://repo1.maven.org/maven2/org/apache/groovy/groovy-bom/4.0.22/groovy-bom-4.0.22.pom";
       sha256 = "sha256-Hh9rQiKue/1jMgA+33AgGDWZDb1GEGsWzduopT4832U=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/apache/groovy/groovy-bom/4.0.22";
     pkgname = "groovy-bom";
   };
   "io_2.13-1.10.3-bundle" = {
@@ -215,6 +238,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/io_2.13/1.10.3/io_2.13-1.10.3.jar";
       sha256 = "sha256-JRtFEwfvrDJwVp+mGmostUNv36ZRxHf/wueaenq5ZHw=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/io_2.13/1.10.3";
     pkgname = "io_2.13";
   };
   "io_2.13-1.10.3-pom" = {
@@ -224,6 +248,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/io_2.13/1.10.3/io_2.13-1.10.3.pom";
       sha256 = "sha256-Nk9w4/HVu3de9JXV0XfTmGxxGlWxoDLRrlIXgkAMHMc=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/io_2.13/1.10.3";
     pkgname = "io_2.13";
   };
   "jackson-bom-2.17.2-pom" = {
@@ -233,6 +258,7 @@
       url = "https://repo1.maven.org/maven2/com/fasterxml/jackson/jackson-bom/2.17.2/jackson-bom-2.17.2.pom";
       sha256 = "sha256-H0crC8IATVz0IaxIhxQX+EGJ5481wElxg4f9i0T7nzI=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/fasterxml/jackson/jackson-bom/2.17.2";
     pkgname = "jackson-bom";
   };
   "jackson-parent-2.17-pom" = {
@@ -242,6 +268,7 @@
       url = "https://repo1.maven.org/maven2/com/fasterxml/jackson/jackson-parent/2.17/jackson-parent-2.17.pom";
       sha256 = "sha256-rubeSpcoOwQOQ/Ta1XXnt0eWzZhNiSdvfsdWc4DIop0=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/fasterxml/jackson/jackson-parent/2.17";
     pkgname = "jackson-parent";
   };
   "jakarta.jakartaee-bom-9.1.0-pom" = {
@@ -251,6 +278,7 @@
       url = "https://repo1.maven.org/maven2/jakarta/platform/jakarta.jakartaee-bom/9.1.0/jakarta.jakartaee-bom-9.1.0.pom";
       sha256 = "sha256-35jgJmIZ/buCVigm15o6IHdqi6Aqp4fw8HZaU4ZUyKQ=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/jakarta/platform/jakarta.jakartaee-bom/9.1.0";
     pkgname = "jakarta.jakartaee-bom";
   };
   "jakartaee-api-parent-9.1.0-pom" = {
@@ -260,6 +288,7 @@
       url = "https://repo1.maven.org/maven2/jakarta/platform/jakartaee-api-parent/9.1.0/jakartaee-api-parent-9.1.0.pom";
       sha256 = "sha256-p3AsSHAmgCeEtXl7YjMKi41lkr8PRzeyXGel6sgmWcA=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/jakarta/platform/jakartaee-api-parent/9.1.0";
     pkgname = "jakartaee-api-parent";
   };
   "jansi-2.4.1-bundle" = {
@@ -269,6 +298,7 @@
       url = "https://repo1.maven.org/maven2/org/fusesource/jansi/jansi/2.4.1/jansi-2.4.1.jar";
       sha256 = "sha256-Ll53Wp3Fj/prvWqm8JnWL4ti3N60w8O7vlzyMBvC3ME=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/fusesource/jansi/jansi/2.4.1";
     pkgname = "jansi";
   };
   "jansi-2.4.1-pom" = {
@@ -278,6 +308,7 @@
       url = "https://repo1.maven.org/maven2/org/fusesource/jansi/jansi/2.4.1/jansi-2.4.1.pom";
       sha256 = "sha256-P5jZeaTTVZ+HefuwBLNK51Fq+t9RDhHffMPNBz6xuzs=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/fusesource/jansi/jansi/2.4.1";
     pkgname = "jansi";
   };
   "java-diff-utils-4.12-bundle" = {
@@ -287,6 +318,7 @@
       url = "https://repo1.maven.org/maven2/io/github/java-diff-utils/java-diff-utils/4.12/java-diff-utils-4.12.jar";
       sha256 = "sha256-mZCiA5d49rTMlHkBQcKGiGTqzuBiDGxFlFESGpAc1bU=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/io/github/java-diff-utils/java-diff-utils/4.12";
     pkgname = "java-diff-utils";
   };
   "java-diff-utils-4.12-pom" = {
@@ -296,6 +328,7 @@
       url = "https://repo1.maven.org/maven2/io/github/java-diff-utils/java-diff-utils/4.12/java-diff-utils-4.12.pom";
       sha256 = "sha256-wm4JftyOxoBdExmBfSPU5JbMEBXMVdxSAhEtj2qRZfw=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/io/github/java-diff-utils/java-diff-utils/4.12";
     pkgname = "java-diff-utils";
   };
   "java-diff-utils-parent-4.12-pom" = {
@@ -305,6 +338,7 @@
       url = "https://repo1.maven.org/maven2/io/github/java-diff-utils/java-diff-utils-parent/4.12/java-diff-utils-parent-4.12.pom";
       sha256 = "sha256-2BHPnxGMwsrRMMlCetVcF01MCm8aAKwa4cm8vsXESxk=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/io/github/java-diff-utils/java-diff-utils-parent/4.12";
     pkgname = "java-diff-utils-parent";
   };
   "java-parent-pom-1.1.28-pom" = {
@@ -314,6 +348,7 @@
       url = "https://repo1.maven.org/maven2/net/openhft/java-parent-pom/1.1.28/java-parent-pom-1.1.28.pom";
       sha256 = "sha256-AhmcNHqdK55vXb+OE9TDTo/r+rkMm4H7oToW6CCICb8=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/net/openhft/java-parent-pom/1.1.28";
     pkgname = "java-parent-pom";
   };
   "jline-2.14.7-sbt-9a88bc413e2b34a4580c001c654d1a7f4f65bf18-bundle" = {
@@ -323,6 +358,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/jline/jline/2.14.7-sbt-9a88bc413e2b34a4580c001c654d1a7f4f65bf18/jline-2.14.7-sbt-9a88bc413e2b34a4580c001c654d1a7f4f65bf18.jar";
       sha256 = "sha256-oNuqeBlU+l7QFXBtEtAETgGKVwXaZ5HsmKUfs2XWbLA=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/jline/jline/2.14.7-sbt-9a88bc413e2b34a4580c001c654d1a7f4f65bf18";
     pkgname = "jline";
   };
   "jline-2.14.7-sbt-9a88bc413e2b34a4580c001c654d1a7f4f65bf18-pom" = {
@@ -332,6 +368,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/jline/jline/2.14.7-sbt-9a88bc413e2b34a4580c001c654d1a7f4f65bf18/jline-2.14.7-sbt-9a88bc413e2b34a4580c001c654d1a7f4f65bf18.pom";
       sha256 = "sha256-fiebiHtNMNGo1Ntlffaobq1Pj07msv/dALQX6vgJ8yU=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/jline/jline/2.14.7-sbt-9a88bc413e2b34a4580c001c654d1a7f4f65bf18";
     pkgname = "jline";
   };
   "jline-3.26.3-bundle" = {
@@ -341,6 +378,7 @@
       url = "https://repo1.maven.org/maven2/org/jline/jline/3.26.3/jline-3.26.3.jar";
       sha256 = "sha256-8jEWw0kxRljN66psr20AZ3M8yeW4UsrSop5kPTK9Ur0=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline/3.26.3";
     pkgname = "jline";
   };
   "jline-3.26.3-pom" = {
@@ -350,6 +388,7 @@
       url = "https://repo1.maven.org/maven2/org/jline/jline/3.26.3/jline-3.26.3.pom";
       sha256 = "sha256-qvtXBPA+JK/9NnaKNdbE9blcB3nxNvDnjB5GO+ltkKI=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline/3.26.3";
     pkgname = "jline";
   };
   "jline-native-3.27.1-bundle" = {
@@ -359,6 +398,7 @@
       url = "https://repo1.maven.org/maven2/org/jline/jline-native/3.27.1/jline-native-3.27.1.jar";
       sha256 = "sha256-Y2ZG2kBBPnSWOz9LQMnF3PtC89Ds8bk9bd9ciV7/5CI=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-native/3.27.1";
     pkgname = "jline-native";
   };
   "jline-native-3.27.1-pom" = {
@@ -368,6 +408,7 @@
       url = "https://repo1.maven.org/maven2/org/jline/jline-native/3.27.1/jline-native-3.27.1.pom";
       sha256 = "sha256-n/4orsyfVG7JaV8tUh9nRZtLNpFxSMCNFvRVazg9Mo8=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-native/3.27.1";
     pkgname = "jline-native";
   };
   "jline-parent-3.27.1-pom" = {
@@ -377,6 +418,7 @@
       url = "https://repo1.maven.org/maven2/org/jline/jline-parent/3.27.1/jline-parent-3.27.1.pom";
       sha256 = "sha256-6WT9B2wgziTdtI3XN6CNYFA0cAXj5u7IL/XrBD1WFYE=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-parent/3.27.1";
     pkgname = "jline-parent";
   };
   "jline-terminal-3.27.1-bundle" = {
@@ -386,6 +428,7 @@
       url = "https://repo1.maven.org/maven2/org/jline/jline-terminal/3.27.1/jline-terminal-3.27.1.jar";
       sha256 = "sha256-Qre3VlBrypi1BZOEJqNcmQgveBnDM+0lvUEUv7DjtfI=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal/3.27.1";
     pkgname = "jline-terminal";
   };
   "jline-terminal-3.27.1-pom" = {
@@ -395,6 +438,7 @@
       url = "https://repo1.maven.org/maven2/org/jline/jline-terminal/3.27.1/jline-terminal-3.27.1.pom";
       sha256 = "sha256-hHjnmqIupq95eWRD+O0w//pdxkfrPS0YYLrC4j800pc=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal/3.27.1";
     pkgname = "jline-terminal";
   };
   "jline-terminal-jni-3.27.1-bundle" = {
@@ -404,6 +448,7 @@
       url = "https://repo1.maven.org/maven2/org/jline/jline-terminal-jni/3.27.1/jline-terminal-jni-3.27.1.jar";
       sha256 = "sha256-5Lxk8eaOn7JdgFFzOOdqvKHgFFuC44m1wrLH1x0VD4I=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal-jni/3.27.1";
     pkgname = "jline-terminal-jni";
   };
   "jline-terminal-jni-3.27.1-pom" = {
@@ -413,6 +458,7 @@
       url = "https://repo1.maven.org/maven2/org/jline/jline-terminal-jni/3.27.1/jline-terminal-jni-3.27.1.pom";
       sha256 = "sha256-UkSN48v1X4BwFITLSiO1jLGw2P6qhtvdwyE2ByQ2l1c=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal-jni/3.27.1";
     pkgname = "jline-terminal-jni";
   };
   "jna-5.14.0-bundle" = {
@@ -422,6 +468,7 @@
       url = "https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.14.0/jna-5.14.0.jar";
       sha256 = "sha256-NO0eHyf6iWvKUNvE6ZzzcylnzsOHp6DV40hsCWc/6MY=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.14.0";
     pkgname = "jna";
   };
   "jna-5.14.0-pom" = {
@@ -431,6 +478,7 @@
       url = "https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.14.0/jna-5.14.0.pom";
       sha256 = "sha256-4E4llRUB3yWtx7Hc22xTNzyUiXuE0+FJISknY+4Hrj0=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.14.0";
     pkgname = "jna";
   };
   "junit-bom-5.10.3-pom" = {
@@ -440,6 +488,7 @@
       url = "https://repo1.maven.org/maven2/org/junit/junit-bom/5.10.3/junit-bom-5.10.3.pom";
       sha256 = "sha256-EJN9RMQlmEy4c5Il00cS4aMUVkHKk6w/fvGG+iX2urw=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/junit/junit-bom/5.10.3";
     pkgname = "junit-bom";
   };
   "launcher-interface-1.4.4-bundle" = {
@@ -449,6 +498,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/launcher-interface/1.4.4/launcher-interface-1.4.4.jar";
       sha256 = "sha256-rrW8E07NN8pVMv0mML5lBYuI/X3RxRfLS1LTFrUr4s4=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/launcher-interface/1.4.4";
     pkgname = "launcher-interface";
   };
   "launcher-interface-1.4.4-pom" = {
@@ -458,6 +508,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/launcher-interface/1.4.4/launcher-interface-1.4.4.pom";
       sha256 = "sha256-4ln1ERKUVnfDcSzHAQGPb2ZGMKSTGXx9LXtcOyCRotQ=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/launcher-interface/1.4.4";
     pkgname = "launcher-interface";
   };
   "log4j-2.24.3-pom" = {
@@ -467,6 +518,7 @@
       url = "https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j/2.24.3/log4j-2.24.3.pom";
       sha256 = "sha256-wUG0hj/AzqtYOJShPh+eUsAfwtdYcn1nR/a5nVBA87E=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j/2.24.3";
     pkgname = "log4j";
   };
   "log4j-api-2.24.3-bundle" = {
@@ -476,6 +528,7 @@
       url = "https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.24.3/log4j-api-2.24.3.jar";
       sha256 = "sha256-W0oKDNDnUd7UMcFiRCvb3VMyjR+Lsrrl/Bu+7g9m2A8=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.24.3";
     pkgname = "log4j-api";
   };
   "log4j-api-2.24.3-pom" = {
@@ -485,6 +538,7 @@
       url = "https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.24.3/log4j-api-2.24.3.pom";
       sha256 = "sha256-vAXeM1M6Elmtusv8yCbNZjdqLZxO5T+4NgCfRKRbgjk=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.24.3";
     pkgname = "log4j-api";
   };
   "log4j-bom-2.24.3-pom" = {
@@ -494,6 +548,7 @@
       url = "https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-bom/2.24.3/log4j-bom-2.24.3.pom";
       sha256 = "sha256-sXq38yj0WGt+cfjJT8NaXaK86AcFpdYwBAIsGSiDNVg=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j-bom/2.24.3";
     pkgname = "log4j-bom";
   };
   "log4j-core-2.24.3-bundle" = {
@@ -503,6 +558,7 @@
       url = "https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.24.3/log4j-core-2.24.3.jar";
       sha256 = "sha256-frQIRZauJb08YWmOSOjQq2WpJgdYiE7Vy7nG5VxEpWo=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.24.3";
     pkgname = "log4j-core";
   };
   "log4j-core-2.24.3-pom" = {
@@ -512,6 +568,7 @@
       url = "https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.24.3/log4j-core-2.24.3.pom";
       sha256 = "sha256-v9XAxKrGECQsy2H/ABCK1zeA2iCi9ym+Bjg2qXZXf1c=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.24.3";
     pkgname = "log4j-core";
   };
   "logging-parent-11.3.0-pom" = {
@@ -521,6 +578,7 @@
       url = "https://repo1.maven.org/maven2/org/apache/logging/logging-parent/11.3.0/logging-parent-11.3.0.pom";
       sha256 = "sha256-pcmFtW/hxYQzOTtQkabznlufeFGN2PySE0aQWZtk19A=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/apache/logging/logging-parent/11.3.0";
     pkgname = "logging-parent";
   };
   "mainargs_2.13-0.7.6-bundle" = {
@@ -530,6 +588,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mainargs_2.13/0.7.6/mainargs_2.13-0.7.6.jar";
       sha256 = "sha256-ujbt3LWyAbYgYjv/e67FJwU3FoYtPStzoceIMxye/d0=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mainargs_2.13/0.7.6";
     pkgname = "mainargs_2.13";
   };
   "mainargs_2.13-0.7.6-pom" = {
@@ -539,6 +598,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mainargs_2.13/0.7.6/mainargs_2.13-0.7.6.pom";
       sha256 = "sha256-yrYbZn32G3CvWgYAI+R5LWDpbK4ngIVcoNtK6YpUqqc=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mainargs_2.13/0.7.6";
     pkgname = "mainargs_2.13";
   };
   "mainargs_3-0.5.0-bundle" = {
@@ -548,6 +608,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mainargs_3/0.5.0/mainargs_3-0.5.0.jar";
       sha256 = "sha256-mXAkdu0r4vf9VTXOZkrixhBRGZCJebuyIIqHAw5PmyI=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mainargs_3/0.5.0";
     pkgname = "mainargs_3";
   };
   "mainargs_3-0.5.0-pom" = {
@@ -557,6 +618,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mainargs_3/0.5.0/mainargs_3-0.5.0.pom";
       sha256 = "sha256-6l3iQV6H/EcqQHjdqeXx+1BkFPFpLOKWj79MqPLDLD4=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mainargs_3/0.5.0";
     pkgname = "mainargs_3";
   };
   "mill-main-api_2.13-0.12.5-173-15dded-bundle" = {
@@ -566,6 +628,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mill-main-api_2.13/0.12.5-173-15dded/mill-main-api_2.13-0.12.5-173-15dded.jar";
       sha256 = "sha256-iiX0cdAeDd//S2c5j+QC3ghKeqH6dH8vwo7ddgxtnz8=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-main-api_2.13/0.12.5-173-15dded";
     pkgname = "mill-main-api_2.13";
   };
   "mill-main-api_2.13-0.12.5-173-15dded-pom" = {
@@ -575,6 +638,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mill-main-api_2.13/0.12.5-173-15dded/mill-main-api_2.13-0.12.5-173-15dded.pom";
       sha256 = "sha256-RijZX2iYFSTjVbq+Di285ORKDQHGhTjRj4t/b4cQ5ag=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-main-api_2.13/0.12.5-173-15dded";
     pkgname = "mill-main-api_2.13";
   };
   "mill-main-client-0.12.5-173-15dded-bundle" = {
@@ -584,6 +648,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mill-main-client/0.12.5-173-15dded/mill-main-client-0.12.5-173-15dded.jar";
       sha256 = "sha256-+fAnZGlLBkF1b49KfIFgbaulkqtknHnXaRSYKT06kjc=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-main-client/0.12.5-173-15dded";
     pkgname = "mill-main-client";
   };
   "mill-main-client-0.12.5-173-15dded-pom" = {
@@ -593,6 +658,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mill-main-client/0.12.5-173-15dded/mill-main-client-0.12.5-173-15dded.pom";
       sha256 = "sha256-jXSwQBOag2auxS/44zvk8CuTMhvNkGKAnE9+xVNKWkg=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-main-client/0.12.5-173-15dded";
     pkgname = "mill-main-client";
   };
   "mill-moduledefs_2.13-0.11.2-bundle" = {
@@ -602,6 +668,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mill-moduledefs_2.13/0.11.2/mill-moduledefs_2.13-0.11.2.jar";
       sha256 = "sha256-5+5vmebD4i37cup1wI0koEc/zM3TRu0LOeWIjrYYxM4=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-moduledefs_2.13/0.11.2";
     pkgname = "mill-moduledefs_2.13";
   };
   "mill-moduledefs_2.13-0.11.2-pom" = {
@@ -611,6 +678,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mill-moduledefs_2.13/0.11.2/mill-moduledefs_2.13-0.11.2.pom";
       sha256 = "sha256-SBOavgguoUyVsBHRRpwiyxpJ6OpbF5i5HHnsG5UhwNI=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-moduledefs_2.13/0.11.2";
     pkgname = "mill-moduledefs_2.13";
   };
   "mill-runner-linenumbers_2.13-0.12.5-173-15dded-bundle" = {
@@ -620,6 +688,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-linenumbers_2.13/0.12.5-173-15dded/mill-runner-linenumbers_2.13-0.12.5-173-15dded.jar";
       sha256 = "sha256-dN64R4fKYURzDsU9D6riZ/eARyF5xXucVGBSVD6od68=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-linenumbers_2.13/0.12.5-173-15dded";
     pkgname = "mill-runner-linenumbers_2.13";
   };
   "mill-runner-linenumbers_2.13-0.12.5-173-15dded-pom" = {
@@ -629,6 +698,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-linenumbers_2.13/0.12.5-173-15dded/mill-runner-linenumbers_2.13-0.12.5-173-15dded.pom";
       sha256 = "sha256-du60lzunVo/q1V7ieEOlcLRA3y/fT+GG96ZuIqSud/k=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-linenumbers_2.13/0.12.5-173-15dded";
     pkgname = "mill-runner-linenumbers_2.13";
   };
   "mill-scala-compiler-bridge_2.13.15-0.0.1-bundle" = {
@@ -638,6 +708,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mill-scala-compiler-bridge_2.13.15/0.0.1/mill-scala-compiler-bridge_2.13.15-0.0.1.jar";
       sha256 = "sha256-mf2hc4LBMaJ+uqpcHZVhM0+YfzeJnEbwVcDSWL81n2s=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-scala-compiler-bridge_2.13.15/0.0.1";
     pkgname = "mill-scala-compiler-bridge_2.13.15";
   };
   "mill-scala-compiler-bridge_2.13.15-0.0.1-pom" = {
@@ -647,6 +718,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mill-scala-compiler-bridge_2.13.15/0.0.1/mill-scala-compiler-bridge_2.13.15-0.0.1.pom";
       sha256 = "sha256-+Z5Tlk1ZRoOxqeNvX0vfXSkbXQR7blXRJhfSuXpEbjA=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-scala-compiler-bridge_2.13.15/0.0.1";
     pkgname = "mill-scala-compiler-bridge_2.13.15";
   };
   "mill-scalalib-api_2.13-0.12.5-173-15dded-bundle" = {
@@ -656,6 +728,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mill-scalalib-api_2.13/0.12.5-173-15dded/mill-scalalib-api_2.13-0.12.5-173-15dded.jar";
       sha256 = "sha256-D4JA/0DHVGdJ0Zt3TdXtaye1Fh6YUFdVSyZXVO5Hb+E=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-scalalib-api_2.13/0.12.5-173-15dded";
     pkgname = "mill-scalalib-api_2.13";
   };
   "mill-scalalib-api_2.13-0.12.5-173-15dded-pom" = {
@@ -665,6 +738,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mill-scalalib-api_2.13/0.12.5-173-15dded/mill-scalalib-api_2.13-0.12.5-173-15dded.pom";
       sha256 = "sha256-YGXfyf+CnM2apNpG4De8Ghyui/sH1UXaLDie7RiAvUk=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-scalalib-api_2.13/0.12.5-173-15dded";
     pkgname = "mill-scalalib-api_2.13";
   };
   "mill-scalalib-worker_2.13-0.12.5-173-15dded-bundle" = {
@@ -674,6 +748,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mill-scalalib-worker_2.13/0.12.5-173-15dded/mill-scalalib-worker_2.13-0.12.5-173-15dded.jar";
       sha256 = "sha256-5MCKLzqSM5HWI0bWv0qDJ88Dmmsrpzuqf4d04PDo0zM=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-scalalib-worker_2.13/0.12.5-173-15dded";
     pkgname = "mill-scalalib-worker_2.13";
   };
   "mill-scalalib-worker_2.13-0.12.5-173-15dded-pom" = {
@@ -683,6 +758,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/mill-scalalib-worker_2.13/0.12.5-173-15dded/mill-scalalib-worker_2.13-0.12.5-173-15dded.pom";
       sha256 = "sha256-F97dgIYShL1vJP/whtWsyM5tiqSVjdEZaGrtMVFHPME=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-scalalib-worker_2.13/0.12.5-173-15dded";
     pkgname = "mill-scalalib-worker_2.13";
   };
   "mockito-bom-4.11.0-pom" = {
@@ -692,6 +768,7 @@
       url = "https://repo1.maven.org/maven2/org/mockito/mockito-bom/4.11.0/mockito-bom-4.11.0.pom";
       sha256 = "sha256-2FMadGyYj39o7V8YjN6pRQBq6pk+xd+eUk4NJ9YUkdo=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/mockito/mockito-bom/4.11.0";
     pkgname = "mockito-bom";
   };
   "os-lib_2.13-0.11.4-M4-bundle" = {
@@ -701,6 +778,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/os-lib_2.13/0.11.4-M4/os-lib_2.13-0.11.4-M4.jar";
       sha256 = "sha256-0o69W2XFzShYDCFvH2TLkvlVJ1L6vVTV41dPsoCeH1g=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/os-lib_2.13/0.11.4-M4";
     pkgname = "os-lib_2.13";
   };
   "os-lib_2.13-0.11.4-M4-pom" = {
@@ -710,6 +788,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/os-lib_2.13/0.11.4-M4/os-lib_2.13-0.11.4-M4.pom";
       sha256 = "sha256-KRSIhVHWIgsn8cAS5Yn2CXCpicqvzIMLYLQ26fqoeZg=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/os-lib_2.13/0.11.4-M4";
     pkgname = "os-lib_2.13";
   };
   "os-lib_3-0.10.0-bundle" = {
@@ -719,6 +798,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/os-lib_3/0.10.0/os-lib_3-0.10.0.jar";
       sha256 = "sha256-6i2prk+AGfxQTR5VRWZSI/u5rM3yzhsxrGIWIf9zLXM=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/os-lib_3/0.10.0";
     pkgname = "os-lib_3";
   };
   "os-lib_3-0.10.0-pom" = {
@@ -728,6 +808,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/os-lib_3/0.10.0/os-lib_3-0.10.0.pom";
       sha256 = "sha256-ekxk3YMRwFurBPlzjsirJY8n9ihIufBo4zMGF277skU=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/os-lib_3/0.10.0";
     pkgname = "os-lib_3";
   };
   oss-parent-58-pom = {
@@ -737,6 +818,7 @@
       url = "https://repo1.maven.org/maven2/com/fasterxml/oss-parent/58/oss-parent-58.pom";
       sha256 = "sha256-VnDmrBxN3MnUE8+HmXpdou+qTSq+Q5Njr57xAqCgnkA=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/fasterxml/oss-parent/58";
     pkgname = "oss-parent";
   };
   "pprint_2.13-0.9.0-bundle" = {
@@ -746,6 +828,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/pprint_2.13/0.9.0/pprint_2.13-0.9.0.jar";
       sha256 = "sha256-XdNrZa3c1HvMxo023QC+6T4t70OfGjbQKkUDCOjZo9M=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/pprint_2.13/0.9.0";
     pkgname = "pprint_2.13";
   };
   "pprint_2.13-0.9.0-pom" = {
@@ -755,6 +838,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/pprint_2.13/0.9.0/pprint_2.13-0.9.0.pom";
       sha256 = "sha256-8MEu42PW11u42Pqjedk2ebTwxtYcyWtPykxM3yO5isQ=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/pprint_2.13/0.9.0";
     pkgname = "pprint_2.13";
   };
   "project-1.0.7-pom" = {
@@ -764,6 +848,7 @@
       url = "https://repo1.maven.org/maven2/org/eclipse/ee4j/project/1.0.7/project-1.0.7.pom";
       sha256 = "sha256-IFwDmkLLrjVW776wSkg+s6PPlVC9db+EJg3I8oIY8QU=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/eclipse/ee4j/project/1.0.7";
     pkgname = "project";
   };
   "requests_3-0.9.0-bundle" = {
@@ -773,6 +858,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/requests_3/0.9.0/requests_3-0.9.0.jar";
       sha256 = "sha256-/bbe7v8KQ2iBvRWyrBrpwef/+PURA1NMcKYPo8k4Vxc=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/requests_3/0.9.0";
     pkgname = "requests_3";
   };
   "requests_3-0.9.0-pom" = {
@@ -782,6 +868,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/requests_3/0.9.0/requests_3-0.9.0.pom";
       sha256 = "sha256-wwmhJqc4AYfzL7+AG6GXI2oASfQISXHo4lm4KFgCzH8=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/requests_3/0.9.0";
     pkgname = "requests_3";
   };
   "root-parent-pom-1.2.12-pom" = {
@@ -791,6 +878,7 @@
       url = "https://repo1.maven.org/maven2/net/openhft/root-parent-pom/1.2.12/root-parent-pom-1.2.12.pom";
       sha256 = "sha256-MYArTIZCLZGsUzfa1wURNTXKmG9817wjlwG5+d+WfM8=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/net/openhft/root-parent-pom/1.2.12";
     pkgname = "root-parent-pom";
   };
   "sbinary_2.13-0.5.1-bundle" = {
@@ -800,6 +888,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/sbinary_2.13/0.5.1/sbinary_2.13-0.5.1.jar";
       sha256 = "sha256-Kf/dtVRxkQ8sX4KpVGg84fqzsJSQC5etsfd3xEsa/Mw=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/sbinary_2.13/0.5.1";
     pkgname = "sbinary_2.13";
   };
   "sbinary_2.13-0.5.1-pom" = {
@@ -809,6 +898,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/sbinary_2.13/0.5.1/sbinary_2.13-0.5.1.pom";
       sha256 = "sha256-dX4cy3163XqY7ZdZaJOEeYjoYtlS4SXSnla7lMtJlJs=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/sbinary_2.13/0.5.1";
     pkgname = "sbinary_2.13";
   };
   "scala-collection-compat_2.13-2.12.0-bundle" = {
@@ -818,6 +908,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.13/2.12.0/scala-collection-compat_2.13-2.12.0.jar";
       sha256 = "sha256-vv/0giM81/mnyh4fWjbt5CHAGObOgjWJeMR11FUydV8=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.13/2.12.0";
     pkgname = "scala-collection-compat_2.13";
   };
   "scala-collection-compat_2.13-2.12.0-pom" = {
@@ -827,6 +918,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.13/2.12.0/scala-collection-compat_2.13-2.12.0.pom";
       sha256 = "sha256-tSMCkiCYLivduDPSlYWSvTfSdxPvH7uzGl7wba/9/LQ=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.13/2.12.0";
     pkgname = "scala-collection-compat_2.13";
   };
   "scala-collection-compat_3-2.8.1-bundle" = {
@@ -836,6 +928,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_3/2.8.1/scala-collection-compat_3-2.8.1.jar";
       sha256 = "sha256-RYEf/yevKCkW767Zqt3Xvzd20Wjb322Jao5sYg+Hquw=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_3/2.8.1";
     pkgname = "scala-collection-compat_3";
   };
   "scala-collection-compat_3-2.8.1-pom" = {
@@ -845,6 +938,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_3/2.8.1/scala-collection-compat_3-2.8.1.pom";
       sha256 = "sha256-3mSibRDpEQ4MUJ23r83GUS1TrUvz9omN+bjIYrk+WRM=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_3/2.8.1";
     pkgname = "scala-collection-compat_3";
   };
   "scala-compiler-2.13.15-bundle" = {
@@ -854,6 +948,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.13.15/scala-compiler-2.13.15.jar";
       sha256 = "sha256-TCAM0ZPAgr7BSiot/+ahul+BMLGyfHnuVMk238r8jtk=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.13.15";
     pkgname = "scala-compiler";
   };
   "scala-compiler-2.13.15-pom" = {
@@ -863,6 +958,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.13.15/scala-compiler-2.13.15.pom";
       sha256 = "sha256-auEwgelQpVVF5T5+b5v2dU7Q7BevMxdyro+uT7QG9pc=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.13.15";
     pkgname = "scala-compiler";
   };
   "scala-library-2.13.12-bundle" = {
@@ -872,6 +968,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.12/scala-library-2.13.12.jar";
       sha256 = "sha256-xqh55Jc6YPYWJmhUKjPqzMK7Vl0ck0+wYcWEQlkTHdE=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.12";
     pkgname = "scala-library";
   };
   "scala-library-2.13.12-pom" = {
@@ -881,6 +978,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.12/scala-library-2.13.12.pom";
       sha256 = "sha256-CDMIeGMmqohH5rRIHGCdbGFvbiBqorRxOlG5sjjtRlo=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.12";
     pkgname = "scala-library";
   };
   "scala-library-2.13.15-bundle" = {
@@ -890,6 +988,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.15/scala-library-2.13.15.jar";
       sha256 = "sha256-jk28O+z3DVnHhxGPatBvq2eQE2oGmc1kErydo9M2lE4=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.15";
     pkgname = "scala-library";
   };
   "scala-library-2.13.15-pom" = {
@@ -899,6 +998,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.15/scala-library-2.13.15.pom";
       sha256 = "sha256-+B1vMpF6DpMdqmVZqFAL4cYv+MbILbBx3Nvr9gu9R4Y=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.15";
     pkgname = "scala-library";
   };
   "scala-parallel-collections_2.13-0.2.0-bundle" = {
@@ -908,6 +1008,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-parallel-collections_2.13/0.2.0/scala-parallel-collections_2.13-0.2.0.jar";
       sha256 = "sha256-0V8i8TCLmOmsUqPRrI1YLVSNbYUrERbL31pQ9DEkbtE=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parallel-collections_2.13/0.2.0";
     pkgname = "scala-parallel-collections_2.13";
   };
   "scala-parallel-collections_2.13-0.2.0-pom" = {
@@ -917,6 +1018,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-parallel-collections_2.13/0.2.0/scala-parallel-collections_2.13-0.2.0.pom";
       sha256 = "sha256-KpXuHbIOpnF42bQrTOCbFHIjqj7qmSxz8mKttclzORk=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parallel-collections_2.13/0.2.0";
     pkgname = "scala-parallel-collections_2.13";
   };
   "scala-parser-combinators_2.13-1.1.2-bundle" = {
@@ -926,6 +1028,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.13/1.1.2/scala-parser-combinators_2.13-1.1.2.jar";
       sha256 = "sha256-XChbcubcCpjpmuChzutAJ9q5rfpEGEQEa9Pxng79y1Q=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.13/1.1.2";
     pkgname = "scala-parser-combinators_2.13";
   };
   "scala-parser-combinators_2.13-1.1.2-pom" = {
@@ -935,6 +1038,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.13/1.1.2/scala-parser-combinators_2.13-1.1.2.pom";
       sha256 = "sha256-XIVv78BGqI3gEYrF5Fzd9jiXX6mAwAfSQmMydvcmbwI=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.13/1.1.2";
     pkgname = "scala-parser-combinators_2.13";
   };
   "scala-reflect-2.13.15-bundle" = {
@@ -944,6 +1048,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.15/scala-reflect-2.13.15.jar";
       sha256 = "sha256-eNDMNQ4e5C2HxuEc9bDce/C3CCnACqOPJ7+wGdQ53BE=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.15";
     pkgname = "scala-reflect";
   };
   "scala-reflect-2.13.15-pom" = {
@@ -953,6 +1058,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.15/scala-reflect-2.13.15.pom";
       sha256 = "sha256-qpysWTJIJOXnPcNFb9PDq19QTfY9Lx3bZBN4Orsc7NY=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.15";
     pkgname = "scala-reflect";
   };
   "scala-xml_2.13-2.3.0-bundle" = {
@@ -962,6 +1068,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.13/2.3.0/scala-xml_2.13-2.3.0.jar";
       sha256 = "sha256-S01mmMdL/4ShBRArv1g5CYDce7jEC96kvHJwQLP5Zr0=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.13/2.3.0";
     pkgname = "scala-xml_2.13";
   };
   "scala-xml_2.13-2.3.0-pom" = {
@@ -971,6 +1078,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.13/2.3.0/scala-xml_2.13-2.3.0.pom";
       sha256 = "sha256-nlKx4JOFPhRrC3VgWvmFQyGRk8rU6lDQe5RGX0r6gVw=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.13/2.3.0";
     pkgname = "scala-xml_2.13";
   };
   "scala3-library_3-3.3.3-bundle" = {
@@ -980,6 +1088,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.3.3/scala3-library_3-3.3.3.jar";
       sha256 = "sha256-Fv4GTxNz7W8JjT2fgSo5jtUHXbS/JyHATmMFAss1KBY=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.3.3";
     pkgname = "scala3-library_3";
   };
   "scala3-library_3-3.3.3-pom" = {
@@ -989,6 +1098,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.3.3/scala3-library_3-3.3.3.pom";
       sha256 = "sha256-0nweLNpEgUvx9iv+asdv0uIaZ/wzBbioAmuem1uA6m4=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.3.3";
     pkgname = "scala3-library_3";
   };
   "scala3-sbt-bridge-3.3.3-bundle" = {
@@ -998,6 +1108,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/scala3-sbt-bridge/3.3.3/scala3-sbt-bridge-3.3.3.jar";
       sha256 = "sha256-759QqUjDdFAH89tAmfE59Sc8xAs8OpFia61jSEXDqEg=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-sbt-bridge/3.3.3";
     pkgname = "scala3-sbt-bridge";
   };
   "scala3-sbt-bridge-3.3.3-pom" = {
@@ -1007,6 +1118,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/scala3-sbt-bridge/3.3.3/scala3-sbt-bridge-3.3.3.pom";
       sha256 = "sha256-29GJduAgBiJau7/xiNvFoR0psgVvZsiHvSqc8ibR7y0=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-sbt-bridge/3.3.3";
     pkgname = "scala3-sbt-bridge";
   };
   "scalac-mill-moduledefs-plugin_2.13.15-0.11.2-bundle" = {
@@ -1016,6 +1128,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/scalac-mill-moduledefs-plugin_2.13.15/0.11.2/scalac-mill-moduledefs-plugin_2.13.15-0.11.2.jar";
       sha256 = "sha256-PXciFheEOrB1J4ftu62h8FSGjZSjb6k38ecFxf8opGE=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/scalac-mill-moduledefs-plugin_2.13.15/0.11.2";
     pkgname = "scalac-mill-moduledefs-plugin_2.13.15";
   };
   "scalac-mill-moduledefs-plugin_2.13.15-0.11.2-pom" = {
@@ -1025,6 +1138,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/scalac-mill-moduledefs-plugin_2.13.15/0.11.2/scalac-mill-moduledefs-plugin_2.13.15-0.11.2.pom";
       sha256 = "sha256-iQf2G6M9oLGJHrJj8Cgtdlnyv2MCW1SEzZEVVPNzmd8=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/scalac-mill-moduledefs-plugin_2.13.15/0.11.2";
     pkgname = "scalac-mill-moduledefs-plugin_2.13.15";
   };
   "scalap-2.13.15-bundle" = {
@@ -1034,6 +1148,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/scalap/2.13.15/scalap-2.13.15.jar";
       sha256 = "sha256-eJkSgtc+nSDL8Ye6uFSc4u+UAmlAnUffKnH6r5r8RhY=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scalap/2.13.15";
     pkgname = "scalap";
   };
   "scalap-2.13.15-pom" = {
@@ -1043,6 +1158,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-lang/scalap/2.13.15/scalap-2.13.15.pom";
       sha256 = "sha256-3Akl2Ecs39idCEHWKi9TDShnBLJD0m1QyIW3sA0cgLo=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-lang/scalap/2.13.15";
     pkgname = "scalap";
   };
   "shaded-jawn-parser_2.13-1.3.2-bundle" = {
@@ -1052,6 +1168,7 @@
       url = "https://repo1.maven.org/maven2/com/eed3si9n/shaded-jawn-parser_2.13/1.3.2/shaded-jawn-parser_2.13-1.3.2.jar";
       sha256 = "sha256-8yczhMtLlNYAGH5yA3uBXs2qW0RSi7BuyNxHBNSJKIQ=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/eed3si9n/shaded-jawn-parser_2.13/1.3.2";
     pkgname = "shaded-jawn-parser_2.13";
   };
   "shaded-jawn-parser_2.13-1.3.2-pom" = {
@@ -1061,6 +1178,7 @@
       url = "https://repo1.maven.org/maven2/com/eed3si9n/shaded-jawn-parser_2.13/1.3.2/shaded-jawn-parser_2.13-1.3.2.pom";
       sha256 = "sha256-AzxwUovzVMJDLEU/R5s1/qqJG6HfG51II79cfo5JIBo=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/eed3si9n/shaded-jawn-parser_2.13/1.3.2";
     pkgname = "shaded-jawn-parser_2.13";
   };
   "shaded-scalajson_2.13-1.0.0-M4-bundle" = {
@@ -1070,6 +1188,7 @@
       url = "https://repo1.maven.org/maven2/com/eed3si9n/shaded-scalajson_2.13/1.0.0-M4/shaded-scalajson_2.13-1.0.0-M4.jar";
       sha256 = "sha256-e2tthXJ72KurlAtVnejjKqUIGt0p91MchVuwdhro3mc=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/eed3si9n/shaded-scalajson_2.13/1.0.0-M4";
     pkgname = "shaded-scalajson_2.13";
   };
   "shaded-scalajson_2.13-1.0.0-M4-pom" = {
@@ -1079,6 +1198,7 @@
       url = "https://repo1.maven.org/maven2/com/eed3si9n/shaded-scalajson_2.13/1.0.0-M4/shaded-scalajson_2.13-1.0.0-M4.pom";
       sha256 = "sha256-JW0i9tVjTcS+k1jGq2ktgeUR1GjD54NtsoM6PtiKhPg=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/eed3si9n/shaded-scalajson_2.13/1.0.0-M4";
     pkgname = "shaded-scalajson_2.13";
   };
   "sjson-new-core_2.13-0.10.1-bundle" = {
@@ -1088,6 +1208,7 @@
       url = "https://repo1.maven.org/maven2/com/eed3si9n/sjson-new-core_2.13/0.10.1/sjson-new-core_2.13-0.10.1.jar";
       sha256 = "sha256-oslg2mcT+Kbp5TUBFuPJ6nM94b1cS+IN/QiZrFqE8F4=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-core_2.13/0.10.1";
     pkgname = "sjson-new-core_2.13";
   };
   "sjson-new-core_2.13-0.10.1-pom" = {
@@ -1097,6 +1218,7 @@
       url = "https://repo1.maven.org/maven2/com/eed3si9n/sjson-new-core_2.13/0.10.1/sjson-new-core_2.13-0.10.1.pom";
       sha256 = "sha256-/Yq6w1VOkQ3I7cnEf0kPu3dM6yTBYlMLa2RRcHC1Ips=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-core_2.13/0.10.1";
     pkgname = "sjson-new-core_2.13";
   };
   "sjson-new-core_2.13-0.9.0-bundle" = {
@@ -1106,6 +1228,7 @@
       url = "https://repo1.maven.org/maven2/com/eed3si9n/sjson-new-core_2.13/0.9.0/sjson-new-core_2.13-0.9.0.jar";
       sha256 = "sha256-Z7XJkwjUT6vRRAISDFtey/eWm4V81M5SKeB/34UbLH0=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-core_2.13/0.9.0";
     pkgname = "sjson-new-core_2.13";
   };
   "sjson-new-core_2.13-0.9.0-pom" = {
@@ -1115,6 +1238,7 @@
       url = "https://repo1.maven.org/maven2/com/eed3si9n/sjson-new-core_2.13/0.9.0/sjson-new-core_2.13-0.9.0.pom";
       sha256 = "sha256-GF32+3HX2QDpYCd4lq23kLNrpl0pn/KfJwYKs9ZTI+4=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-core_2.13/0.9.0";
     pkgname = "sjson-new-core_2.13";
   };
   "sjson-new-scalajson_2.13-0.10.1-bundle" = {
@@ -1124,6 +1248,7 @@
       url = "https://repo1.maven.org/maven2/com/eed3si9n/sjson-new-scalajson_2.13/0.10.1/sjson-new-scalajson_2.13-0.10.1.jar";
       sha256 = "sha256-zbMyatEPS64nUrHWd3hZ50yqay+HtwppT6I9A0hbjl0=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-scalajson_2.13/0.10.1";
     pkgname = "sjson-new-scalajson_2.13";
   };
   "sjson-new-scalajson_2.13-0.10.1-pom" = {
@@ -1133,6 +1258,7 @@
       url = "https://repo1.maven.org/maven2/com/eed3si9n/sjson-new-scalajson_2.13/0.10.1/sjson-new-scalajson_2.13-0.10.1.pom";
       sha256 = "sha256-6u2XGZfMEdLEedMjaeSYZfYQWRTaeZvBj9FpmklttI4=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-scalajson_2.13/0.10.1";
     pkgname = "sjson-new-scalajson_2.13";
   };
   "sourcecode_2.13-0.3.0-bundle" = {
@@ -1142,6 +1268,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.3.0/sourcecode_2.13-0.3.0.jar";
       sha256 = "sha256-blstVelCtFCiIr/T68I+mcoDcW5C2iWvGyyM3gOBAPU=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.3.0";
     pkgname = "sourcecode_2.13";
   };
   "sourcecode_2.13-0.3.0-pom" = {
@@ -1151,6 +1278,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.3.0/sourcecode_2.13-0.3.0.pom";
       sha256 = "sha256-dJd4CGpLVZ8XkdaLTVih6AxgSW8y9TtsH3Xo8hsb/dA=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.3.0";
     pkgname = "sourcecode_2.13";
   };
   "sourcecode_2.13-0.4.0-bundle" = {
@@ -1160,6 +1288,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.4.0/sourcecode_2.13-0.4.0.jar";
       sha256 = "sha256-fOm4woWgQoA3TXOde3mUCLLPpAzDFzlghIrsnuhFD+0=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.4.0";
     pkgname = "sourcecode_2.13";
   };
   "sourcecode_2.13-0.4.0-pom" = {
@@ -1169,6 +1298,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.4.0/sourcecode_2.13-0.4.0.pom";
       sha256 = "sha256-gAhoDXtD/UaX+BQVaxAK+VzLI5uhaEHQpRJXNN/vgs4=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.4.0";
     pkgname = "sourcecode_2.13";
   };
   "spring-framework-bom-5.3.39-pom" = {
@@ -1178,6 +1308,7 @@
       url = "https://repo1.maven.org/maven2/org/springframework/spring-framework-bom/5.3.39/spring-framework-bom-5.3.39.pom";
       sha256 = "sha256-9tSBCT51dny6Gsfh2zj49pLL4+OHRGkzcada6yHGFIs=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/springframework/spring-framework-bom/5.3.39";
     pkgname = "spring-framework-bom";
   };
   "test-interface-1.0-bundle" = {
@@ -1187,6 +1318,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/test-interface/1.0/test-interface-1.0.jar";
       sha256 = "sha256-FfcLOLuV8wAv7JrqVAMPGbtOz7rWTGdCS15f6gnNdJ4=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/test-interface/1.0";
     pkgname = "test-interface";
   };
   "test-interface-1.0-pom" = {
@@ -1196,6 +1328,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/test-interface/1.0/test-interface-1.0.pom";
       sha256 = "sha256-YboGqdDCJuEPBIAE/Ov7MA/dmwd9Be1QLph1MkyLdi4=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/test-interface/1.0";
     pkgname = "test-interface";
   };
   "ujson_2.13-3.3.1-bundle" = {
@@ -1205,6 +1338,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/ujson_2.13/3.3.1/ujson_2.13-3.3.1.jar";
       sha256 = "sha256-xh1m171X3hKxELdPDqJxHDRTQ3Y0q1PWj4xEXYZGZgc=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/ujson_2.13/3.3.1";
     pkgname = "ujson_2.13";
   };
   "ujson_2.13-3.3.1-pom" = {
@@ -1214,6 +1348,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/ujson_2.13/3.3.1/ujson_2.13-3.3.1.pom";
       sha256 = "sha256-RMlhHCoub+KTqjLl8FVQdn8xWflWq8KYrM7M+lC5Gkk=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/ujson_2.13/3.3.1";
     pkgname = "ujson_2.13";
   };
   "ujson_3-3.3.1-bundle" = {
@@ -1223,6 +1358,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/ujson_3/3.3.1/ujson_3-3.3.1.jar";
       sha256 = "sha256-p3z97+TCeMTr+TUFVEDpv930z2xXFJzDeRPl4F4tZt4=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/ujson_3/3.3.1";
     pkgname = "ujson_3";
   };
   "ujson_3-3.3.1-pom" = {
@@ -1232,6 +1368,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/ujson_3/3.3.1/ujson_3-3.3.1.pom";
       sha256 = "sha256-GAazr1fL0AMOkOPowJBrI0B68wTWs6XKYW88ieYe6WI=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/ujson_3/3.3.1";
     pkgname = "ujson_3";
   };
   "upack_2.13-3.3.1-bundle" = {
@@ -1241,6 +1378,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/upack_2.13/3.3.1/upack_2.13-3.3.1.jar";
       sha256 = "sha256-h1mYnNUNlpRhBxUsJxTg1b4I9mvsWh4A7FbO2w4gid4=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/upack_2.13/3.3.1";
     pkgname = "upack_2.13";
   };
   "upack_2.13-3.3.1-pom" = {
@@ -1250,6 +1388,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/upack_2.13/3.3.1/upack_2.13-3.3.1.pom";
       sha256 = "sha256-ZDYrD51YSn5WTjH7lnHIAgcfIBhaHG89ii1a2gi/JhA=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/upack_2.13/3.3.1";
     pkgname = "upack_2.13";
   };
   "upack_3-3.3.1-bundle" = {
@@ -1259,6 +1398,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/upack_3/3.3.1/upack_3-3.3.1.jar";
       sha256 = "sha256-9Msxzh8NhzPTiJsjlN4HriSIQsfszvc/O4mebeFIWks=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/upack_3/3.3.1";
     pkgname = "upack_3";
   };
   "upack_3-3.3.1-pom" = {
@@ -1268,6 +1408,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/upack_3/3.3.1/upack_3-3.3.1.pom";
       sha256 = "sha256-q8WVqzu9/4cDMzLjPXWkVtIkdwDHdaMGioI6jyeOvZw=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/upack_3/3.3.1";
     pkgname = "upack_3";
   };
   "upickle-core_2.13-3.3.1-bundle" = {
@@ -1277,6 +1418,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/upickle-core_2.13/3.3.1/upickle-core_2.13-3.3.1.jar";
       sha256 = "sha256-EjUTT9i6j2tan4BK5xBj5J9m3cLiI9cRH2JPvoAKX8Q=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-core_2.13/3.3.1";
     pkgname = "upickle-core_2.13";
   };
   "upickle-core_2.13-3.3.1-pom" = {
@@ -1286,6 +1428,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/upickle-core_2.13/3.3.1/upickle-core_2.13-3.3.1.pom";
       sha256 = "sha256-WLwd8Rg50yZoKf5B6omNKClP7ZIGEffMXu+cw0nVVKg=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-core_2.13/3.3.1";
     pkgname = "upickle-core_2.13";
   };
   "upickle-core_3-3.3.1-bundle" = {
@@ -1295,6 +1438,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/upickle-core_3/3.3.1/upickle-core_3-3.3.1.jar";
       sha256 = "sha256-DEZWC/IQoLAIWheXVXLbTgLAxJdjtOczuUDiLa6pJno=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-core_3/3.3.1";
     pkgname = "upickle-core_3";
   };
   "upickle-core_3-3.3.1-pom" = {
@@ -1304,6 +1448,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/upickle-core_3/3.3.1/upickle-core_3-3.3.1.pom";
       sha256 = "sha256-EP7WOT2LCY5Y+go5waNTK0qM8l0KzsBP33fzQBk7Lhw=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-core_3/3.3.1";
     pkgname = "upickle-core_3";
   };
   "upickle-implicits_2.13-3.3.1-bundle" = {
@@ -1313,6 +1458,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_2.13/3.3.1/upickle-implicits_2.13-3.3.1.jar";
       sha256 = "sha256-Y11MF6QLCcVRzNuH0YF8hDyrRi/V3AHx+/cBhNYGlWc=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_2.13/3.3.1";
     pkgname = "upickle-implicits_2.13";
   };
   "upickle-implicits_2.13-3.3.1-pom" = {
@@ -1322,6 +1468,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_2.13/3.3.1/upickle-implicits_2.13-3.3.1.pom";
       sha256 = "sha256-rZnqdQ71JfXcHTE+37A3o8Jdip8yanMD+Cwd6UN7i28=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_2.13/3.3.1";
     pkgname = "upickle-implicits_2.13";
   };
   "upickle-implicits_3-3.3.1-bundle" = {
@@ -1331,6 +1478,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_3/3.3.1/upickle-implicits_3-3.3.1.jar";
       sha256 = "sha256-yhgwCqpPgJGMIMNqLLRC0Gjs5HhK9cLBYcDY5tlYBR0=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_3/3.3.1";
     pkgname = "upickle-implicits_3";
   };
   "upickle-implicits_3-3.3.1-pom" = {
@@ -1340,6 +1488,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_3/3.3.1/upickle-implicits_3-3.3.1.pom";
       sha256 = "sha256-kHPfH+PVbbxe8HbsZTvQ1VH6uMeHOAiS7aN5qk19d14=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_3/3.3.1";
     pkgname = "upickle-implicits_3";
   };
   "upickle_2.13-3.3.1-bundle" = {
@@ -1349,6 +1498,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/upickle_2.13/3.3.1/upickle_2.13-3.3.1.jar";
       sha256 = "sha256-+1fubHgbD1nVrvOshVsrOnr6/dOSJGs0lZ/Hqh6fFb0=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle_2.13/3.3.1";
     pkgname = "upickle_2.13";
   };
   "upickle_2.13-3.3.1-pom" = {
@@ -1358,6 +1508,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/upickle_2.13/3.3.1/upickle_2.13-3.3.1.pom";
       sha256 = "sha256-tFGWp9ClpJQfaVBz2kQ7c/IFJzbwrZWHVSKCJUKS9Hc=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle_2.13/3.3.1";
     pkgname = "upickle_2.13";
   };
   "upickle_3-3.3.1-bundle" = {
@@ -1367,6 +1518,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/upickle_3/3.3.1/upickle_3-3.3.1.jar";
       sha256 = "sha256-HG5Q9uXogJbeiSzmOMgKjCvHVYyLf8TJpj1urtBOp3w=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle_3/3.3.1";
     pkgname = "upickle_3";
   };
   "upickle_3-3.3.1-pom" = {
@@ -1376,6 +1528,7 @@
       url = "https://repo1.maven.org/maven2/com/lihaoyi/upickle_3/3.3.1/upickle_3-3.3.1.pom";
       sha256 = "sha256-xIaK5dflt0vGC4o3wNhTM+V7MQAV2GENtdKLgmMr/BI=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle_3/3.3.1";
     pkgname = "upickle_3";
   };
   "util-control_2.13-1.10.7-bundle" = {
@@ -1385,6 +1538,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/util-control_2.13/1.10.7/util-control_2.13-1.10.7.jar";
       sha256 = "sha256-3v7edNPa5h8m2W/Nh1LXE/thiZJ8FxWQF66nCRHDxZc=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-control_2.13/1.10.7";
     pkgname = "util-control_2.13";
   };
   "util-control_2.13-1.10.7-pom" = {
@@ -1394,6 +1548,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/util-control_2.13/1.10.7/util-control_2.13-1.10.7.pom";
       sha256 = "sha256-8alWX2q/B8a+dum/p/uT8iaUhY0wJW83xre9tiAOvVk=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-control_2.13/1.10.7";
     pkgname = "util-control_2.13";
   };
   "util-interface-1.10.3-bundle" = {
@@ -1403,6 +1558,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.3/util-interface-1.10.3.jar";
       sha256 = "sha256-r5LTeltP+cZcl3vlBAB7hg2Kf3CPYrjYvkxAzaFSrvY=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.3";
     pkgname = "util-interface";
   };
   "util-interface-1.10.3-pom" = {
@@ -1412,6 +1568,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.3/util-interface-1.10.3.pom";
       sha256 = "sha256-WTlG7PZuHigdP7le7KpOluR7yGTxBUMeuahXLxIrPuc=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.3";
     pkgname = "util-interface";
   };
   "util-interface-1.10.7-bundle" = {
@@ -1421,6 +1578,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.7/util-interface-1.10.7.jar";
       sha256 = "sha256-HWuR76QrcPwGTK7W1iliN04Tsnc3+IWofITGZ7ML5iU=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.7";
     pkgname = "util-interface";
   };
   "util-interface-1.10.7-pom" = {
@@ -1430,6 +1588,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.7/util-interface-1.10.7.pom";
       sha256 = "sha256-1JRwyBXgcORPlQERbIPzWxeUE/Wq/pXimsKTxnzBYpc=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.7";
     pkgname = "util-interface";
   };
   "util-logging_2.13-1.10.7-bundle" = {
@@ -1439,6 +1598,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/util-logging_2.13/1.10.7/util-logging_2.13-1.10.7.jar";
       sha256 = "sha256-+XBNmPixN8tnWLz5nI9NEnMd2al1Z+RomZPJAgxwmQg=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-logging_2.13/1.10.7";
     pkgname = "util-logging_2.13";
   };
   "util-logging_2.13-1.10.7-pom" = {
@@ -1448,6 +1608,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/util-logging_2.13/1.10.7/util-logging_2.13-1.10.7.pom";
       sha256 = "sha256-XfwvDIKtLp8naMPCR0ERqJdfqB8xCuynFcPvs7rCpLg=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-logging_2.13/1.10.7";
     pkgname = "util-logging_2.13";
   };
   "util-position_2.13-1.10.7-bundle" = {
@@ -1457,6 +1618,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/util-position_2.13/1.10.7/util-position_2.13-1.10.7.jar";
       sha256 = "sha256-xk1IrTBqXk3ko7P+NlXXGicCTlrkvY3BpstzancQrmQ=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-position_2.13/1.10.7";
     pkgname = "util-position_2.13";
   };
   "util-position_2.13-1.10.7-pom" = {
@@ -1466,6 +1628,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/util-position_2.13/1.10.7/util-position_2.13-1.10.7.pom";
       sha256 = "sha256-NTTRGtvkJ7J87DsFvWKQda+g0eNTdPxNimdWEegeTUQ=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-position_2.13/1.10.7";
     pkgname = "util-position_2.13";
   };
   "util-relation_2.13-1.10.7-bundle" = {
@@ -1475,6 +1638,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/util-relation_2.13/1.10.7/util-relation_2.13-1.10.7.jar";
       sha256 = "sha256-uyKnk1KDhnVqhP9fvkGi/G/U2bjLDZMTrJ+DHOKnjYI=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-relation_2.13/1.10.7";
     pkgname = "util-relation_2.13";
   };
   "util-relation_2.13-1.10.7-pom" = {
@@ -1484,6 +1648,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/util-relation_2.13/1.10.7/util-relation_2.13-1.10.7.pom";
       sha256 = "sha256-mPAagFGYgS1/BhFCZadQw+o9GI/FGP7ZbnIPKGi480Y=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-relation_2.13/1.10.7";
     pkgname = "util-relation_2.13";
   };
   "zero-allocation-hashing-0.16-bundle" = {
@@ -1493,6 +1658,7 @@
       url = "https://repo1.maven.org/maven2/net/openhft/zero-allocation-hashing/0.16/zero-allocation-hashing-0.16.jar";
       sha256 = "sha256-O8OcZAzIMUV13k68saC8pUBRbTxg1J+N59Y4sJhoVT0=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/net/openhft/zero-allocation-hashing/0.16";
     pkgname = "zero-allocation-hashing";
   };
   "zero-allocation-hashing-0.16-pom" = {
@@ -1502,6 +1668,7 @@
       url = "https://repo1.maven.org/maven2/net/openhft/zero-allocation-hashing/0.16/zero-allocation-hashing-0.16.pom";
       sha256 = "sha256-CUlJaWMZNlX4Gvuduih0NETdKiOm9JM2OKaZHP1yj8Y=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/net/openhft/zero-allocation-hashing/0.16";
     pkgname = "zero-allocation-hashing";
   };
   "zinc-apiinfo_2.13-1.10.7-bundle" = {
@@ -1511,6 +1678,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/zinc-apiinfo_2.13/1.10.7/zinc-apiinfo_2.13-1.10.7.jar";
       sha256 = "sha256-cYm5nHwBBT8ySH2myhiBXmvtrCSvBl6FNLik93vcU6Q=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-apiinfo_2.13/1.10.7";
     pkgname = "zinc-apiinfo_2.13";
   };
   "zinc-apiinfo_2.13-1.10.7-pom" = {
@@ -1520,6 +1688,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/zinc-apiinfo_2.13/1.10.7/zinc-apiinfo_2.13-1.10.7.pom";
       sha256 = "sha256-OwYVqbvStnBjAf2whgujTVSnzsLAutiATwW/JFZkvik=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-apiinfo_2.13/1.10.7";
     pkgname = "zinc-apiinfo_2.13";
   };
   "zinc-classfile_2.13-1.10.7-bundle" = {
@@ -1529,6 +1698,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/zinc-classfile_2.13/1.10.7/zinc-classfile_2.13-1.10.7.jar";
       sha256 = "sha256-nnF5MvDjK6lD8FCGc84yCbXiW2WS9XfOnmgE//xU770=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-classfile_2.13/1.10.7";
     pkgname = "zinc-classfile_2.13";
   };
   "zinc-classfile_2.13-1.10.7-pom" = {
@@ -1538,6 +1708,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/zinc-classfile_2.13/1.10.7/zinc-classfile_2.13-1.10.7.pom";
       sha256 = "sha256-mliyZvw8XRqfc58uYA1TlJem1LPB31hdIqYvKrfG7T8=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-classfile_2.13/1.10.7";
     pkgname = "zinc-classfile_2.13";
   };
   "zinc-classpath_2.13-1.10.7-bundle" = {
@@ -1547,6 +1718,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/zinc-classpath_2.13/1.10.7/zinc-classpath_2.13-1.10.7.jar";
       sha256 = "sha256-tuw1MJRZRYNVEZ7zq54KvbkkXs0HK72lpBudV7wymTo=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-classpath_2.13/1.10.7";
     pkgname = "zinc-classpath_2.13";
   };
   "zinc-classpath_2.13-1.10.7-pom" = {
@@ -1556,6 +1728,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/zinc-classpath_2.13/1.10.7/zinc-classpath_2.13-1.10.7.pom";
       sha256 = "sha256-Jjf1Cq2diwL5r4QntiQZtYFMNtzydELRdLKBKZjEQG8=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-classpath_2.13/1.10.7";
     pkgname = "zinc-classpath_2.13";
   };
   "zinc-compile-core_2.13-1.10.7-bundle" = {
@@ -1565,6 +1738,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/zinc-compile-core_2.13/1.10.7/zinc-compile-core_2.13-1.10.7.jar";
       sha256 = "sha256-knsMrc6+BojLoolkjqk4F145kErA5QH9gzFoecJ5NWA=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-compile-core_2.13/1.10.7";
     pkgname = "zinc-compile-core_2.13";
   };
   "zinc-compile-core_2.13-1.10.7-pom" = {
@@ -1574,6 +1748,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/zinc-compile-core_2.13/1.10.7/zinc-compile-core_2.13-1.10.7.pom";
       sha256 = "sha256-HmOO8js1pl4QmkNrel4vhY/KMYxW+zK/ECG9sfqEuaQ=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-compile-core_2.13/1.10.7";
     pkgname = "zinc-compile-core_2.13";
   };
   "zinc-core_2.13-1.10.7-bundle" = {
@@ -1583,6 +1758,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/zinc-core_2.13/1.10.7/zinc-core_2.13-1.10.7.jar";
       sha256 = "sha256-QGuhG+NpI7KZuN/Ubd0pdMqGn3qWJwU1PZ0lFyqYvi8=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-core_2.13/1.10.7";
     pkgname = "zinc-core_2.13";
   };
   "zinc-core_2.13-1.10.7-pom" = {
@@ -1592,6 +1768,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/zinc-core_2.13/1.10.7/zinc-core_2.13-1.10.7.pom";
       sha256 = "sha256-eSD1e3nMpEh2qGmqpDf8teUQonOxSD5tuxjOV/TyABo=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-core_2.13/1.10.7";
     pkgname = "zinc-core_2.13";
   };
   "zinc-persist-core-assembly-1.10.7-bundle" = {
@@ -1601,6 +1778,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/zinc-persist-core-assembly/1.10.7/zinc-persist-core-assembly-1.10.7.jar";
       sha256 = "sha256-OM2IJ1HDdTGzgVkITJHwf3Nn4zaNww2tINClfDT/GkI=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-persist-core-assembly/1.10.7";
     pkgname = "zinc-persist-core-assembly";
   };
   "zinc-persist-core-assembly-1.10.7-pom" = {
@@ -1610,6 +1788,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/zinc-persist-core-assembly/1.10.7/zinc-persist-core-assembly-1.10.7.pom";
       sha256 = "sha256-UsTMtkr864ZWkrHPUPF7+InVx2xAOrsWxpEYgKaetII=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-persist-core-assembly/1.10.7";
     pkgname = "zinc-persist-core-assembly";
   };
   "zinc-persist_2.13-1.10.7-bundle" = {
@@ -1619,6 +1798,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/zinc-persist_2.13/1.10.7/zinc-persist_2.13-1.10.7.jar";
       sha256 = "sha256-poVKQotAPDBwhy+mTtjDRpM+GvbB/Ckjl15x0nw+DzE=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-persist_2.13/1.10.7";
     pkgname = "zinc-persist_2.13";
   };
   "zinc-persist_2.13-1.10.7-pom" = {
@@ -1628,6 +1808,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/zinc-persist_2.13/1.10.7/zinc-persist_2.13-1.10.7.pom";
       sha256 = "sha256-T0/ndiueXkaGTnLvOESrH0f7pw1MMdUBMNyFY3MYEKs=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-persist_2.13/1.10.7";
     pkgname = "zinc-persist_2.13";
   };
   "zinc_2.13-1.10.7-bundle" = {
@@ -1637,6 +1818,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/zinc_2.13/1.10.7/zinc_2.13-1.10.7.jar";
       sha256 = "sha256-w0N8N7Duj+9bHeY0wnZdDoyShHULktA+ixmKCVtebYQ=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc_2.13/1.10.7";
     pkgname = "zinc_2.13";
   };
   "zinc_2.13-1.10.7-pom" = {
@@ -1646,6 +1828,7 @@
       url = "https://repo1.maven.org/maven2/org/scala-sbt/zinc_2.13/1.10.7/zinc_2.13-1.10.7.pom";
       sha256 = "sha256-uaEzM2xTCAoG5xzluB+YYfawLK7WchV4GBhZq2Nv0LI=";
     };
+    install_path = "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc_2.13/1.10.7";
     pkgname = "zinc_2.13";
   };
 }
