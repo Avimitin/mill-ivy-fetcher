@@ -5,7 +5,6 @@ from os.path import basename
 import subprocess
 from urllib import parse as urlparse
 import textwrap
-import re
 import xml.etree.ElementTree as ET
 import argparse
 import shutil
@@ -112,24 +111,35 @@ class Pom:
     def to_nvfetcher_cfg(self) -> str:
         unique_name = (self.artifact_id + "-" + self.version).strip()
         safe_ver = self.version.strip()
-        bundle_url = self.to_maven(self._guess_suffix())
+        suffix = self._guess_suffix()
+        is_pom = suffix == "pom"
+        bundle_url = self.to_maven(suffix)
         pom_url = self.to_maven(".pom")
         safe_pkgname = self.artifact_id.strip()
 
-        return textwrap.dedent(
-            f"""\
-        ["{unique_name}-bundle"]
-        src.manual = "{safe_ver}"
-        fetch.url = "{bundle_url}"
-        fetch.force = true
-        passthru.pkgname = "{safe_pkgname}"
+        def optional_dedent(expr: bool, s: str):
+            return textwrap.dedent(s) if expr else ""
 
+        return (
+            textwrap.dedent(
+                f"""\
         ["{unique_name}-pom"]
         src.manual = "{safe_ver}"
         fetch.url = "{pom_url}"
         fetch.force = true
         passthru.pkgname = "{safe_pkgname}"
         """
+            )
+            + optional_dedent(
+                not is_pom,
+                f"""\
+        ["{unique_name}-bundle"]
+        src.manual = "{safe_ver}"
+        fetch.url = "{bundle_url}"
+        fetch.force = true
+        passthru.pkgname = "{safe_pkgname}"
+        """,
+            )
         )
 
 
