@@ -1,7 +1,7 @@
 { lib, stdenvNoCC, mill, jdk21, callPackage, makeWrapper }:
 let
   deps-builder = callPackage ../dep-builder.nix { };
-  deps = (deps-builder ./deps/_sources/generated.nix).ivyDeps;
+  deps = (deps-builder ./deps/_sources/generated.nix).ivyDepsList;
 in
 stdenvNoCC.mkDerivation {
   name = "foo-deps";
@@ -16,7 +16,7 @@ stdenvNoCC.mkDerivation {
 
   nativeBuildInputs = [ mill makeWrapper ];
 
-  buildInputs = lib.attrValues deps;
+  buildInputs = deps;
 
   buildPhase = ''
     runHook preBuild

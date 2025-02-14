@@ -45,5 +45,8 @@ let
       '';
     };
 in
-{ ivyDeps = lib.mapAttrs ivyDepBuilder uniqSources; }
+rec {
+  ivyDeps = lib.mapAttrs ivyDepBuilder uniqSources;
+  ivyDepsList = lib.attrValues ivyDeps;
+}
 
