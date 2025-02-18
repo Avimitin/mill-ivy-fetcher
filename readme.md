@@ -76,6 +76,58 @@ expression for each JAR package.
 
 ## Recommended Workflow
 
-1. Use the `fetch` subcommand to fetch clean dependencies directory
-2. Use the `dump` subcommand to generate nvfetcher key file
-3. Use "nvfetcher" tools to convert key file to Nix expression
+1. Use this project in overlay
+
+```nix
+final: prev: {
+  mill-ivy-fetcher =
+    let
+      src = final.fetchFromGitHub {
+        owner = "Avimitin";
+        repo = "mill-ivy-fetcher";
+        rev = "<latest commit in this repository>";
+        hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      };
+    in
+    final.callPackage "${src}/package.nix" { inherit (final) callPackage; };
+}
+```
+
+2. Use the `fetch` subcommand to fetch clean dependencies directory
+3. Use the `dump` subcommand to generate nvfetcher key file
+4. Use "nvfetcher" tools to convert key file to Nix expression
+5. *Optional* Use the default shipped expression to group those ivy dependencies into small pieces:
+
+```nix
+# ...
+{ mill-ivy-fetcher, ... }:
+let
+  dep-builder = mill-ivy-fetcher.dep-builder-script { };
+in
+dep-builder path/to/_sources/generated.nix
+# ...
+```
+
+This will return a attribute set in following patterns:
+
+```nix
+rec {
+  ivyDeps = {
+    apache-33-pom = <setup-hook>;
+    scala-compiler = <setup-hook>;
+    # ...
+  };
+  ivyDepsList = attrValues ivyDeps;
+}
+```
+
+Then you can just put those derivations to your mill project buildInputs:
+
+```nix
+# ...
+stdenv.mkDerivation {
+    # ...
+    buildInputs = [ ... ] + ivyDepsList;
+}
+# ...
+```
