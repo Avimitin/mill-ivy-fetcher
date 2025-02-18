@@ -149,7 +149,7 @@ class LocalCoursierRepo:
         if coursier_dir is None:
             self.find_repo_roots()
         else:
-            self._coursier_dir = coursier_dir
+            self._coursier_dir = os.path.realpath(coursier_dir)
 
         if self._coursier_dir is None:
             raise Exception("No coursier directory was found or given")
@@ -238,7 +238,7 @@ def mill_prepare_offline(
 def fetch_handler(args):
     dir = mill_prepare_offline(
         args.targets or ["__"],
-        args.home,
+        os.path.realpath(args.home),
         args.java_opts,
     )
     info(f"Downloaded into {dir}")
