@@ -69,6 +69,8 @@ class Pom:
         match self.packaging:
             case "bundle":
                 return ".jar"
+            case "so":
+                return ".jar"
             case ext:
                 return "." + ext
 
