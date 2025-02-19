@@ -1,7 +1,7 @@
 { lib, stdenvNoCC, mill, jdk21, callPackage, makeWrapper }:
 let
-  dep-builder = (callPackage ../package.nix { inherit callPackage; }).dep-builder-script;
-  deps = dep-builder ./deps/_sources/generated.nix;
+  deps-builder = (callPackage ../package.nix { inherit callPackage; }).deps-builder;
+  deps = deps-builder ./deps/_sources/generated.nix;
 in
 stdenvNoCC.mkDerivation {
   name = "foo-deps";
