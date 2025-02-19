@@ -44,6 +44,7 @@ class Pom:
     _tree: ET.ElementTree
     _pom_path: str
     _install_path: str
+    _uniq_name: str
     group_id: str
     artifact_id: str
     description: str
@@ -62,6 +63,7 @@ class Pom:
         )
         self.artifact_id = self._get_str("artifactId", "pom:artifactId")
         self.version = self._get_str("version", "pom:version", "pom:parent/pom:version")
+        self._uniq_name = f"{self.artifact_id}-{self.version}".strip()
 
     def _guess_suffix(self) -> str:
         match self.packaging:
@@ -111,7 +113,7 @@ class Pom:
         return urlparse.urljoin("https://repo1.maven.org", segment)
 
     def to_nvfetcher_cfg(self) -> str:
-        unique_name = (self.artifact_id + "-" + self.version).strip()
+        unique_name = self._uniq_name
         safe_ver = self.version.strip()
         suffix = self._guess_suffix()
         is_pom = "pom" in suffix
@@ -177,12 +179,9 @@ class LocalCoursierRepo:
 
     def to_nvfetcher_cfg_file(self) -> str:
         assert self._coursier_dir is not None
-        return "\n\n".join(
-            [
-                Pom(f, self._coursier_dir).to_nvfetcher_cfg()
-                for f in PomSearcher(self._coursier_dir)
-            ]
-        )
+        poms = [Pom(f, self._coursier_dir) for f in PomSearcher(self._coursier_dir)]
+        poms.sort(key=lambda pom: pom._uniq_name)
+        return "\n\n".join([pom.to_nvfetcher_cfg() for pom in poms])
 
 
 def mill_prepare_offline(
