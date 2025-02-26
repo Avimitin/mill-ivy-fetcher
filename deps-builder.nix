@@ -1,4 +1,4 @@
-{ lib, stdenvNoCC, lndir, fetchgit, fetchurl, fetchFromGitHub, dockerTools, configure-mill-home-hook }:
+{ lib, stdenvNoCC, lndir, fetchgit, fetchurl, fetchFromGitHub, dockerTools, configure-mill-env-hook }:
 nvfetcherNixSrcPath:
 let
   sources = (import nvfetcherNixSrcPath) { inherit fetchgit fetchurl fetchFromGitHub dockerTools; };
@@ -9,7 +9,7 @@ let
       passthru = { inherit ivySources; };
       dontUnpack = true;
 
-      propagatedBuildInputs = [ lndir configure-mill-home-hook ];
+      propagatedBuildInputs = [ lndir configure-mill-env-hook ];
 
       buildPhase = "runHook preBuild\n"
         + lib.concatMapStringsSep "\n"
