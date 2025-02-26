@@ -5,7 +5,7 @@
         "extract": null,
         "name": "apache-33-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/apache/apache/33",
+            "install_path": "https/repo1.maven.org/maven2/org/apache/apache/33",
             "pkgname": "apache"
         },
         "pinned": false,
@@ -23,7 +23,7 @@
         "extract": null,
         "name": "collections_2.13-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/collections_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/collections_2.13/1.10.7",
             "pkgname": "collections_2.13"
         },
         "pinned": false,
@@ -41,7 +41,7 @@
         "extract": null,
         "name": "collections_2.13-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/collections_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/collections_2.13/1.10.7",
             "pkgname": "collections_2.13"
         },
         "pinned": false,
@@ -59,7 +59,7 @@
         "extract": null,
         "name": "compiler-bridge_2.13-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-bridge_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/compiler-bridge_2.13/1.10.7",
             "pkgname": "compiler-bridge_2.13"
         },
         "pinned": false,
@@ -77,7 +77,7 @@
         "extract": null,
         "name": "compiler-bridge_2.13-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-bridge_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/compiler-bridge_2.13/1.10.7",
             "pkgname": "compiler-bridge_2.13"
         },
         "pinned": false,
@@ -95,7 +95,7 @@
         "extract": null,
         "name": "compiler-interface-1.10.3-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.3",
             "pkgname": "compiler-interface"
         },
         "pinned": false,
@@ -113,7 +113,7 @@
         "extract": null,
         "name": "compiler-interface-1.10.3-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.3",
             "pkgname": "compiler-interface"
         },
         "pinned": false,
@@ -131,7 +131,7 @@
         "extract": null,
         "name": "compiler-interface-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.7",
             "pkgname": "compiler-interface"
         },
         "pinned": false,
@@ -149,7 +149,7 @@
         "extract": null,
         "name": "compiler-interface-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.7",
             "pkgname": "compiler-interface"
         },
         "pinned": false,
@@ -167,7 +167,7 @@
         "extract": null,
         "name": "compiler-interface-1.9.3-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.9.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.9.3",
             "pkgname": "compiler-interface"
         },
         "pinned": false,
@@ -185,7 +185,7 @@
         "extract": null,
         "name": "compiler-interface-1.9.3-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.9.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.9.3",
             "pkgname": "compiler-interface"
         },
         "pinned": false,
@@ -203,7 +203,7 @@
         "extract": null,
         "name": "core-macros_2.13-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/core-macros_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/core-macros_2.13/1.10.7",
             "pkgname": "core-macros_2.13"
         },
         "pinned": false,
@@ -221,7 +221,7 @@
         "extract": null,
         "name": "core-macros_2.13-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/core-macros_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/core-macros_2.13/1.10.7",
             "pkgname": "core-macros_2.13"
         },
         "pinned": false,
@@ -239,7 +239,7 @@
         "extract": null,
         "name": "disruptor-3.4.2-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lmax/disruptor/3.4.2",
+            "install_path": "https/repo1.maven.org/maven2/com/lmax/disruptor/3.4.2",
             "pkgname": "disruptor"
         },
         "pinned": false,
@@ -257,7 +257,7 @@
         "extract": null,
         "name": "disruptor-3.4.2-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lmax/disruptor/3.4.2",
+            "install_path": "https/repo1.maven.org/maven2/com/lmax/disruptor/3.4.2",
             "pkgname": "disruptor"
         },
         "pinned": false,
@@ -275,7 +275,7 @@
         "extract": null,
         "name": "fansi_2.13-0.5.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.13/0.5.0",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.13/0.5.0",
             "pkgname": "fansi_2.13"
         },
         "pinned": false,
@@ -293,7 +293,7 @@
         "extract": null,
         "name": "fansi_2.13-0.5.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.13/0.5.0",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/fansi_2.13/0.5.0",
             "pkgname": "fansi_2.13"
         },
         "pinned": false,
@@ -311,7 +311,7 @@
         "extract": null,
         "name": "file-tree-views-2.1.12-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/swoval/file-tree-views/2.1.12",
+            "install_path": "https/repo1.maven.org/maven2/com/swoval/file-tree-views/2.1.12",
             "pkgname": "file-tree-views"
         },
         "pinned": false,
@@ -329,7 +329,7 @@
         "extract": null,
         "name": "file-tree-views-2.1.12-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/swoval/file-tree-views/2.1.12",
+            "install_path": "https/repo1.maven.org/maven2/com/swoval/file-tree-views/2.1.12",
             "pkgname": "file-tree-views"
         },
         "pinned": false,
@@ -347,7 +347,7 @@
         "extract": null,
         "name": "fusesource-pom-1.12-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/fusesource/fusesource-pom/1.12",
+            "install_path": "https/repo1.maven.org/maven2/org/fusesource/fusesource-pom/1.12",
             "pkgname": "fusesource-pom"
         },
         "pinned": false,
@@ -365,7 +365,7 @@
         "extract": null,
         "name": "geny_2.13-1.1.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/geny_2.13/1.1.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/geny_2.13/1.1.1",
             "pkgname": "geny_2.13"
         },
         "pinned": false,
@@ -383,7 +383,7 @@
         "extract": null,
         "name": "geny_2.13-1.1.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/geny_2.13/1.1.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/geny_2.13/1.1.1",
             "pkgname": "geny_2.13"
         },
         "pinned": false,
@@ -401,7 +401,7 @@
         "extract": null,
         "name": "geny_3-1.1.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/geny_3/1.1.0",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/geny_3/1.1.0",
             "pkgname": "geny_3"
         },
         "pinned": false,
@@ -419,7 +419,7 @@
         "extract": null,
         "name": "geny_3-1.1.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/geny_3/1.1.0",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/geny_3/1.1.0",
             "pkgname": "geny_3"
         },
         "pinned": false,
@@ -437,7 +437,7 @@
         "extract": null,
         "name": "groovy-bom-4.0.22-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/apache/groovy/groovy-bom/4.0.22",
+            "install_path": "https/repo1.maven.org/maven2/org/apache/groovy/groovy-bom/4.0.22",
             "pkgname": "groovy-bom"
         },
         "pinned": false,
@@ -455,7 +455,7 @@
         "extract": null,
         "name": "io_2.13-1.10.3-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/io_2.13/1.10.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/io_2.13/1.10.3",
             "pkgname": "io_2.13"
         },
         "pinned": false,
@@ -473,7 +473,7 @@
         "extract": null,
         "name": "io_2.13-1.10.3-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/io_2.13/1.10.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/io_2.13/1.10.3",
             "pkgname": "io_2.13"
         },
         "pinned": false,
@@ -491,7 +491,7 @@
         "extract": null,
         "name": "jackson-bom-2.17.2-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/fasterxml/jackson/jackson-bom/2.17.2",
+            "install_path": "https/repo1.maven.org/maven2/com/fasterxml/jackson/jackson-bom/2.17.2",
             "pkgname": "jackson-bom"
         },
         "pinned": false,
@@ -509,7 +509,7 @@
         "extract": null,
         "name": "jackson-parent-2.17-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/fasterxml/jackson/jackson-parent/2.17",
+            "install_path": "https/repo1.maven.org/maven2/com/fasterxml/jackson/jackson-parent/2.17",
             "pkgname": "jackson-parent"
         },
         "pinned": false,
@@ -527,7 +527,7 @@
         "extract": null,
         "name": "jakarta.jakartaee-bom-9.1.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/jakarta/platform/jakarta.jakartaee-bom/9.1.0",
+            "install_path": "https/repo1.maven.org/maven2/jakarta/platform/jakarta.jakartaee-bom/9.1.0",
             "pkgname": "jakarta.jakartaee-bom"
         },
         "pinned": false,
@@ -545,7 +545,7 @@
         "extract": null,
         "name": "jakartaee-api-parent-9.1.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/jakarta/platform/jakartaee-api-parent/9.1.0",
+            "install_path": "https/repo1.maven.org/maven2/jakarta/platform/jakartaee-api-parent/9.1.0",
             "pkgname": "jakartaee-api-parent"
         },
         "pinned": false,
@@ -563,7 +563,7 @@
         "extract": null,
         "name": "jansi-2.4.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/fusesource/jansi/jansi/2.4.1",
+            "install_path": "https/repo1.maven.org/maven2/org/fusesource/jansi/jansi/2.4.1",
             "pkgname": "jansi"
         },
         "pinned": false,
@@ -581,7 +581,7 @@
         "extract": null,
         "name": "jansi-2.4.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/fusesource/jansi/jansi/2.4.1",
+            "install_path": "https/repo1.maven.org/maven2/org/fusesource/jansi/jansi/2.4.1",
             "pkgname": "jansi"
         },
         "pinned": false,
@@ -599,7 +599,7 @@
         "extract": null,
         "name": "java-diff-utils-4.12-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/io/github/java-diff-utils/java-diff-utils/4.12",
+            "install_path": "https/repo1.maven.org/maven2/io/github/java-diff-utils/java-diff-utils/4.12",
             "pkgname": "java-diff-utils"
         },
         "pinned": false,
@@ -617,7 +617,7 @@
         "extract": null,
         "name": "java-diff-utils-4.12-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/io/github/java-diff-utils/java-diff-utils/4.12",
+            "install_path": "https/repo1.maven.org/maven2/io/github/java-diff-utils/java-diff-utils/4.12",
             "pkgname": "java-diff-utils"
         },
         "pinned": false,
@@ -635,7 +635,7 @@
         "extract": null,
         "name": "java-diff-utils-parent-4.12-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/io/github/java-diff-utils/java-diff-utils-parent/4.12",
+            "install_path": "https/repo1.maven.org/maven2/io/github/java-diff-utils/java-diff-utils-parent/4.12",
             "pkgname": "java-diff-utils-parent"
         },
         "pinned": false,
@@ -653,7 +653,7 @@
         "extract": null,
         "name": "java-parent-pom-1.1.28-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/net/openhft/java-parent-pom/1.1.28",
+            "install_path": "https/repo1.maven.org/maven2/net/openhft/java-parent-pom/1.1.28",
             "pkgname": "java-parent-pom"
         },
         "pinned": false,
@@ -671,7 +671,7 @@
         "extract": null,
         "name": "jline-2.14.7-sbt-9a88bc413e2b34a4580c001c654d1a7f4f65bf18-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/jline/jline/2.14.7-sbt-9a88bc413e2b34a4580c001c654d1a7f4f65bf18",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/jline/jline/2.14.7-sbt-9a88bc413e2b34a4580c001c654d1a7f4f65bf18",
             "pkgname": "jline"
         },
         "pinned": false,
@@ -689,7 +689,7 @@
         "extract": null,
         "name": "jline-2.14.7-sbt-9a88bc413e2b34a4580c001c654d1a7f4f65bf18-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/jline/jline/2.14.7-sbt-9a88bc413e2b34a4580c001c654d1a7f4f65bf18",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/jline/jline/2.14.7-sbt-9a88bc413e2b34a4580c001c654d1a7f4f65bf18",
             "pkgname": "jline"
         },
         "pinned": false,
@@ -707,7 +707,7 @@
         "extract": null,
         "name": "jline-3.26.3-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline/3.26.3",
+            "install_path": "https/repo1.maven.org/maven2/org/jline/jline/3.26.3",
             "pkgname": "jline"
         },
         "pinned": false,
@@ -725,7 +725,7 @@
         "extract": null,
         "name": "jline-3.26.3-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline/3.26.3",
+            "install_path": "https/repo1.maven.org/maven2/org/jline/jline/3.26.3",
             "pkgname": "jline"
         },
         "pinned": false,
@@ -743,7 +743,7 @@
         "extract": null,
         "name": "jline-native-3.27.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-native/3.27.1",
+            "install_path": "https/repo1.maven.org/maven2/org/jline/jline-native/3.27.1",
             "pkgname": "jline-native"
         },
         "pinned": false,
@@ -761,7 +761,7 @@
         "extract": null,
         "name": "jline-native-3.27.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-native/3.27.1",
+            "install_path": "https/repo1.maven.org/maven2/org/jline/jline-native/3.27.1",
             "pkgname": "jline-native"
         },
         "pinned": false,
@@ -779,7 +779,7 @@
         "extract": null,
         "name": "jline-parent-3.19.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-parent/3.19.0",
+            "install_path": "https/repo1.maven.org/maven2/org/jline/jline-parent/3.19.0",
             "pkgname": "jline-parent"
         },
         "pinned": false,
@@ -797,7 +797,7 @@
         "extract": null,
         "name": "jline-parent-3.27.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-parent/3.27.1",
+            "install_path": "https/repo1.maven.org/maven2/org/jline/jline-parent/3.27.1",
             "pkgname": "jline-parent"
         },
         "pinned": false,
@@ -815,7 +815,7 @@
         "extract": null,
         "name": "jline-reader-3.19.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-reader/3.19.0",
+            "install_path": "https/repo1.maven.org/maven2/org/jline/jline-reader/3.19.0",
             "pkgname": "jline-reader"
         },
         "pinned": false,
@@ -833,7 +833,7 @@
         "extract": null,
         "name": "jline-reader-3.19.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-reader/3.19.0",
+            "install_path": "https/repo1.maven.org/maven2/org/jline/jline-reader/3.19.0",
             "pkgname": "jline-reader"
         },
         "pinned": false,
@@ -851,7 +851,7 @@
         "extract": null,
         "name": "jline-terminal-3.19.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal/3.19.0",
+            "install_path": "https/repo1.maven.org/maven2/org/jline/jline-terminal/3.19.0",
             "pkgname": "jline-terminal"
         },
         "pinned": false,
@@ -869,7 +869,7 @@
         "extract": null,
         "name": "jline-terminal-3.19.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal/3.19.0",
+            "install_path": "https/repo1.maven.org/maven2/org/jline/jline-terminal/3.19.0",
             "pkgname": "jline-terminal"
         },
         "pinned": false,
@@ -887,7 +887,7 @@
         "extract": null,
         "name": "jline-terminal-3.27.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal/3.27.1",
+            "install_path": "https/repo1.maven.org/maven2/org/jline/jline-terminal/3.27.1",
             "pkgname": "jline-terminal"
         },
         "pinned": false,
@@ -905,7 +905,7 @@
         "extract": null,
         "name": "jline-terminal-3.27.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal/3.27.1",
+            "install_path": "https/repo1.maven.org/maven2/org/jline/jline-terminal/3.27.1",
             "pkgname": "jline-terminal"
         },
         "pinned": false,
@@ -923,7 +923,7 @@
         "extract": null,
         "name": "jline-terminal-jna-3.19.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal-jna/3.19.0",
+            "install_path": "https/repo1.maven.org/maven2/org/jline/jline-terminal-jna/3.19.0",
             "pkgname": "jline-terminal-jna"
         },
         "pinned": false,
@@ -941,7 +941,7 @@
         "extract": null,
         "name": "jline-terminal-jna-3.19.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal-jna/3.19.0",
+            "install_path": "https/repo1.maven.org/maven2/org/jline/jline-terminal-jna/3.19.0",
             "pkgname": "jline-terminal-jna"
         },
         "pinned": false,
@@ -959,7 +959,7 @@
         "extract": null,
         "name": "jline-terminal-jni-3.27.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal-jni/3.27.1",
+            "install_path": "https/repo1.maven.org/maven2/org/jline/jline-terminal-jni/3.27.1",
             "pkgname": "jline-terminal-jni"
         },
         "pinned": false,
@@ -977,7 +977,7 @@
         "extract": null,
         "name": "jline-terminal-jni-3.27.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/jline/jline-terminal-jni/3.27.1",
+            "install_path": "https/repo1.maven.org/maven2/org/jline/jline-terminal-jni/3.27.1",
             "pkgname": "jline-terminal-jni"
         },
         "pinned": false,
@@ -995,7 +995,7 @@
         "extract": null,
         "name": "jna-5.14.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.14.0",
+            "install_path": "https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.14.0",
             "pkgname": "jna"
         },
         "pinned": false,
@@ -1013,7 +1013,7 @@
         "extract": null,
         "name": "jna-5.14.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.14.0",
+            "install_path": "https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.14.0",
             "pkgname": "jna"
         },
         "pinned": false,
@@ -1031,7 +1031,7 @@
         "extract": null,
         "name": "jna-5.3.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1",
+            "install_path": "https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1",
             "pkgname": "jna"
         },
         "pinned": false,
@@ -1049,7 +1049,7 @@
         "extract": null,
         "name": "jna-5.3.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1",
+            "install_path": "https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1",
             "pkgname": "jna"
         },
         "pinned": false,
@@ -1067,7 +1067,7 @@
         "extract": null,
         "name": "junit-bom-5.10.3-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/junit/junit-bom/5.10.3",
+            "install_path": "https/repo1.maven.org/maven2/org/junit/junit-bom/5.10.3",
             "pkgname": "junit-bom"
         },
         "pinned": false,
@@ -1085,7 +1085,7 @@
         "extract": null,
         "name": "launcher-interface-1.4.4-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/launcher-interface/1.4.4",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/launcher-interface/1.4.4",
             "pkgname": "launcher-interface"
         },
         "pinned": false,
@@ -1103,7 +1103,7 @@
         "extract": null,
         "name": "launcher-interface-1.4.4-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/launcher-interface/1.4.4",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/launcher-interface/1.4.4",
             "pkgname": "launcher-interface"
         },
         "pinned": false,
@@ -1121,7 +1121,7 @@
         "extract": null,
         "name": "log4j-2.24.3-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j/2.24.3",
+            "install_path": "https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j/2.24.3",
             "pkgname": "log4j"
         },
         "pinned": false,
@@ -1139,7 +1139,7 @@
         "extract": null,
         "name": "log4j-api-2.24.3-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.24.3",
+            "install_path": "https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.24.3",
             "pkgname": "log4j-api"
         },
         "pinned": false,
@@ -1157,7 +1157,7 @@
         "extract": null,
         "name": "log4j-api-2.24.3-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.24.3",
+            "install_path": "https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.24.3",
             "pkgname": "log4j-api"
         },
         "pinned": false,
@@ -1175,7 +1175,7 @@
         "extract": null,
         "name": "log4j-bom-2.24.3-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j-bom/2.24.3",
+            "install_path": "https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j-bom/2.24.3",
             "pkgname": "log4j-bom"
         },
         "pinned": false,
@@ -1193,7 +1193,7 @@
         "extract": null,
         "name": "log4j-core-2.24.3-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.24.3",
+            "install_path": "https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.24.3",
             "pkgname": "log4j-core"
         },
         "pinned": false,
@@ -1211,7 +1211,7 @@
         "extract": null,
         "name": "log4j-core-2.24.3-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.24.3",
+            "install_path": "https/repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.24.3",
             "pkgname": "log4j-core"
         },
         "pinned": false,
@@ -1229,7 +1229,7 @@
         "extract": null,
         "name": "logging-parent-11.3.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/apache/logging/logging-parent/11.3.0",
+            "install_path": "https/repo1.maven.org/maven2/org/apache/logging/logging-parent/11.3.0",
             "pkgname": "logging-parent"
         },
         "pinned": false,
@@ -1247,7 +1247,7 @@
         "extract": null,
         "name": "mainargs_2.13-0.7.6-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mainargs_2.13/0.7.6",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mainargs_2.13/0.7.6",
             "pkgname": "mainargs_2.13"
         },
         "pinned": false,
@@ -1265,7 +1265,7 @@
         "extract": null,
         "name": "mainargs_2.13-0.7.6-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mainargs_2.13/0.7.6",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mainargs_2.13/0.7.6",
             "pkgname": "mainargs_2.13"
         },
         "pinned": false,
@@ -1283,7 +1283,7 @@
         "extract": null,
         "name": "mainargs_3-0.5.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mainargs_3/0.5.0",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mainargs_3/0.5.0",
             "pkgname": "mainargs_3"
         },
         "pinned": false,
@@ -1301,7 +1301,7 @@
         "extract": null,
         "name": "mainargs_3-0.5.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mainargs_3/0.5.0",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mainargs_3/0.5.0",
             "pkgname": "mainargs_3"
         },
         "pinned": false,
@@ -1319,7 +1319,7 @@
         "extract": null,
         "name": "mill-main-api_2.13-0.12.8-1-46e216-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-main-api_2.13/0.12.8-1-46e216",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mill-main-api_2.13/0.12.8-1-46e216",
             "pkgname": "mill-main-api_2.13"
         },
         "pinned": false,
@@ -1337,7 +1337,7 @@
         "extract": null,
         "name": "mill-main-api_2.13-0.12.8-1-46e216-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-main-api_2.13/0.12.8-1-46e216",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mill-main-api_2.13/0.12.8-1-46e216",
             "pkgname": "mill-main-api_2.13"
         },
         "pinned": false,
@@ -1355,7 +1355,7 @@
         "extract": null,
         "name": "mill-main-client-0.12.8-1-46e216-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-main-client/0.12.8-1-46e216",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mill-main-client/0.12.8-1-46e216",
             "pkgname": "mill-main-client"
         },
         "pinned": false,
@@ -1373,7 +1373,7 @@
         "extract": null,
         "name": "mill-main-client-0.12.8-1-46e216-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-main-client/0.12.8-1-46e216",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mill-main-client/0.12.8-1-46e216",
             "pkgname": "mill-main-client"
         },
         "pinned": false,
@@ -1391,7 +1391,7 @@
         "extract": null,
         "name": "mill-moduledefs_2.13-0.11.2-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-moduledefs_2.13/0.11.2",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mill-moduledefs_2.13/0.11.2",
             "pkgname": "mill-moduledefs_2.13"
         },
         "pinned": false,
@@ -1409,7 +1409,7 @@
         "extract": null,
         "name": "mill-moduledefs_2.13-0.11.2-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-moduledefs_2.13/0.11.2",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mill-moduledefs_2.13/0.11.2",
             "pkgname": "mill-moduledefs_2.13"
         },
         "pinned": false,
@@ -1427,7 +1427,7 @@
         "extract": null,
         "name": "mill-runner-linenumbers_2.13-0.12.8-1-46e216-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-linenumbers_2.13/0.12.8-1-46e216",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-linenumbers_2.13/0.12.8-1-46e216",
             "pkgname": "mill-runner-linenumbers_2.13"
         },
         "pinned": false,
@@ -1445,7 +1445,7 @@
         "extract": null,
         "name": "mill-runner-linenumbers_2.13-0.12.8-1-46e216-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-linenumbers_2.13/0.12.8-1-46e216",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-linenumbers_2.13/0.12.8-1-46e216",
             "pkgname": "mill-runner-linenumbers_2.13"
         },
         "pinned": false,
@@ -1463,7 +1463,7 @@
         "extract": null,
         "name": "mill-scala-compiler-bridge_2.13.15-0.0.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-scala-compiler-bridge_2.13.15/0.0.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mill-scala-compiler-bridge_2.13.15/0.0.1",
             "pkgname": "mill-scala-compiler-bridge_2.13.15"
         },
         "pinned": false,
@@ -1481,7 +1481,7 @@
         "extract": null,
         "name": "mill-scala-compiler-bridge_2.13.15-0.0.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-scala-compiler-bridge_2.13.15/0.0.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mill-scala-compiler-bridge_2.13.15/0.0.1",
             "pkgname": "mill-scala-compiler-bridge_2.13.15"
         },
         "pinned": false,
@@ -1499,7 +1499,7 @@
         "extract": null,
         "name": "mill-scalalib-api_2.13-0.12.8-1-46e216-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-scalalib-api_2.13/0.12.8-1-46e216",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mill-scalalib-api_2.13/0.12.8-1-46e216",
             "pkgname": "mill-scalalib-api_2.13"
         },
         "pinned": false,
@@ -1517,7 +1517,7 @@
         "extract": null,
         "name": "mill-scalalib-api_2.13-0.12.8-1-46e216-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-scalalib-api_2.13/0.12.8-1-46e216",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mill-scalalib-api_2.13/0.12.8-1-46e216",
             "pkgname": "mill-scalalib-api_2.13"
         },
         "pinned": false,
@@ -1535,7 +1535,7 @@
         "extract": null,
         "name": "mill-scalalib-worker_2.13-0.12.8-1-46e216-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-scalalib-worker_2.13/0.12.8-1-46e216",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mill-scalalib-worker_2.13/0.12.8-1-46e216",
             "pkgname": "mill-scalalib-worker_2.13"
         },
         "pinned": false,
@@ -1553,7 +1553,7 @@
         "extract": null,
         "name": "mill-scalalib-worker_2.13-0.12.8-1-46e216-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/mill-scalalib-worker_2.13/0.12.8-1-46e216",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/mill-scalalib-worker_2.13/0.12.8-1-46e216",
             "pkgname": "mill-scalalib-worker_2.13"
         },
         "pinned": false,
@@ -1571,7 +1571,7 @@
         "extract": null,
         "name": "mockito-bom-4.11.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/mockito/mockito-bom/4.11.0",
+            "install_path": "https/repo1.maven.org/maven2/org/mockito/mockito-bom/4.11.0",
             "pkgname": "mockito-bom"
         },
         "pinned": false,
@@ -1589,7 +1589,7 @@
         "extract": null,
         "name": "os-lib_2.13-0.11.4-M6-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/os-lib_2.13/0.11.4-M6",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/os-lib_2.13/0.11.4-M6",
             "pkgname": "os-lib_2.13"
         },
         "pinned": false,
@@ -1607,7 +1607,7 @@
         "extract": null,
         "name": "os-lib_2.13-0.11.4-M6-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/os-lib_2.13/0.11.4-M6",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/os-lib_2.13/0.11.4-M6",
             "pkgname": "os-lib_2.13"
         },
         "pinned": false,
@@ -1625,7 +1625,7 @@
         "extract": null,
         "name": "os-lib_3-0.10.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/os-lib_3/0.10.0",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/os-lib_3/0.10.0",
             "pkgname": "os-lib_3"
         },
         "pinned": false,
@@ -1643,7 +1643,7 @@
         "extract": null,
         "name": "os-lib_3-0.10.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/os-lib_3/0.10.0",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/os-lib_3/0.10.0",
             "pkgname": "os-lib_3"
         },
         "pinned": false,
@@ -1661,7 +1661,7 @@
         "extract": null,
         "name": "oss-parent-58-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/fasterxml/oss-parent/58",
+            "install_path": "https/repo1.maven.org/maven2/com/fasterxml/oss-parent/58",
             "pkgname": "oss-parent"
         },
         "pinned": false,
@@ -1679,7 +1679,7 @@
         "extract": null,
         "name": "oss-parent-9-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/sonatype/oss/oss-parent/9",
+            "install_path": "https/repo1.maven.org/maven2/org/sonatype/oss/oss-parent/9",
             "pkgname": "oss-parent"
         },
         "pinned": false,
@@ -1697,7 +1697,7 @@
         "extract": null,
         "name": "pprint_2.13-0.9.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/pprint_2.13/0.9.0",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/pprint_2.13/0.9.0",
             "pkgname": "pprint_2.13"
         },
         "pinned": false,
@@ -1715,7 +1715,7 @@
         "extract": null,
         "name": "pprint_2.13-0.9.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/pprint_2.13/0.9.0",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/pprint_2.13/0.9.0",
             "pkgname": "pprint_2.13"
         },
         "pinned": false,
@@ -1733,7 +1733,7 @@
         "extract": null,
         "name": "project-1.0.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/eclipse/ee4j/project/1.0.7",
+            "install_path": "https/repo1.maven.org/maven2/org/eclipse/ee4j/project/1.0.7",
             "pkgname": "project"
         },
         "pinned": false,
@@ -1751,7 +1751,7 @@
         "extract": null,
         "name": "requests_3-0.9.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/requests_3/0.9.0",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/requests_3/0.9.0",
             "pkgname": "requests_3"
         },
         "pinned": false,
@@ -1769,7 +1769,7 @@
         "extract": null,
         "name": "requests_3-0.9.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/requests_3/0.9.0",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/requests_3/0.9.0",
             "pkgname": "requests_3"
         },
         "pinned": false,
@@ -1787,7 +1787,7 @@
         "extract": null,
         "name": "root-parent-pom-1.2.12-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/net/openhft/root-parent-pom/1.2.12",
+            "install_path": "https/repo1.maven.org/maven2/net/openhft/root-parent-pom/1.2.12",
             "pkgname": "root-parent-pom"
         },
         "pinned": false,
@@ -1805,7 +1805,7 @@
         "extract": null,
         "name": "sbinary_2.13-0.5.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/sbinary_2.13/0.5.1",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/sbinary_2.13/0.5.1",
             "pkgname": "sbinary_2.13"
         },
         "pinned": false,
@@ -1823,7 +1823,7 @@
         "extract": null,
         "name": "sbinary_2.13-0.5.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/sbinary_2.13/0.5.1",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/sbinary_2.13/0.5.1",
             "pkgname": "sbinary_2.13"
         },
         "pinned": false,
@@ -1841,7 +1841,7 @@
         "extract": null,
         "name": "scala-asm-9.5.0-scala-1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.5.0-scala-1",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.5.0-scala-1",
             "pkgname": "scala-asm"
         },
         "pinned": false,
@@ -1859,7 +1859,7 @@
         "extract": null,
         "name": "scala-asm-9.5.0-scala-1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.5.0-scala-1",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.5.0-scala-1",
             "pkgname": "scala-asm"
         },
         "pinned": false,
@@ -1877,7 +1877,7 @@
         "extract": null,
         "name": "scala-collection-compat_2.13-2.12.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.13/2.12.0",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.13/2.12.0",
             "pkgname": "scala-collection-compat_2.13"
         },
         "pinned": false,
@@ -1895,7 +1895,7 @@
         "extract": null,
         "name": "scala-collection-compat_2.13-2.12.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.13/2.12.0",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_2.13/2.12.0",
             "pkgname": "scala-collection-compat_2.13"
         },
         "pinned": false,
@@ -1913,7 +1913,7 @@
         "extract": null,
         "name": "scala-collection-compat_3-2.8.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_3/2.8.1",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_3/2.8.1",
             "pkgname": "scala-collection-compat_3"
         },
         "pinned": false,
@@ -1931,7 +1931,7 @@
         "extract": null,
         "name": "scala-collection-compat_3-2.8.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_3/2.8.1",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/modules/scala-collection-compat_3/2.8.1",
             "pkgname": "scala-collection-compat_3"
         },
         "pinned": false,
@@ -1949,7 +1949,7 @@
         "extract": null,
         "name": "scala-compiler-2.13.15-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.13.15",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.13.15",
             "pkgname": "scala-compiler"
         },
         "pinned": false,
@@ -1967,7 +1967,7 @@
         "extract": null,
         "name": "scala-compiler-2.13.15-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.13.15",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.13.15",
             "pkgname": "scala-compiler"
         },
         "pinned": false,
@@ -1985,7 +1985,7 @@
         "extract": null,
         "name": "scala-library-2.13.12-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.12",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.12",
             "pkgname": "scala-library"
         },
         "pinned": false,
@@ -2003,7 +2003,7 @@
         "extract": null,
         "name": "scala-library-2.13.12-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.12",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.12",
             "pkgname": "scala-library"
         },
         "pinned": false,
@@ -2021,7 +2021,7 @@
         "extract": null,
         "name": "scala-library-2.13.15-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.15",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.15",
             "pkgname": "scala-library"
         },
         "pinned": false,
@@ -2039,7 +2039,7 @@
         "extract": null,
         "name": "scala-library-2.13.15-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.15",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.15",
             "pkgname": "scala-library"
         },
         "pinned": false,
@@ -2057,7 +2057,7 @@
         "extract": null,
         "name": "scala-parallel-collections_2.13-0.2.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parallel-collections_2.13/0.2.0",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parallel-collections_2.13/0.2.0",
             "pkgname": "scala-parallel-collections_2.13"
         },
         "pinned": false,
@@ -2075,7 +2075,7 @@
         "extract": null,
         "name": "scala-parallel-collections_2.13-0.2.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parallel-collections_2.13/0.2.0",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parallel-collections_2.13/0.2.0",
             "pkgname": "scala-parallel-collections_2.13"
         },
         "pinned": false,
@@ -2093,7 +2093,7 @@
         "extract": null,
         "name": "scala-parser-combinators_2.13-1.1.2-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.13/1.1.2",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.13/1.1.2",
             "pkgname": "scala-parser-combinators_2.13"
         },
         "pinned": false,
@@ -2111,7 +2111,7 @@
         "extract": null,
         "name": "scala-parser-combinators_2.13-1.1.2-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.13/1.1.2",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.13/1.1.2",
             "pkgname": "scala-parser-combinators_2.13"
         },
         "pinned": false,
@@ -2129,7 +2129,7 @@
         "extract": null,
         "name": "scala-reflect-2.13.15-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.15",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.15",
             "pkgname": "scala-reflect"
         },
         "pinned": false,
@@ -2147,7 +2147,7 @@
         "extract": null,
         "name": "scala-reflect-2.13.15-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.15",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.15",
             "pkgname": "scala-reflect"
         },
         "pinned": false,
@@ -2165,7 +2165,7 @@
         "extract": null,
         "name": "scala-xml_2.13-2.3.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.13/2.3.0",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.13/2.3.0",
             "pkgname": "scala-xml_2.13"
         },
         "pinned": false,
@@ -2183,7 +2183,7 @@
         "extract": null,
         "name": "scala-xml_2.13-2.3.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.13/2.3.0",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.13/2.3.0",
             "pkgname": "scala-xml_2.13"
         },
         "pinned": false,
@@ -2201,7 +2201,7 @@
         "extract": null,
         "name": "scala3-compiler_3-3.3.3-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.3.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.3.3",
             "pkgname": "scala3-compiler_3"
         },
         "pinned": false,
@@ -2219,7 +2219,7 @@
         "extract": null,
         "name": "scala3-compiler_3-3.3.3-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.3.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.3.3",
             "pkgname": "scala3-compiler_3"
         },
         "pinned": false,
@@ -2237,7 +2237,7 @@
         "extract": null,
         "name": "scala3-interfaces-3.3.3-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.3.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.3.3",
             "pkgname": "scala3-interfaces"
         },
         "pinned": false,
@@ -2255,7 +2255,7 @@
         "extract": null,
         "name": "scala3-interfaces-3.3.3-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.3.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.3.3",
             "pkgname": "scala3-interfaces"
         },
         "pinned": false,
@@ -2273,7 +2273,7 @@
         "extract": null,
         "name": "scala3-library_3-3.3.3-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.3.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.3.3",
             "pkgname": "scala3-library_3"
         },
         "pinned": false,
@@ -2291,7 +2291,7 @@
         "extract": null,
         "name": "scala3-library_3-3.3.3-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.3.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.3.3",
             "pkgname": "scala3-library_3"
         },
         "pinned": false,
@@ -2309,7 +2309,7 @@
         "extract": null,
         "name": "scala3-sbt-bridge-3.3.3-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-sbt-bridge/3.3.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scala3-sbt-bridge/3.3.3",
             "pkgname": "scala3-sbt-bridge"
         },
         "pinned": false,
@@ -2327,7 +2327,7 @@
         "extract": null,
         "name": "scala3-sbt-bridge-3.3.3-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scala3-sbt-bridge/3.3.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scala3-sbt-bridge/3.3.3",
             "pkgname": "scala3-sbt-bridge"
         },
         "pinned": false,
@@ -2345,7 +2345,7 @@
         "extract": null,
         "name": "scalac-mill-moduledefs-plugin_2.13.15-0.11.2-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/scalac-mill-moduledefs-plugin_2.13.15/0.11.2",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/scalac-mill-moduledefs-plugin_2.13.15/0.11.2",
             "pkgname": "scalac-mill-moduledefs-plugin_2.13.15"
         },
         "pinned": false,
@@ -2363,7 +2363,7 @@
         "extract": null,
         "name": "scalac-mill-moduledefs-plugin_2.13.15-0.11.2-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/scalac-mill-moduledefs-plugin_2.13.15/0.11.2",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/scalac-mill-moduledefs-plugin_2.13.15/0.11.2",
             "pkgname": "scalac-mill-moduledefs-plugin_2.13.15"
         },
         "pinned": false,
@@ -2381,7 +2381,7 @@
         "extract": null,
         "name": "scalap-2.13.15-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scalap/2.13.15",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scalap/2.13.15",
             "pkgname": "scalap"
         },
         "pinned": false,
@@ -2399,7 +2399,7 @@
         "extract": null,
         "name": "scalap-2.13.15-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/scalap/2.13.15",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/scalap/2.13.15",
             "pkgname": "scalap"
         },
         "pinned": false,
@@ -2417,7 +2417,7 @@
         "extract": null,
         "name": "shaded-jawn-parser_2.13-1.3.2-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/eed3si9n/shaded-jawn-parser_2.13/1.3.2",
+            "install_path": "https/repo1.maven.org/maven2/com/eed3si9n/shaded-jawn-parser_2.13/1.3.2",
             "pkgname": "shaded-jawn-parser_2.13"
         },
         "pinned": false,
@@ -2435,7 +2435,7 @@
         "extract": null,
         "name": "shaded-jawn-parser_2.13-1.3.2-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/eed3si9n/shaded-jawn-parser_2.13/1.3.2",
+            "install_path": "https/repo1.maven.org/maven2/com/eed3si9n/shaded-jawn-parser_2.13/1.3.2",
             "pkgname": "shaded-jawn-parser_2.13"
         },
         "pinned": false,
@@ -2453,7 +2453,7 @@
         "extract": null,
         "name": "shaded-scalajson_2.13-1.0.0-M4-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/eed3si9n/shaded-scalajson_2.13/1.0.0-M4",
+            "install_path": "https/repo1.maven.org/maven2/com/eed3si9n/shaded-scalajson_2.13/1.0.0-M4",
             "pkgname": "shaded-scalajson_2.13"
         },
         "pinned": false,
@@ -2471,7 +2471,7 @@
         "extract": null,
         "name": "shaded-scalajson_2.13-1.0.0-M4-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/eed3si9n/shaded-scalajson_2.13/1.0.0-M4",
+            "install_path": "https/repo1.maven.org/maven2/com/eed3si9n/shaded-scalajson_2.13/1.0.0-M4",
             "pkgname": "shaded-scalajson_2.13"
         },
         "pinned": false,
@@ -2489,7 +2489,7 @@
         "extract": null,
         "name": "sjson-new-core_2.13-0.10.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-core_2.13/0.10.1",
+            "install_path": "https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-core_2.13/0.10.1",
             "pkgname": "sjson-new-core_2.13"
         },
         "pinned": false,
@@ -2507,7 +2507,7 @@
         "extract": null,
         "name": "sjson-new-core_2.13-0.10.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-core_2.13/0.10.1",
+            "install_path": "https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-core_2.13/0.10.1",
             "pkgname": "sjson-new-core_2.13"
         },
         "pinned": false,
@@ -2525,7 +2525,7 @@
         "extract": null,
         "name": "sjson-new-core_2.13-0.9.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-core_2.13/0.9.0",
+            "install_path": "https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-core_2.13/0.9.0",
             "pkgname": "sjson-new-core_2.13"
         },
         "pinned": false,
@@ -2543,7 +2543,7 @@
         "extract": null,
         "name": "sjson-new-core_2.13-0.9.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-core_2.13/0.9.0",
+            "install_path": "https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-core_2.13/0.9.0",
             "pkgname": "sjson-new-core_2.13"
         },
         "pinned": false,
@@ -2561,7 +2561,7 @@
         "extract": null,
         "name": "sjson-new-scalajson_2.13-0.10.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-scalajson_2.13/0.10.1",
+            "install_path": "https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-scalajson_2.13/0.10.1",
             "pkgname": "sjson-new-scalajson_2.13"
         },
         "pinned": false,
@@ -2579,7 +2579,7 @@
         "extract": null,
         "name": "sjson-new-scalajson_2.13-0.10.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-scalajson_2.13/0.10.1",
+            "install_path": "https/repo1.maven.org/maven2/com/eed3si9n/sjson-new-scalajson_2.13/0.10.1",
             "pkgname": "sjson-new-scalajson_2.13"
         },
         "pinned": false,
@@ -2597,7 +2597,7 @@
         "extract": null,
         "name": "sourcecode_2.13-0.3.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.3.0",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.3.0",
             "pkgname": "sourcecode_2.13"
         },
         "pinned": false,
@@ -2615,7 +2615,7 @@
         "extract": null,
         "name": "sourcecode_2.13-0.3.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.3.0",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.3.0",
             "pkgname": "sourcecode_2.13"
         },
         "pinned": false,
@@ -2633,7 +2633,7 @@
         "extract": null,
         "name": "sourcecode_2.13-0.4.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.4.0",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.4.0",
             "pkgname": "sourcecode_2.13"
         },
         "pinned": false,
@@ -2651,7 +2651,7 @@
         "extract": null,
         "name": "sourcecode_2.13-0.4.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.4.0",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/sourcecode_2.13/0.4.0",
             "pkgname": "sourcecode_2.13"
         },
         "pinned": false,
@@ -2669,7 +2669,7 @@
         "extract": null,
         "name": "spring-framework-bom-5.3.39-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/springframework/spring-framework-bom/5.3.39",
+            "install_path": "https/repo1.maven.org/maven2/org/springframework/spring-framework-bom/5.3.39",
             "pkgname": "spring-framework-bom"
         },
         "pinned": false,
@@ -2687,7 +2687,7 @@
         "extract": null,
         "name": "tasty-core_3-3.3.3-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.3.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.3.3",
             "pkgname": "tasty-core_3"
         },
         "pinned": false,
@@ -2705,7 +2705,7 @@
         "extract": null,
         "name": "tasty-core_3-3.3.3-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.3.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.3.3",
             "pkgname": "tasty-core_3"
         },
         "pinned": false,
@@ -2723,7 +2723,7 @@
         "extract": null,
         "name": "test-interface-1.0-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/test-interface/1.0",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/test-interface/1.0",
             "pkgname": "test-interface"
         },
         "pinned": false,
@@ -2741,7 +2741,7 @@
         "extract": null,
         "name": "test-interface-1.0-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/test-interface/1.0",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/test-interface/1.0",
             "pkgname": "test-interface"
         },
         "pinned": false,
@@ -2759,7 +2759,7 @@
         "extract": null,
         "name": "ujson_2.13-3.3.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/ujson_2.13/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/ujson_2.13/3.3.1",
             "pkgname": "ujson_2.13"
         },
         "pinned": false,
@@ -2777,7 +2777,7 @@
         "extract": null,
         "name": "ujson_2.13-3.3.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/ujson_2.13/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/ujson_2.13/3.3.1",
             "pkgname": "ujson_2.13"
         },
         "pinned": false,
@@ -2795,7 +2795,7 @@
         "extract": null,
         "name": "ujson_3-3.3.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/ujson_3/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/ujson_3/3.3.1",
             "pkgname": "ujson_3"
         },
         "pinned": false,
@@ -2813,7 +2813,7 @@
         "extract": null,
         "name": "ujson_3-3.3.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/ujson_3/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/ujson_3/3.3.1",
             "pkgname": "ujson_3"
         },
         "pinned": false,
@@ -2831,7 +2831,7 @@
         "extract": null,
         "name": "upack_2.13-3.3.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/upack_2.13/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/upack_2.13/3.3.1",
             "pkgname": "upack_2.13"
         },
         "pinned": false,
@@ -2849,7 +2849,7 @@
         "extract": null,
         "name": "upack_2.13-3.3.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/upack_2.13/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/upack_2.13/3.3.1",
             "pkgname": "upack_2.13"
         },
         "pinned": false,
@@ -2867,7 +2867,7 @@
         "extract": null,
         "name": "upack_3-3.3.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/upack_3/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/upack_3/3.3.1",
             "pkgname": "upack_3"
         },
         "pinned": false,
@@ -2885,7 +2885,7 @@
         "extract": null,
         "name": "upack_3-3.3.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/upack_3/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/upack_3/3.3.1",
             "pkgname": "upack_3"
         },
         "pinned": false,
@@ -2903,7 +2903,7 @@
         "extract": null,
         "name": "upickle-core_2.13-3.3.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-core_2.13/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/upickle-core_2.13/3.3.1",
             "pkgname": "upickle-core_2.13"
         },
         "pinned": false,
@@ -2921,7 +2921,7 @@
         "extract": null,
         "name": "upickle-core_2.13-3.3.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-core_2.13/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/upickle-core_2.13/3.3.1",
             "pkgname": "upickle-core_2.13"
         },
         "pinned": false,
@@ -2939,7 +2939,7 @@
         "extract": null,
         "name": "upickle-core_3-3.3.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-core_3/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/upickle-core_3/3.3.1",
             "pkgname": "upickle-core_3"
         },
         "pinned": false,
@@ -2957,7 +2957,7 @@
         "extract": null,
         "name": "upickle-core_3-3.3.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-core_3/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/upickle-core_3/3.3.1",
             "pkgname": "upickle-core_3"
         },
         "pinned": false,
@@ -2975,7 +2975,7 @@
         "extract": null,
         "name": "upickle-implicits_2.13-3.3.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_2.13/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_2.13/3.3.1",
             "pkgname": "upickle-implicits_2.13"
         },
         "pinned": false,
@@ -2993,7 +2993,7 @@
         "extract": null,
         "name": "upickle-implicits_2.13-3.3.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_2.13/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_2.13/3.3.1",
             "pkgname": "upickle-implicits_2.13"
         },
         "pinned": false,
@@ -3011,7 +3011,7 @@
         "extract": null,
         "name": "upickle-implicits_3-3.3.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_3/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_3/3.3.1",
             "pkgname": "upickle-implicits_3"
         },
         "pinned": false,
@@ -3029,7 +3029,7 @@
         "extract": null,
         "name": "upickle-implicits_3-3.3.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_3/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/upickle-implicits_3/3.3.1",
             "pkgname": "upickle-implicits_3"
         },
         "pinned": false,
@@ -3047,7 +3047,7 @@
         "extract": null,
         "name": "upickle_2.13-3.3.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle_2.13/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/upickle_2.13/3.3.1",
             "pkgname": "upickle_2.13"
         },
         "pinned": false,
@@ -3065,7 +3065,7 @@
         "extract": null,
         "name": "upickle_2.13-3.3.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle_2.13/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/upickle_2.13/3.3.1",
             "pkgname": "upickle_2.13"
         },
         "pinned": false,
@@ -3083,7 +3083,7 @@
         "extract": null,
         "name": "upickle_3-3.3.1-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle_3/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/upickle_3/3.3.1",
             "pkgname": "upickle_3"
         },
         "pinned": false,
@@ -3101,7 +3101,7 @@
         "extract": null,
         "name": "upickle_3-3.3.1-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/com/lihaoyi/upickle_3/3.3.1",
+            "install_path": "https/repo1.maven.org/maven2/com/lihaoyi/upickle_3/3.3.1",
             "pkgname": "upickle_3"
         },
         "pinned": false,
@@ -3119,7 +3119,7 @@
         "extract": null,
         "name": "util-control_2.13-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-control_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/util-control_2.13/1.10.7",
             "pkgname": "util-control_2.13"
         },
         "pinned": false,
@@ -3137,7 +3137,7 @@
         "extract": null,
         "name": "util-control_2.13-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-control_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/util-control_2.13/1.10.7",
             "pkgname": "util-control_2.13"
         },
         "pinned": false,
@@ -3155,7 +3155,7 @@
         "extract": null,
         "name": "util-interface-1.10.3-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.3",
             "pkgname": "util-interface"
         },
         "pinned": false,
@@ -3173,7 +3173,7 @@
         "extract": null,
         "name": "util-interface-1.10.3-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.3",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.3",
             "pkgname": "util-interface"
         },
         "pinned": false,
@@ -3191,7 +3191,7 @@
         "extract": null,
         "name": "util-interface-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.7",
             "pkgname": "util-interface"
         },
         "pinned": false,
@@ -3209,7 +3209,7 @@
         "extract": null,
         "name": "util-interface-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.7",
             "pkgname": "util-interface"
         },
         "pinned": false,
@@ -3227,7 +3227,7 @@
         "extract": null,
         "name": "util-interface-1.9.2-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.9.2",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.9.2",
             "pkgname": "util-interface"
         },
         "pinned": false,
@@ -3245,7 +3245,7 @@
         "extract": null,
         "name": "util-interface-1.9.2-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.9.2",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.9.2",
             "pkgname": "util-interface"
         },
         "pinned": false,
@@ -3263,7 +3263,7 @@
         "extract": null,
         "name": "util-logging_2.13-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-logging_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/util-logging_2.13/1.10.7",
             "pkgname": "util-logging_2.13"
         },
         "pinned": false,
@@ -3281,7 +3281,7 @@
         "extract": null,
         "name": "util-logging_2.13-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-logging_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/util-logging_2.13/1.10.7",
             "pkgname": "util-logging_2.13"
         },
         "pinned": false,
@@ -3299,7 +3299,7 @@
         "extract": null,
         "name": "util-position_2.13-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-position_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/util-position_2.13/1.10.7",
             "pkgname": "util-position_2.13"
         },
         "pinned": false,
@@ -3317,7 +3317,7 @@
         "extract": null,
         "name": "util-position_2.13-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-position_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/util-position_2.13/1.10.7",
             "pkgname": "util-position_2.13"
         },
         "pinned": false,
@@ -3335,7 +3335,7 @@
         "extract": null,
         "name": "util-relation_2.13-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-relation_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/util-relation_2.13/1.10.7",
             "pkgname": "util-relation_2.13"
         },
         "pinned": false,
@@ -3353,7 +3353,7 @@
         "extract": null,
         "name": "util-relation_2.13-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/util-relation_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/util-relation_2.13/1.10.7",
             "pkgname": "util-relation_2.13"
         },
         "pinned": false,
@@ -3371,7 +3371,7 @@
         "extract": null,
         "name": "zero-allocation-hashing-0.16-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/net/openhft/zero-allocation-hashing/0.16",
+            "install_path": "https/repo1.maven.org/maven2/net/openhft/zero-allocation-hashing/0.16",
             "pkgname": "zero-allocation-hashing"
         },
         "pinned": false,
@@ -3389,7 +3389,7 @@
         "extract": null,
         "name": "zero-allocation-hashing-0.16-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/net/openhft/zero-allocation-hashing/0.16",
+            "install_path": "https/repo1.maven.org/maven2/net/openhft/zero-allocation-hashing/0.16",
             "pkgname": "zero-allocation-hashing"
         },
         "pinned": false,
@@ -3407,7 +3407,7 @@
         "extract": null,
         "name": "zinc-apiinfo_2.13-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-apiinfo_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/zinc-apiinfo_2.13/1.10.7",
             "pkgname": "zinc-apiinfo_2.13"
         },
         "pinned": false,
@@ -3425,7 +3425,7 @@
         "extract": null,
         "name": "zinc-apiinfo_2.13-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-apiinfo_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/zinc-apiinfo_2.13/1.10.7",
             "pkgname": "zinc-apiinfo_2.13"
         },
         "pinned": false,
@@ -3443,7 +3443,7 @@
         "extract": null,
         "name": "zinc-classfile_2.13-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-classfile_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/zinc-classfile_2.13/1.10.7",
             "pkgname": "zinc-classfile_2.13"
         },
         "pinned": false,
@@ -3461,7 +3461,7 @@
         "extract": null,
         "name": "zinc-classfile_2.13-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-classfile_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/zinc-classfile_2.13/1.10.7",
             "pkgname": "zinc-classfile_2.13"
         },
         "pinned": false,
@@ -3479,7 +3479,7 @@
         "extract": null,
         "name": "zinc-classpath_2.13-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-classpath_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/zinc-classpath_2.13/1.10.7",
             "pkgname": "zinc-classpath_2.13"
         },
         "pinned": false,
@@ -3497,7 +3497,7 @@
         "extract": null,
         "name": "zinc-classpath_2.13-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-classpath_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/zinc-classpath_2.13/1.10.7",
             "pkgname": "zinc-classpath_2.13"
         },
         "pinned": false,
@@ -3515,7 +3515,7 @@
         "extract": null,
         "name": "zinc-compile-core_2.13-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-compile-core_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/zinc-compile-core_2.13/1.10.7",
             "pkgname": "zinc-compile-core_2.13"
         },
         "pinned": false,
@@ -3533,7 +3533,7 @@
         "extract": null,
         "name": "zinc-compile-core_2.13-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-compile-core_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/zinc-compile-core_2.13/1.10.7",
             "pkgname": "zinc-compile-core_2.13"
         },
         "pinned": false,
@@ -3551,7 +3551,7 @@
         "extract": null,
         "name": "zinc-core_2.13-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-core_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/zinc-core_2.13/1.10.7",
             "pkgname": "zinc-core_2.13"
         },
         "pinned": false,
@@ -3569,7 +3569,7 @@
         "extract": null,
         "name": "zinc-core_2.13-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-core_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/zinc-core_2.13/1.10.7",
             "pkgname": "zinc-core_2.13"
         },
         "pinned": false,
@@ -3587,7 +3587,7 @@
         "extract": null,
         "name": "zinc-persist-core-assembly-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-persist-core-assembly/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/zinc-persist-core-assembly/1.10.7",
             "pkgname": "zinc-persist-core-assembly"
         },
         "pinned": false,
@@ -3605,7 +3605,7 @@
         "extract": null,
         "name": "zinc-persist-core-assembly-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-persist-core-assembly/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/zinc-persist-core-assembly/1.10.7",
             "pkgname": "zinc-persist-core-assembly"
         },
         "pinned": false,
@@ -3623,7 +3623,7 @@
         "extract": null,
         "name": "zinc-persist_2.13-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-persist_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/zinc-persist_2.13/1.10.7",
             "pkgname": "zinc-persist_2.13"
         },
         "pinned": false,
@@ -3641,7 +3641,7 @@
         "extract": null,
         "name": "zinc-persist_2.13-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc-persist_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/zinc-persist_2.13/1.10.7",
             "pkgname": "zinc-persist_2.13"
         },
         "pinned": false,
@@ -3659,7 +3659,7 @@
         "extract": null,
         "name": "zinc_2.13-1.10.7-bundle",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/zinc_2.13/1.10.7",
             "pkgname": "zinc_2.13"
         },
         "pinned": false,
@@ -3677,7 +3677,7 @@
         "extract": null,
         "name": "zinc_2.13-1.10.7-pom",
         "passthru": {
-            "install_path": "v1/https/repo1.maven.org/maven2/org/scala-sbt/zinc_2.13/1.10.7",
+            "install_path": "https/repo1.maven.org/maven2/org/scala-sbt/zinc_2.13/1.10.7",
             "pkgname": "zinc_2.13"
         },
         "pinned": false,
