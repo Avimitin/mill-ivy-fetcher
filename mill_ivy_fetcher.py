@@ -159,7 +159,8 @@ class LocalCoursierRepo:
             raise Exception("No coursier directory was found or given")
 
         if not os.path.exists(self._coursier_dir):
-            raise Exception(f"No such directory '{self._coursier_dir}'")
+            warning(f"No such directory '{self._coursier_dir}', creating")
+            os.makedirs(self._coursier_dir)
 
         info(f"Searching in {self._coursier_dir}")
 
