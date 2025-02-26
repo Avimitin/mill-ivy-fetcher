@@ -24,15 +24,8 @@ let
         runHook preInstall
 
         mkdir -p "$out"/nix-support
-        tee "$out/nix-support/setup-hook" <<EOF
-        install_ivy_${ivyName}_to_repo() {
-          COURSIER_CACHE=''${COURSIER_CACHE:-$NIX_MILL_HOME/.cache/coursier}
-          mkdir -p "\$COURSIER_CACHE"/v1
-          lndir "$out" "\$COURSIER_CACHE"/v1
-        }
-
-        prePatchHooks+=(install_ivy_${ivyName}_to_repo)
-        EOF
+        substitute ${./setup-hook.sh} "$out"/nix-support/setup-hook \
+          --replace-fail "@ivyName@" "${ivyName}"
 
         runHook postInstall
       '';
