@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 import argparse
 import shutil
 import logging
-from logging import info, error
+from logging import info, warning, error
 import tempfile
 
 
@@ -188,18 +188,35 @@ class LocalCoursierRepo:
 
 def mill_prepare_offline(
     prepare_targets: list[str],
-    user_home: str | None = None,
-    extra_java_opts: list[str] | None = None,
+    work_dir: str | None = None,
 ) -> str:
-    home_dir = user_home or tempfile.gettempdir()
+    ivy_repo_dir = (
+        os.path.realpath(work_dir) if work_dir is not None else tempfile.gettempdir()
+    )
+    ivy_cache_dir = os.makedirs(os.path.join(ivy_repo_dir, "cache"), exist_ok=True)
     mill_opt_file = tempfile.mktemp()
 
-    java_opt = f"-Duser.home={home_dir} "
-    if extra_java_opts is not None:
-        java_opt += " ".join(extra_java_opts)
+    base_java_opts = [
+        # Override ~/.ivy2
+        f"-Dcoursier.ivy.home={ivy_repo_dir}",
+        # Override ~/.cache/coursier/v1
+        f"-Dcoursier.cache={ivy_cache_dir}",
+    ]
+
+    user_java_opts = os.getenv("JAVA_OPTS")
+    if user_java_opts is not None:
+        warning(f"using env JAVA_OPTS: '{user_java_opts}'")
+        base_java_opts += user_java_opts.split(" ")
+
+    user_java_tool_opts = os.getenv("JAVA_TOOL_OPTIONS")
+    if user_java_tool_opts is not None:
+        warning(f"using env JAVA_TOOL_OPTIONS: '{user_java_tool_opts}'")
+        base_java_opts += user_java_tool_opts.split(" ")
 
     with open(mill_opt_file, "w") as mf:
-        mf.write(java_opt.replace(" ", "\n"))
+        mf.write("\n".join(base_java_opts))
+
+    java_opt = " ".join(base_java_opts)
 
     info("Preparing Ivy dependencies")
     mill = shutil.which("mill")
@@ -209,38 +226,35 @@ def mill_prepare_offline(
         [mill, "--no-server"]
         + [target + ".prepareOffline" for target in prepare_targets],
         env={
-            # Java doens't respect $HOME, we need to change the user.home property
             "JAVA_OPTS": java_opt,
             # In Oracle Java, they use "JAVA_TOOL_OPTIONS"
             "JAVA_TOOL_OPTIONS": java_opt,
             # Maven mirror sometime contains invalid dependency and make us hard to debug the problem, use maven central only.
             "COURSIER_REPOSITORIES": "ivy2local|central",
-            # Mill will fork process without inherit the JAVA_OPTS env, so we need "MILL JVM OPT" file to help us modify home dir.
+            # Mill will fork process without inherit the JAVA_OPTS env
             "MILL_JVM_OPTS_PATH": mill_opt_file,
         },
     )
     subprocess.check_call(
         [mill, "--no-server", "__.scalaCompilerClasspath"],
         env={
-            # Java doens't respect $HOME, we need to change the user.home property
             "JAVA_OPTS": java_opt,
             # In Oracle Java, they use "JAVA_TOOL_OPTIONS"
             "JAVA_TOOL_OPTIONS": java_opt,
             # Maven mirror sometime contains invalid dependency and make us hard to debug the problem, use maven central only.
             "COURSIER_REPOSITORIES": "ivy2local|central",
-            # Mill will fork process without inherit the JAVA_OPTS env, so we need "MILL JVM OPT" file to help us modify home dir.
+            # Mill will fork process without inherit the JAVA_OPTS env
             "MILL_JVM_OPTS_PATH": mill_opt_file,
         },
     )
     info("Ivy dependencies resolved")
-    return os.path.join(home_dir, ".cache", "coursier")
+    return ivy_repo_dir
 
 
 def fetch_handler(args):
     dir = mill_prepare_offline(
         args.targets or ["__"],
-        os.path.realpath(args.home),
-        args.java_opts,
+        args.work_dir,
     )
     info(f"Downloaded into {dir}")
 
@@ -286,15 +300,9 @@ if __name__ == "__main__":
     fetch_parser = subparser.add_parser("fetch", help="%(prog)s fetch help")
     fetch_parser.add_argument(
         "-o",
-        "--home",
+        "--work-dir",
         nargs="?",
-        help="Use the specify directory as HOME directory, default using temporary directory",
-    )
-    fetch_parser.add_argument(
-        "-j",
-        "--java-opts",
-        action="append",
-        help="Set custom Java options. Can be used multiple time to append options.",
+        help="Use the specify directory as working directory, default using a new temporary directory",
     )
     fetch_parser.add_argument(
         "-t",
