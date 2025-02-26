@@ -193,7 +193,8 @@ def mill_prepare_offline(
     ivy_repo_dir = (
         os.path.realpath(work_dir) if work_dir is not None else tempfile.gettempdir()
     )
-    ivy_cache_dir = os.makedirs(os.path.join(ivy_repo_dir, "cache"), exist_ok=True)
+    ivy_cache_dir = os.path.join(ivy_repo_dir, "cache")
+    os.makedirs(ivy_cache_dir, exist_ok=True)
     mill_opt_file = tempfile.mktemp()
 
     base_java_opts = [
