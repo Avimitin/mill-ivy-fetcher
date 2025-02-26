@@ -14,8 +14,8 @@ let
       buildPhase = "runHook preBuild\n"
         + lib.concatMapStringsSep "\n"
         (x: ''
-          mkdir -p "$out/${x.install_path}"
-          ln -s ${x.src} "$out"/${x.install_path}/$(stripHash ${x.src})
+          mkdir -p "$out/cache/${x.install_path}"
+          ln -s ${x.src} "$out"/cache/${x.install_path}/$(stripHash ${x.src})
         '')
         ivySources
         + "\nrunHook postBuild";
@@ -25,7 +25,7 @@ let
 
         mkdir -p "$out"/nix-support
         substitute ${./setup-hook.sh} "$out"/nix-support/setup-hook \
-          --replace-fail "@out@" "$out" \
+          --replace-fail "@cacheDir@" "$out/cache" \
           --replace-fail "@ivyName@" "${ivyName}"
 
         runHook postInstall
