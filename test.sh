@@ -6,11 +6,12 @@ export PATH="$(nix build '.#jdk21.out' --print-out-paths --no-link)/bin:$PATH"
 export PATH="$(nix build '.#nvfetcher.out' --print-out-paths --no-link)/bin:$PATH"
 export PATH="$(nix build '.#mill.out' --print-out-paths --no-link)/bin:$PATH"
 
-echo "Running unit tests"
-export JAVA_OPTS="-Duser.home=$(realpath ./assets)"
-export JAVA_TOOL_OPTIONS="-Duser.home=$(realpath ./assets)"
-export MILL_HOME="$(realpath ./assets)"
-python3 ./test.py
+(
+  echo "Running unit tests"
+  export JAVA_TOOL_OPTIONS="-Duser.home=$(realpath ./assets)"
+  export MILL_HOME="$(realpath ./assets)"
+  python3 ./test.py
+)
 
 
 echo "Running integration tests"
@@ -21,14 +22,14 @@ pushd tests >/dev/null
 if [[ -d "out" ]]; then
   rm -rf out
 fi
-mkdir -p out/.javaHome
+mkdir -p out/.coursier
 
-javaHome=$(realpath out/.javaHome)
-"$exe" fetch --home "$javaHome" --targets "foo"
+coursierDir=$(realpath out/.coursier)
+"$exe" fetch --work-dir "$coursierDir" --targets "foo"
 
 mkdir -p deps
 nvfetcherCfg="deps/nvfetcher.toml"
-"$exe" dump --coursier-dir "$javaHome/.cache/coursier" --dump-path "$nvfetcherCfg"
+"$exe" dump --coursier-dir "$coursierDir/cache" --dump-path "$nvfetcherCfg"
 cd deps
 nvfetcher
 
