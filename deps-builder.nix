@@ -25,6 +25,7 @@ let
 
         mkdir -p "$out"/nix-support
         substitute ${./setup-hook.sh} "$out"/nix-support/setup-hook \
+          --replace-fail "@out@" "$out" \
           --replace-fail "@ivyName@" "${ivyName}"
 
         runHook postInstall
