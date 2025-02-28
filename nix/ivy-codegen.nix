@@ -25,8 +25,13 @@ stdenvNoCC.mkDerivation (lib.recursiveUpdate
     mkdir -p coursier build
     mill_ivy_fetcher fetch --work-dir couriser ${fetchArgs}
     mill_ivy_fetcher dump --coursier-dir coursier/cache --dump-path build/nvfetcher.toml
+
     cd build
-    HOME=$PWD nvfetcher
+    # nvfetcher will write database lock to $HOME/.local/nvfetcher, but HOME is set to
+    # /homeless-shelter to protect chroot.
+    # https://github.com/berberman/nvfetcher/blob/master/src/NvFetcher/Utils.hs#L39
+    XDG_DATA_DIRECTORY=$NIX_BUILD_TOP \
+      nvfetcher
 
     runHook postBuild
   '';
