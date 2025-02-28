@@ -38,6 +38,8 @@ stdenvNoCC.mkDerivation {
     runHook postInstall
   '';
 
+  impureEnvVars = [ "JAVA_OPTS" "JAVA_TOOL_OPTIONS" ];
+
   outputHashMode = "nar";
   outputHashAlgo = "sha256";
   outputHash = hash;
