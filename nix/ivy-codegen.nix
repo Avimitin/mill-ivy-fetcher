@@ -3,7 +3,9 @@
 { name, src, hash, targets ? [ ] }:
 
 let
-  fetchArgs = lib.escapeShellArgs (lib.flattenMap (x: [ "--targets" x ]) targets);
+  fetchArgs = lib.escapeShellArgs
+    (lib.flatten
+      (map (x: [ "--targets" x ]) targets));
 in
 stdenvNoCC.mkDerivation {
   name = "ivy-codegen-for-${name}";
