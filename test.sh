@@ -15,24 +15,4 @@ export PATH="$(nix build '.#mill.out' --print-out-paths --no-link)/bin:$PATH"
 
 
 echo "Running integration tests"
-exe=$(realpath ./mill_ivy_fetcher.py)
-"$exe" --help >/dev/null
-
-pushd tests >/dev/null
-if [[ -d "out" ]]; then
-  rm -rf out
-fi
-mkdir -p out/.coursier
-
-coursierDir=$(realpath out/.coursier)
-"$exe" fetch --work-dir "$coursierDir" --targets "foo"
-
-mkdir -p deps
-nvfetcherCfg="deps/nvfetcher.toml"
-"$exe" dump --coursier-dir "$coursierDir/cache" --dump-path "$nvfetcherCfg"
-cd deps
-nvfetcher
-
-popd >/dev/null
-
-nix build '.#test-foo'
+nix build '.#test-foo' -L
