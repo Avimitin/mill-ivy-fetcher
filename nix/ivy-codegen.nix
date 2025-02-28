@@ -1,13 +1,14 @@
 { lib, stdenvNoCC, mill-ivy-fetcher, nvfetcher, mill }:
 
-{ name, src, hash, targets ? [ ] }:
+{ name, src, hash, targets ? [ ] }@extraArgs:
 
 let
   fetchArgs = lib.escapeShellArgs
     (lib.flatten
       (map (x: [ "--targets" x ]) targets));
 in
-stdenvNoCC.mkDerivation {
+stdenvNoCC.mkDerivation (lib.recursiveUpdate
+{
   name = "ivy-codegen-for-${name}";
 
   inherit src;
@@ -46,3 +47,4 @@ stdenvNoCC.mkDerivation {
   outputHashAlgo = "sha256";
   outputHash = hash;
 }
+  (lib.removeAttrs extraArgs [ "name" "src" "hash" "targets" ]))
