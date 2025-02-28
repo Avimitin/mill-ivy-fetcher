@@ -159,8 +159,7 @@ class LocalCoursierRepo:
             raise Exception("No coursier directory was found or given")
 
         if not os.path.exists(self._coursier_dir):
-            warning(f"No such directory '{self._coursier_dir}', creating")
-            os.makedirs(self._coursier_dir)
+            raise Exception("Specified coursier directory not found")
 
         info(f"Searching in {self._coursier_dir}")
 
@@ -194,6 +193,8 @@ def mill_prepare_offline(
     ivy_repo_dir = (
         os.path.realpath(work_dir) if work_dir is not None else tempfile.gettempdir()
     )
+    if not os.path.exists(ivy_repo_dir):
+        warning(f"Speified work dir {work_dir} not exists, creating")
     ivy_cache_dir = os.path.join(ivy_repo_dir, "cache")
     os.makedirs(ivy_cache_dir, exist_ok=True)
     mill_opt_file = tempfile.mktemp()
