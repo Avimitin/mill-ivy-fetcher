@@ -206,12 +206,12 @@ def mill_prepare_offline(
     ]
 
     user_java_opts = os.getenv("JAVA_OPTS")
-    if user_java_opts is not None:
+    if user_java_opts is not None and user_java_opts != "":
         warning(f"using env JAVA_OPTS: '{user_java_opts}'")
         base_java_opts += user_java_opts.split(" ")
 
     user_java_tool_opts = os.getenv("JAVA_TOOL_OPTIONS")
-    if user_java_tool_opts is not None:
+    if user_java_tool_opts is not None and user_java_tool_opts != "":
         warning(f"using env JAVA_TOOL_OPTIONS: '{user_java_tool_opts}'")
         base_java_opts += user_java_tool_opts.split(" ")
 
@@ -224,30 +224,23 @@ def mill_prepare_offline(
     mill = shutil.which("mill")
     if mill is None:
         raise FileNotFoundError("Mill executable not found")
+    jvm_env = {
+        "JAVA_OPTS": java_opt,
+        # In Oracle Java, they use "JAVA_TOOL_OPTIONS"
+        "JAVA_TOOL_OPTIONS": java_opt,
+        # Maven mirror sometime contains invalid dependency and make us hard to debug the problem, use maven central only.
+        "COURSIER_REPOSITORIES": "ivy2local|central",
+        # Mill will fork process without inherit the JAVA_OPTS env
+        "MILL_JVM_OPTS_PATH": mill_opt_file,
+    }
     subprocess.check_call(
         [mill, "--no-server"]
         + [target + ".prepareOffline" for target in prepare_targets],
-        env={
-            "JAVA_OPTS": java_opt,
-            # In Oracle Java, they use "JAVA_TOOL_OPTIONS"
-            "JAVA_TOOL_OPTIONS": java_opt,
-            # Maven mirror sometime contains invalid dependency and make us hard to debug the problem, use maven central only.
-            "COURSIER_REPOSITORIES": "ivy2local|central",
-            # Mill will fork process without inherit the JAVA_OPTS env
-            "MILL_JVM_OPTS_PATH": mill_opt_file,
-        },
+        env=jvm_env,
     )
     subprocess.check_call(
         [mill, "--no-server", "__.scalaCompilerClasspath"],
-        env={
-            "JAVA_OPTS": java_opt,
-            # In Oracle Java, they use "JAVA_TOOL_OPTIONS"
-            "JAVA_TOOL_OPTIONS": java_opt,
-            # Maven mirror sometime contains invalid dependency and make us hard to debug the problem, use maven central only.
-            "COURSIER_REPOSITORIES": "ivy2local|central",
-            # Mill will fork process without inherit the JAVA_OPTS env
-            "MILL_JVM_OPTS_PATH": mill_opt_file,
-        },
+        env=jvm_env,
     )
     info("Ivy dependencies resolved")
     return ivy_repo_dir
