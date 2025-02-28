@@ -10,6 +10,12 @@ let
       passthru = {
         ivy-gather = callPackage ./nix/ivy-gather.nix { };
         ivy-codegen = callPackage ./nix/ivy-codegen.nix { mill-ivy-fetcher = self; };
+
+        generateIvyCache = { name, src, hash, targets ? [ ] }:
+          rec {
+            codegenFiles = self.ivy-codegen { inherit name src hash targets; };
+            cache = self.ivy-gather "${codegenFiles}/${name}-ivys.nix";
+          };
       };
     } ''
     mkdir -p "$out/bin"
