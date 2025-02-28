@@ -4,4 +4,4 @@ install_ivy_@ivyName@_to_repo() {
   lndir "@cacheDir@" "$COURSIER_CACHE"
 }
 
-prePatchHooks+=(install_ivy_@ivyName@_to_repo)
+postUnpackHooks+=(install_ivy_@ivyName@_to_repo)
