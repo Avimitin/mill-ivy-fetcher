@@ -26,7 +26,7 @@ stdenvNoCC.mkDerivation (lib.recursiveUpdate
     mill_ivy_fetcher fetch --work-dir couriser ${fetchArgs}
     mill_ivy_fetcher dump --coursier-dir coursier/cache --dump-path build/nvfetcher.toml
     cd build
-    nvfetcher
+    HOME=$PWD nvfetcher
 
     runHook postBuild
   '';
