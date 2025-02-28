@@ -51,13 +51,7 @@ into small pieces.
 * Fetch mill dependencies to specified directory
 
 ```bash
-./mill_ivy_fetcher.py fetch --home $(mktemp -d)
-```
-
-* Fetch mill dependencies with extra Java options
-
-```bash
-./mill_ivy_fetcher.py fetch --java-opts="-Dhttp.proxyHost=127.0.0.1" -j="-Dhttp.proxyPort=1234"
+./mill_ivy_fetcher.py fetch --work-dir $(mktemp -d)
 ```
 
 ## Implementation Details
@@ -76,7 +70,7 @@ expression for each JAR package.
 
 ## Recommended Workflow
 
-1. Use this project in overlay
+1. Add this project in your overlay
 
 ```nix
 final: prev: {
@@ -93,18 +87,17 @@ final: prev: {
 }
 ```
 
-2. Use the `fetch` subcommand to fetch clean dependencies directory
-3. Use the `dump` subcommand to generate nvfetcher key file
-4. Use "nvfetcher" tools to convert key file to Nix expression
-5. *Optional* Use the default shipped expression to group those ivy dependencies into small pieces:
+2. Use the provided `generateIvyCache` helper to build dependencies for a project:
 
 ```nix
-# ...
-{ mill-ivy-fetcher, ... }:
+{ mill-ivy-fetcher, ...}:
 let
-  dep-builder = mill-ivy-fetcher.dep-builder-script { };
+  ivyCache = mill-ivy-fetcher.generateIvyCache {
+    name = "<project>-deps";
+    src = path/to/project;
+    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+  };
 in
-dep-builder path/to/_sources/generated.nix
 # ...
 ```
 
@@ -112,12 +105,15 @@ This will return a attribute set in following patterns:
 
 ```nix
 rec {
-  ivyDeps = {
-    apache-33-pom = <setup-hook>;
-    scala-compiler = <setup-hook>;
-    # ...
+  cache = rec {
+    ivyDeps = {
+      apache-33-pom = <setup-hook>;
+      scala-compiler = <setup-hook>;
+      # ...
+    };
+    ivyDepsList = attrValues ivyDeps;
   };
-  ivyDepsList = attrValues ivyDeps;
+  codegenFiles = <derivation>;
 }
 ```
 
@@ -131,3 +127,5 @@ stdenv.mkDerivation {
 }
 # ...
 ```
+
+See [`./demo`](./demo) for a detailed explanation.
