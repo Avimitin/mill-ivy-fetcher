@@ -245,15 +245,12 @@ def mill_prepare_offline(
         # Mill will fork process without inherit the JAVA_OPTS env
         "MILL_JVM_OPTS_PATH": mill_opt_file,
     }
-    subprocess.check_call(
-        [mill, "--no-server"]
-        + [target + ".prepareOffline" for target in prepare_targets],
-        env=jvm_env,
-    )
-    subprocess.check_call(
-        [mill, "--no-server", "__.scalaCompilerClasspath"],
-        env=jvm_env,
-    )
+    cmd_queue: list[list[str]] = [
+        [mill, "--no-server", f"{target}.prepareOffline"] for target in prepare_targets
+    ] + [[mill, "--no-server", "__.scalaCompilerClasspath"]]
+    for cmd in cmd_queue:
+        subprocess.check_call(cmd, env=jvm_env)
+
     info("Ivy dependencies resolved")
     return ivy_repo_dir
 
