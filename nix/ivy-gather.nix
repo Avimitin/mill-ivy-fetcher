@@ -1,5 +1,15 @@
-{ lib, stdenvNoCC, lndir, fetchgit, fetchurl, fetchFromGitHub, dockerTools, configure-mill-env-hook }:
+{ lib
+, stdenvNoCC
+, lndir
+, fetchgit
+, fetchurl
+, fetchFromGitHub
+, dockerTools
+, configure-mill-env-hook
+}:
+
 nvfetcherNixSrcPath:
+
 let
   sources = (import nvfetcherNixSrcPath) { inherit fetchgit fetchurl fetchFromGitHub dockerTools; };
   uniqSources = lib.groupBy (x: x.pkgname) (lib.attrValues sources);

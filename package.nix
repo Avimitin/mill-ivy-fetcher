@@ -2,13 +2,19 @@
 , runCommand
 , callPackage
 }:
-runCommand "build-mill-ivy-fetcher"
-{
-  nativeBuildInputs = [ python3 ];
-  meta.mainProgram = "mill_ivy_fetcher";
-  passthru.deps-builder = callPackage ./deps-builder.nix { };
-} ''
-  mkdir -p "$out/bin"
-  cp ${./mill_ivy_fetcher.py} "$out/bin/mill_ivy_fetcher"
-  patchShebangs --host "$out/bin"
-''
+let
+  self = runCommand "build-mill-ivy-fetcher"
+    {
+      propagatedBuildInputs = [ python3 ];
+      meta.mainProgram = "mill_ivy_fetcher";
+      passthru = {
+        ivy-gather = callPackage ./nix/ivy-gather.nix { };
+        ivy-codegen = callPackage ./nix/ivy-codegen.nix { mill-ivy-fetcher = self; };
+      };
+    } ''
+    mkdir -p "$out/bin"
+    cp ${./mill_ivy_fetcher.py} "$out/bin/mill_ivy_fetcher"
+    patchShebangs --host "$out/bin"
+  '';
+in
+self
