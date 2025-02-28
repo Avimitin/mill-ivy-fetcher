@@ -12,7 +12,7 @@ let
   ivyCache = mill-ivy-fetcher.generateIvyCache {
     name = "foo-deps";
     inherit src;
-    hash = "sha256-ET1lBXpM1ACgJ8DRzAJJjcub7ElfmeUi9sNNkNRsK7Y=";
+    hash = "sha256-p2Aip+zlhr6LyYFJ8IOsqzv3aNkvS8u1VssD3Zr/34o=";
   };
 in
 stdenvNoCC.mkDerivation {
