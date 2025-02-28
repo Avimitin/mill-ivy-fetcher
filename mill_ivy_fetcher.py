@@ -199,22 +199,33 @@ def mill_prepare_offline(
     os.makedirs(ivy_cache_dir, exist_ok=True)
     mill_opt_file = tempfile.mktemp()
 
-    base_java_opts = [
-        # Override ~/.ivy2
-        f"-Dcoursier.ivy.home={ivy_repo_dir}",
-        # Override ~/.cache/coursier/v1
-        f"-Dcoursier.cache={ivy_cache_dir}",
-    ]
+    def jvm_opt_to_set(env_key: str):
+        raw = os.getenv(env_key)
+        if raw is not None and raw != "":
+            warning(f"using env {env_key}: '{raw}'")
+            return dict(
+                [
+                    (opt[0], opt[1])
+                    for arg in raw.strip().split(" ")
+                    if (opt := arg.split("="))
+                ]
+            )
+        return {}
 
-    user_java_opts = os.getenv("JAVA_OPTS")
-    if user_java_opts is not None and user_java_opts != "":
-        warning(f"using env JAVA_OPTS: '{user_java_opts}'")
-        base_java_opts += user_java_opts.split(" ")
+    base_java_opt_set = (
+        {
+            # Override ~/.ivy2
+            "-Dcoursier.ivy.home": ivy_repo_dir,
+            # Mill vendor an unofficial way for ivy2 local
+            "-Divy.home": ivy_repo_dir,
+            # Override ~/.cache/coursier/v1
+            "-Dcoursier.cache": ivy_cache_dir,
+        }
+        | jvm_opt_to_set("JAVA_OPTS")
+        | jvm_opt_to_set("JAVA_TOOL_OPTIONS")
+    )
 
-    user_java_tool_opts = os.getenv("JAVA_TOOL_OPTIONS")
-    if user_java_tool_opts is not None and user_java_tool_opts != "":
-        warning(f"using env JAVA_TOOL_OPTIONS: '{user_java_tool_opts}'")
-        base_java_opts += user_java_tool_opts.split(" ")
+    base_java_opts = [f"{k}={base_java_opt_set[k]}" for k in base_java_opt_set.keys()]
 
     with open(mill_opt_file, "w") as mf:
         mf.write("\n".join(base_java_opts))
