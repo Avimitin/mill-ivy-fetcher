@@ -18,11 +18,18 @@
         packages.default = pkgs.callPackage ./package.nix { };
         packages.test-foo = pkgs.callPackage ./demo/default.nix { };
         devShells.default = pkgs.mkShell {
-          nativeBuildInputs = with pkgs; [
-            python3
-            black
-            pyright
-          ];
+          nativeBuildInputs = with pkgs;
+            let
+              ghcW = pkgs.haskellPackages.ghcWithPackages (p: with p; [
+                aeson
+                shake
+              ]);
+            in
+            [
+              cabal-install
+              ghcW
+              haskell-language-server
+            ];
         };
       });
 }
