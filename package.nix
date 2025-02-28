@@ -11,9 +11,9 @@ let
         ivy-gather = callPackage ./nix/ivy-gather.nix { };
         ivy-codegen = callPackage ./nix/ivy-codegen.nix { mill-ivy-fetcher = self; };
 
-        generateIvyCache = { name, src, hash, targets ? [ ] }:
+        generateIvyCache = { name, ... }@args:
           rec {
-            codegenFiles = self.ivy-codegen { inherit name src hash targets; };
+            codegenFiles = self.ivy-codegen args;
             cache = self.ivy-gather "${codegenFiles}/${name}-ivys.nix";
           };
       };

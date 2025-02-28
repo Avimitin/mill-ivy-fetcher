@@ -1,6 +1,6 @@
 { lib, stdenvNoCC, mill-ivy-fetcher, nvfetcher, mill, nix, cacert }:
 
-{ name, src, hash, targets ? [ ] }@extraArgs:
+{ name, src, hash, targets ? [ ], extraBuildInputs ? [ ], ... }@extraArgs:
 
 let
   fetchArgs = lib.escapeShellArgs
@@ -12,6 +12,8 @@ stdenvNoCC.mkDerivation (lib.recursiveUpdate
   name = "ivy-codegen-for-${name}";
 
   inherit src;
+
+  buildInputs = extraBuildInputs;
 
   nativeBuildInputs = [
     mill-ivy-fetcher
@@ -76,4 +78,4 @@ stdenvNoCC.mkDerivation (lib.recursiveUpdate
   outputHashAlgo = "sha256";
   outputHash = hash;
 }
-  (lib.removeAttrs extraArgs [ "name" "src" "hash" "targets" ]))
+  (lib.removeAttrs extraArgs [ "name" "src" "hash" "targets" "extraBuildInputs" ]))
