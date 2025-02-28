@@ -1,11 +1,6 @@
 { lib, stdenvNoCC, mill, jdk21, callPackage, makeWrapper }:
 let
-  deps-builder = (callPackage ../package.nix { inherit callPackage; }).deps-builder;
-  deps = deps-builder ./deps/_sources/generated.nix;
-in
-stdenvNoCC.mkDerivation {
-  name = "foo-deps";
-
+  mill-ivy-fetcher = (callPackage ../package.nix { inherit callPackage; });
   src = with lib.fileset; toSource {
     root = ./.;
     fileset = unions [
@@ -14,9 +9,19 @@ stdenvNoCC.mkDerivation {
     ];
   };
 
+  ivyCache = mill-ivy-fetcher.generateIvyCache {
+    name = "foo-deps";
+    inherit src;
+    hash = "sha256-ET1lBXpM1ACgJ8DRzAJJjcub7ElfmeUi9sNNkNRsK7Y=";
+  };
+in
+stdenvNoCC.mkDerivation {
+  name = "foo";
+  inherit src;
+
   nativeBuildInputs = [ mill makeWrapper ];
 
-  buildInputs = deps.ivyDepsList;
+  buildInputs = ivyCache.cache.ivyDepsList;
 
   buildPhase = ''
     runHook preBuild
@@ -39,6 +44,6 @@ stdenvNoCC.mkDerivation {
   '';
 
   passthru = {
-    millDeps = deps;
+    inherit ivyCache;
   };
 }
