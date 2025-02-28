@@ -19,9 +19,7 @@
         packages.test-foo = pkgs.callPackage ./tests/default.nix { };
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [
-            python3
-            black
-            pyright
+            stack
           ];
         };
       });
