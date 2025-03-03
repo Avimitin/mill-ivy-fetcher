@@ -1,6 +1,5 @@
-{ lib, stdenvNoCC, mill, jdk21, callPackage, makeWrapper }:
+{ lib, stdenvNoCC, mill, jdk21, makeWrapper, generateIvyCache }:
 let
-  mill-ivy-fetcher = (callPackage ../package.nix { inherit callPackage; });
   src = with lib.fileset; toSource {
     root = ./.;
     fileset = unions [
@@ -9,7 +8,7 @@ let
     ];
   };
 
-  ivyCache = mill-ivy-fetcher.generateIvyCache {
+  ivyCache = generateIvyCache {
     name = "foo-deps";
     inherit src;
     hash = "sha256-p2Aip+zlhr6LyYFJ8IOsqzv3aNkvS8u1VssD3Zr/34o=";

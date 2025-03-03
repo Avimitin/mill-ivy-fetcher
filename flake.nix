@@ -10,13 +10,15 @@
   outputs = inputs@{ self, nixpkgs, flake-utils, chisel-nix }:
     { inherit inputs; } // flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs { overlays = [ (import ./overlay.nix) chisel-nix.overlays.mill-flows ]; inherit system; };
+        overlay = import ./nix/overlay.nix;
+        pkgs = import nixpkgs { overlays = [ (import ./nix/local-overlay.nix) chisel-nix.overlays.mill-flows overlay ]; inherit system; };
       in
       {
         formatter = pkgs.nixpkgs-fmt;
         legacyPackages = pkgs;
-        packages.default = pkgs.callPackage ./package.nix { };
+        packages.default = pkgs.mill-ivy-fetcher;
         packages.test-foo = pkgs.callPackage ./demo/default.nix { };
+        overlays.default = overlay;
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [
             python3
