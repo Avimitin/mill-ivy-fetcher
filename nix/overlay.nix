@@ -8,4 +8,38 @@ final: prev:
       codegenFiles = final.ivy-codegen args;
       cache = final.ivy-gather "${codegenFiles}/${name}-ivys.nix";
     };
+
+  # Usage:
+  #
+  # ```nix
+  # { stdenv, mill-ivy-env-shell-hook }:
+  # stdenv.mkDerivation {
+  #   name = "my-mill-project";
+  #
+  #   shellHook = ''
+  #     ${mill-ivy-env-shell-hook}
+  #
+  #     # extra commands
+  #     # ......
+  #   '';
+  # }
+  # ```
+  #
+  # Then:
+  #
+  # ```bash
+  # $ nix develop '.#my-mill-project'
+  # ```
+  mill-ivy-env-shell-hook = ''
+    if [[ ! -d ".git" || ! -f "build.mill" ]]; then
+      echo "Not in mill project root, exit" >&2
+      exit 1
+    fi
+
+    mkdir -p out
+    NIX_BUILD_TOP="$(realpath out)"
+
+    runHook preUnpack
+    runHook postUnpack
+  '';
 }
