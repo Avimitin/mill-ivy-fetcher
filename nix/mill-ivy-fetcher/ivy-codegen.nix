@@ -72,7 +72,7 @@ stdenvNoCC.mkDerivation (lib.recursiveUpdate
     runHook postInstall
   '';
 
-  impureEnvVars = [ "JAVA_OPTS" "JAVA_TOOL_OPTIONS" ];
+  impureEnvVars = [ "JAVA_OPTS" "JAVA_TOOL_OPTIONS" "https_proxy" ];
 
   outputHashMode = "nar";
   outputHashAlgo = "sha256";
