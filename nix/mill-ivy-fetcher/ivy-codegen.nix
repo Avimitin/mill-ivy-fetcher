@@ -48,7 +48,13 @@ stdenvNoCC.mkDerivation (lib.recursiveUpdate
   buildPhase = ''
     runHook preBuild
 
-    mkdir -p coursier build
+    export NIX_CONFIG=$(cat <<EOF
+    experimental-features = nix-command
+    store = file://$TMPDIR/nix/store
+    EOF
+    )
+    mkdir -p coursier build $TMPDIR/nix/store
+
     mill_ivy_fetcher fetch --work-dir coursier ${fetchArgs}
     mill_ivy_fetcher dump --coursier-dir coursier/cache --dump-path build/nvfetcher.toml
 
