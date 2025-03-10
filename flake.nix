@@ -4,19 +4,24 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    chisel-nix.url = "github:chipsalliance/chisel-nix/new-mill-flow";
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-utils, chisel-nix }:
+  outputs = inputs@{ self, nixpkgs, flake-utils }:
     let
-      overlay = import ./nix/overlay.nix;
+      mill-ivy-fetcher-overlay = import ./nix/mill-ivy-fetcher-overlay.nix;
     in
     {
       inherit inputs;
-      overlays.default = overlay;
+      overlays.default = mill-ivy-fetcher-overlay;
     } // flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs { overlays = [ (import ./nix/local-overlay.nix) chisel-nix.overlays.mill-flows overlay ]; inherit system; };
+        pkgs = import nixpkgs {
+          overlays = [
+            (import ./nix/local-overlay.nix)
+            mill-ivy-fetcher-overlay
+          ];
+          inherit system;
+        };
       in
       {
         formatter = pkgs.nixpkgs-fmt;
