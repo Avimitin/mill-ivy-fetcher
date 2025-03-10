@@ -67,6 +67,8 @@ executable mill-ivy-fetcher
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
 
+    ghc-options: -Wall -O3 -rtsopts -threaded -with-rtsopts=-I0
+
     -- Other library packages from which modules are imported.
     build-depends:
         shake >= 0.19.8,
