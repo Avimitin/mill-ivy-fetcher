@@ -34,7 +34,7 @@ let
         runHook preInstall
 
         mkdir -p "$out"/nix-support
-        substitute ${./setup-hook.sh} "$out"/nix-support/setup-hook \
+        substitute ${./ivy-gather-setup-hook.sh} "$out"/nix-support/setup-hook \
           --replace-fail "@cacheDir@" "$out/cache" \
           --replace-fail "@ivyName@" "${ivyName}"
 
