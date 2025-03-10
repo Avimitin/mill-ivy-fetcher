@@ -1,6 +1,6 @@
 final: prev:
 {
-  mill-ivy-fetcher = final.callPackage ./mill-ivy-fetcher { };
+  mill-ivy-fetcher = final.callPackage ./mill-ivy-fetcher/package.nix { };
   ivy-gather = final.callPackage ./mill-ivy-fetcher/ivy-gather.nix { };
   ivy-codegen = final.callPackage ./mill-ivy-fetcher/ivy-codegen.nix { inherit (final) mill-ivy-fetcher; };
   generateIvyCache = { name, ... }@args:
