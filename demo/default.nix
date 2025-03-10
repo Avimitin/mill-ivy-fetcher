@@ -1,4 +1,4 @@
-{ lib, stdenvNoCC, mill, jdk21, makeWrapper, generateIvyCache }:
+{ lib, stdenvNoCC, mill, jdk21, makeWrapper, generateIvyCache, publishMillJar }:
 let
   src = with lib.fileset; toSource {
     root = ./.;
@@ -11,7 +11,23 @@ let
   ivyCache = generateIvyCache {
     name = "foo-deps";
     inherit src;
-    hash = "sha256-p2Aip+zlhr6LyYFJ8IOsqzv3aNkvS8u1VssD3Zr/34o=";
+    hash = "sha256-7GQe62dGnSmTm3apResF3jEnwyvDMpRxjTZTJkby/1E=";
+    targets = [ "foo" ];
+  };
+
+  fooJar = publishMillJar {
+    name = "foo";
+    inherit src;
+
+    publishTargets = [
+      "foo"
+    ];
+
+    buildInputs = ivyCache.cache.ivyDepsList;
+
+    passthru = {
+      inherit ivyCache;
+    };
   };
 in
 stdenvNoCC.mkDerivation {
@@ -34,6 +50,7 @@ stdenvNoCC.mkDerivation {
     runHook preInstall
 
     mkdir -p "$out/share/java" "$out/bin"
+    ln -s "${fooJar}"/local "$out"/local
 
     cp out/foo/assembly.dest/out.jar "$out/share/java/foo.jar"
     makeWrapper ${jdk21}/bin/java $out/bin/foo \
@@ -43,6 +60,6 @@ stdenvNoCC.mkDerivation {
   '';
 
   passthru = {
-    inherit ivyCache;
+    inherit ivyCache fooJar;
   };
 }
