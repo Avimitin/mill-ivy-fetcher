@@ -245,9 +245,20 @@ def mill_prepare_offline(
         # Mill will fork process without inherit the JAVA_OPTS env
         "MILL_JVM_OPTS_PATH": mill_opt_file,
     }
-    cmd_queue: list[list[str]] = [
-        [mill, "--no-server", f"{target}.prepareOffline"] for target in prepare_targets
-    ] + [[mill, "--no-server", "__.scalaCompilerClasspath"]]
+    cmd_queue: list[list[str]] = (
+        [
+            [mill, "--no-server", f"{target}.prepareOffline"]
+            for target in prepare_targets
+        ]
+        + [
+            [mill, "--no-server", f"{target}.scalaCompilerClasspath"]
+            for target in prepare_targets
+        ]
+        + [
+            [mill, "--no-server", f"{target}.scalaDocClasspath"]
+            for target in prepare_targets
+        ]
+    )
     for cmd in cmd_queue:
         subprocess.check_call(cmd, env=jvm_env)
 
