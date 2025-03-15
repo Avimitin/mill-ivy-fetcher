@@ -22,8 +22,8 @@ object MillIvyFetcher {
   }
 
   @main()
-  def dump() = {
-    println("dump")
+  def codegen() = {
+    println("codegen")
   }
 
   def main(args: Array[String]): Unit =

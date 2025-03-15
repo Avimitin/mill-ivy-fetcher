@@ -13,10 +13,11 @@ trait MIFModule extends ScalaModule with ScalafmtModule with PublishModule {
   val mainargs = ivy"com.lihaoyi::mainargs:0.5.0"
   val oslib    = ivy"com.lihaoyi::os-lib:0.10.0"
   val upickle  = ivy"com.lihaoyi::upickle:3.3.1"
+  val coursier = ivy"io.get-coursier:coursier_2.13:2.1.25-M3"
 
   def scalaVersion     = "3.3.3"
   def scalacOptions    = Seq("-new-syntax", "-deprecation")
-  override def ivyDeps = Agg(mainargs, oslib, upickle)
+  override def ivyDeps = Agg(mainargs, oslib, upickle, coursier)
 
   def pomSettings = PomSettings(
     description = "MIF is a project to help you generate Nix lock from a Mill project",
