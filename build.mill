@@ -32,4 +32,24 @@ trait MIFModule extends ScalaModule with ScalafmtModule with PublishModule {
   def publishVersion = "0.1.0"
 }
 
-object mif extends MIFModule {}
+
+def testSrcs = Task.Sources("build.mill", "mif")
+
+object mif extends MIFModule {
+  object test extends ScalaTests {
+    def ivyDeps = Agg(ivy"com.lihaoyi::utest:0.8.5")
+    def testFramework = "utest.runner.Framework"
+    def projectDemoSources = Task {
+      testSrcs().foreach(src => {
+        os.copy.into(src.path, Task.dest)
+      })
+
+      PathRef(Task.dest)
+    }
+
+    override def forkEnv: T[Map[String,String]] = super.forkEnv() ++ Map(
+      "DEMO_PROJECT_DIR" -> projectDemoSources().path.toString
+    )
+  }
+
+}

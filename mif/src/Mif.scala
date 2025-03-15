@@ -30,12 +30,18 @@ object MillIvyFetcher {
   @main
   def fetch(
       @arg(short = 'c', doc = "change to dir")
-      cwd: String
+      cwd: String,
+      @arg(short = 't', doc = "list of mill build target to fetch")
+      targets: Seq[String]
   ) = {
-    val param = FetcherParams(os.Path(cwd, os.pwd), Seq("__"))
+    val param = FetcherParams(
+      os.Path(cwd, os.pwd),
+      if targets.isEmpty then Seq("__") else targets
+    )
     val fetcher = new Fetcher(param)
     val outPath = fetcher.run()
     Logger.info(s"deps downloaded into ${outPath}")
+    outPath
   }
 
   @main()
@@ -113,22 +119,25 @@ class Fetcher(parameter: FetcherParams) {
       ++ fetchTargets.map(t => s"${t}.scalaCompilerClasspath")
       ++ fetchTargets.map(t => s"${t}.scalaDocClasspath")
 
-    val (jvmOptsEnv, millOptFile) = handleEnv(cacheDir)
+    val (millOptFile, jvmOptsEnv) = handleEnv(cacheDir)
 
-    os.proc(Seq("mill", "--no-server") ++ targets)
-      .call(
-        cwd = projectRoot,
-        env = Map(
-          // base override
-          "JAVA_OPTS" -> jvmOptsEnv,
-          // OpenJDK use this env
-          "JAVA_TOOL_OPTIONS" -> jvmOptsEnv,
-          // Maven mirror sometime contains invalid dependency and make us hard to debug the problem, use maven central only.
-          "COURSIER_REPOSITORIES" -> "ivy2local|central",
-          // Mill will fork process without inherit the JAVA_OPTS env
-          "MILL_JVM_OPTS_PATH" -> millOptFile
+    val env: Map[String, String] = Map(
+      // base override
+      "JAVA_OPTS" -> jvmOptsEnv,
+      // OpenJDK use this env
+      "JAVA_TOOL_OPTIONS" -> jvmOptsEnv,
+      // Maven mirror sometime contains invalid dependency and make us hard to debug the problem, use maven central only.
+      "COURSIER_REPOSITORIES" -> "ivy2local|central",
+      // Mill will fork process without inherit the JAVA_OPTS env
+      "MILL_JVM_OPTS_PATH" -> millOptFile
+    )
+    targets.foreach(t =>
+      os.proc(Seq("mill", "--no-server", t))
+        .call(
+          cwd = projectRoot,
+          env = env
         )
-      )
+    )
 
     cacheDir
   }
