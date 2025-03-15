@@ -1,0 +1,35 @@
+package build
+
+import mill._
+import mill.scalalib._
+import mill.define.{Command, TaskModule}
+import mill.scalalib.scalafmt._
+import mill.scalalib.TestModule.Utest
+import mill.util.Jvm
+import mill.scalalib.publish._
+import coursier.maven.MavenRepository
+
+trait MIFModule extends ScalaModule with ScalafmtModule with PublishModule {
+  val mainargs = ivy"com.lihaoyi::mainargs:0.5.0"
+  val oslib    = ivy"com.lihaoyi::os-lib:0.10.0"
+  val upickle  = ivy"com.lihaoyi::upickle:3.3.1"
+
+  def scalaVersion     = "3.3.3"
+  def scalacOptions    = Seq("-new-syntax", "-deprecation")
+  override def ivyDeps = Agg(mainargs, oslib, upickle)
+
+  def pomSettings = PomSettings(
+    description = "MIF is a project to help you generate Nix lock from a Mill project",
+    organization = "dev.avimit.in",
+    url = "https://github.com/Avimitin/mill-ivy-fetcher",
+    licenses = Seq(License.`Apache-2.0`),
+    versionControl = VersionControl.github("Avimitin", "mill-ivy-fetcher"),
+    developers = Seq(
+      Developer("Avimitin", "Avimitin Lu", "https://github.com/Avimitin"),
+    )
+  )
+
+  def publishVersion = "0.1.0"
+}
+
+object mif extends MIFModule {}

@@ -27,12 +27,10 @@
         formatter = pkgs.nixpkgs-fmt;
         legacyPackages = pkgs;
         packages.default = pkgs.mill-ivy-fetcher;
-        packages.test-foo = pkgs.callPackage ./demo/default.nix { };
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [
-            python3
-            black
-            pyright
+            mill
+            metals
           ];
         };
       });
