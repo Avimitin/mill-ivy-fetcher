@@ -1,11 +1,11 @@
 package in.avimit.dev.mif
 
-case class FetcherParams(
+case class PrepareParams(
     projectRoot: os.Path,
     fetchTargets: Seq[String]
 )
 
-class Fetcher(parameter: FetcherParams) {
+class PrepareRunner(parameter: PrepareParams) {
   import parameter.*
 
   def jvm_opt_to_set(env_key: String): Map[String, String] = {
