@@ -12,14 +12,18 @@ object IntegrationTest extends TestSuite {
     }
 
     test("codegen-project") {
-      val param = CodegenParams(p / os.up)
+      val tmpdir = os.temp.dir()
+      val param = CodegenParams(p / os.up, tmpdir)
+
       val generator = new Codegen(param)
+
       val deps = generator.getAllDependencies()
-      println(deps)
       assert(deps.nonEmpty)
       assert(deps.foldLeft(true)((prev, cur) => {
-        prev && (!cur.contains("mill-internal"))
+        prev && (!cur.module.name.value.contains("mill-internal"))
       }))
+
+      generator.run()
     }
   }
 }
