@@ -8,50 +8,28 @@ into small pieces.
 
 ## Requirements
 
-* Python 3.13
+* mill 0.12.8+
 
 ## Usage
 
 * Get help information
 
 ```bash
-./mill_ivy_fetcher.py -h
+mill -i mif.run --help
 ```
 
-* Print generated nvfetcher information
+* Prepare offline dependencies
 
 ```bash
-./mill_ivy_fetcher.py dump
+cacheDir=$(mktemp -d)
+mill -i mif.run fetch --project-dir <project> -c "$cacheDir"
 ```
 
-* Use specific coursier directory to generate nvfetcher information
+* Generate Nix expression for runtime and compile dependencies
 
 ```bash
-./mill_ivy_fetcher.py dump -c path/to/coursier/dir
-```
-
-* Dump nvfetcher contents to a file instead of printing
-
-```bash
-./mill_ivy_fetcher.py dump -d ./nvfetcher.toml
-```
-
-* Fetch mill dependencies
-
-```bash
-./mill_ivy_fetcher.py fetch
-```
-
-* Fetch mill dependencies for specified targets
-
-```bash
-./mill_ivy_fetcher.py fetch --targets unipublish --targets panamaom
-```
-
-* Fetch mill dependencies to specified directory
-
-```bash
-./mill_ivy_fetcher.py fetch --work-dir $(mktemp -d)
+# point to same cache dir
+mill -i mif.run codegen --cache "$cacheDir" -o lock.nix
 ```
 
 ## Implementation Details
@@ -62,70 +40,89 @@ tree. The only way to know all the necessary build time dependencies is to run
 JAR package, we can gather dependency information by searching Coursier cache
 directory.
 
-This project provides a single text script `./mill_ivy_fetcher.py`. It will
+This project provides executable `mif`. It will
 recursively search all `.pom` file in Coursier cache and extract necessary
 information like project name, version...etc and convert those information to
-nvfetcher key file. Then users can use the nvfetcher key file to generate Nix
-expression for each JAR package.
+maven central download URL. Then convert that URL to a nix `fetchurl` expression.
 
 ## Recommended Workflow
 
 1. Add this project in your overlay
 
 ```nix
-final: prev: {
-  mill-ivy-fetcher =
-    let
-      src = final.fetchFromGitHub {
-        owner = "Avimitin";
-        repo = "mill-ivy-fetcher";
-        rev = "<latest commit in this repository>";
-        hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      };
-    in
-    final.callPackage "${src}/package.nix" { inherit (final) callPackage; };
+# flake.nix
+{
+  description = "flake.nix";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+    mill-ivy-fetcher = "github:Avimitin/mill-ivy-fetcher";
+  };
+
+  outputs = { self, nixpkgs, flake-utils, mill-ivy-fetcher }@inputs:
+    flake-utils.lib.eachDefaultSystem
+      (system:
+        let
+          pkgs = import nixpkgs { inherit system; overlays = [ mill-ivy-fetcher.overlays.mill-flows ]; };
+        in
+        {
+          legacyPackages = pkgs;
+          devShells = {
+            default = pkgs.mkShell {
+              buildInputs = with pkgs; [
+                ammonite
+                mill
+                mill-ivy-fetcher
+              ];
+            };
+          };
+          formatter = pkgs.nixpkgs-fmt;
+        }
+      )
+    // { inherit inputs; };
+}
+
+```
+
+2. Use the provided `mif` executable to generate lock file for a project:
+
+```bash
+cacheDir=$(mktemp -d)
+nix shell '.#mill' '.#mill-ivy-fetcher' -c mif fetch -p path/to/project --cache "$cacheDir"
+nix shell '.#mill' '.#mill-ivy-fetcher' -c mif codegen --cache "$cacheDir" -o project-lock.nix
+```
+
+3. Add the lock file to `publishMillJar` (optional)
+
+```nix
+{ publishMillJar }:
+publishMillJar {
+  name = "chisel";
+
+  src = ./.;
+
+  lockFile = ./project-lock.nix;
+
+  publishTargets = [
+    "foo"
+  ];
 }
 ```
 
-2. Use the provided `generateIvyCache` helper to build dependencies for a project:
+4. Or if you want to build an application, try
 
 ```nix
-{ mill-ivy-fetcher, ...}:
+{ stdenv, ivy-gather }:
 let
-  ivyCache = mill-ivy-fetcher.generateIvyCache {
-    name = "<project>-deps";
-    src = path/to/project;
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-  };
+  ivyCache = ivy-gather ./project-lock.nix;
 in
-# ...
-```
-
-This will return a attribute set in following patterns:
-
-```nix
-rec {
-  cache = rec {
-    ivyDeps = {
-      apache-33-pom = <setup-hook>;
-      scala-compiler = <setup-hook>;
-      # ...
-    };
-    ivyDepsList = attrValues ivyDeps;
-  };
-  codegenFiles = <derivation>;
-}
-```
-
-Then you can just put those derivations to your mill project buildInputs:
-
-```nix
-# ...
 stdenv.mkDerivation {
-    # ...
-    buildInputs = [ ... ] + ivyDepsList;
+  #...
+  buildInputs = [ ivyCache ];
+  # ...
 }
-# ...
 ```
 
-See [`./demo`](./demo) for a detailed explanation.
+* See [`./.github/integration/chisel.nix`](./.github/integration/chisel.nix) for a detailed explanation.
+* See [`./nix/mill-ivy-fetcher-overlay.nix`](./nix/mill-ivy-fetcher-overlay.nix) for a function documents.
