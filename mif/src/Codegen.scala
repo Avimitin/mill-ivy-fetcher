@@ -44,6 +44,25 @@ class Codegen(param: CodegenParams) {
     .distinct
     .filter(x => !x.module.orgName.contains("mill-internal"))
 
+  def getMillDependencies() = {
+    val millVersion = os
+      .proc("mill", "--version")
+      .call()
+      .out
+      .trim()
+      .linesIterator
+      .takeWhile(l => l.startsWith("Mill Build Tool version"))
+      .next()
+      .stripPrefix("Mill Build Tool version")
+      .trim()
+    Seq(
+      Dependency(
+        Module(Organization("com.lihaoyi"), ModuleName("mill-dist"), Map.empty),
+        VersionConstraint(millVersion)
+      )
+    )
+  }
+
   def fetch(depsList: Seq[Dependency]) = {
     depsList
       .map(dep => {
@@ -55,7 +74,11 @@ class Codegen(param: CodegenParams) {
           .detailedArtifacts0
           .map { case (dep, _, artifact, file) =>
             // TODO: add sha256sum URL here
-            (dep, artifact.url, os.Path(file))
+            (
+              dep,
+              Seq(artifact.url, artifact.extra("metadata").url),
+              os.Path(file)
+            )
           }
       })
       .flatten
@@ -64,23 +87,30 @@ class Codegen(param: CodegenParams) {
 
   // TODO: upstream sha256 first, then TOFU
   def hash(
-      files: Seq[(Dependency, String, os.Path)]
-  ): Map[Dependency, (String, String)] = {
+      files: Seq[(Dependency, Seq[String], os.Path)]
+  ): Map[Dependency, (Seq[String], String)] = {
     files
       .distinctBy((_, _, p) => p)
       .map((dep, url, jarPath) => {
-        println(s"Hashing ${jarPath}")
+        val modulePath = jarPath / os.up
+        os.walk(modulePath)
+          .filter(p => p.last.startsWith("."))
+          .foreach(os.remove(_))
+
+        Logger.info(s"Hashing ${modulePath}")
         val sha256 = os
           .proc(
             "nix",
             "--extra-experimental-features",
             "nix-command",
             "hash",
-            "file",
+            "path",
             "--sri",
-            "--type",
+            "--algo",
             "sha256",
-            jarPath.toString
+            "--mode",
+            "nar",
+            modulePath.toString
           )
           .call()
           .out
@@ -90,25 +120,41 @@ class Codegen(param: CodegenParams) {
       .toMap
   }
 
-  def codegen(hashResult: Map[Dependency, (String, String)]) = {
+  def codegen(hashResult: Map[Dependency, (Seq[String], String)]) = {
     val expr = hashResult.map { case (dep, (url, sha256)) =>
       val name = dep.module.organization.value
         + "_"
         + dep.module.name.value
         + "-"
         + dep.versionConstraint.asString
-      val installPath = {
-        val p = url.stripPrefix(Repositories.central.root)
-        // Canonicalize path to avoid any possible issue
-        os.RelPath(p.stripPrefix("/"))
+
+      def extract(u: String): (String, String) = {
+        val fullInstallPath = os.RelPath(u.replace("https://", "https/"))
+        val filename = fullInstallPath.last
+        val modulePath = fullInstallPath / os.up
+        (modulePath.toString, filename)
       }
+
+      val Seq(jarUrl, pomUrl) = url
+      val (moduleInstallPath, jarFilename) = extract(jarUrl)
+      val (_, pomFilename) = extract(pomUrl)
 
       s"""
         |  "${name}" = fetchurl {
         |    name = "${name}";
         |    hash = "${sha256}";
-        |    url = "${url}";
-        |    passthru.installPath = "${installPath}";
+        |    url = "${jarUrl}";
+        |    recursiveHash = true;
+        |    downloadToTemp = true;
+        |    postFetch = ''
+        |      mkdir -p "$$out"
+        |      cp -v "$$downloadedFile" "$$out/${jarFilename}"
+        |
+        |      downloadedFile=$$TMPDIR/pomFile
+        |      tryDownload "$pomUrl"
+        |      cp -v "$$downloadedFile" "$$out/${pomFilename}"
+        |    '';
+        |    passthru.installPath = "${moduleInstallPath}";
         |  };
         |""".stripMargin
     }
@@ -123,7 +169,7 @@ class Codegen(param: CodegenParams) {
   }
 
   def run() = {
-    val transitiveDeps = getAllDependencies()
+    val transitiveDeps = getAllDependencies() ++ getMillDependencies()
 
     if transitiveDeps.isEmpty then
       Logger.fatal(
