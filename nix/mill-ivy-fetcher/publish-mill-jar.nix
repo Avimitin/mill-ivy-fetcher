@@ -24,7 +24,7 @@ let
         configure-mill-env-hook
       ] ++ (args.nativeBuildInputs or [ ]);
 
-      buildInputs = [ ivyCacheEnv ];
+      buildInputs = [ ivyCacheEnv ] ++ (args.buildInputs or [ ]);
 
       # It is hard to handle shell escape for bracket, let's just codegen build script
       buildPhase = lib.concatStringsSep "\n" (
@@ -79,6 +79,6 @@ let
           '');
       };
     }
-    (builtins.removeAttrs args [ "name" "src" "publishTargets" "nativeBuildInputs" "lockFile" ]));
+    (builtins.removeAttrs args [ "name" "src" "publishTargets" "nativeBuildInputs" "buildInputs" "lockFile" ]));
 in
 self
