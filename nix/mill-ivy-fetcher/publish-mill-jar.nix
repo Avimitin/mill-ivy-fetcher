@@ -7,11 +7,13 @@
 , lndir
 , configure-mill-env-hook
 , add-determinism
+, ivy-gather
 }:
 
-{ name, src, publishTargets, ... }@args:
+{ name, src, publishTargets, lockFile, ... }@args:
 
 let
+  ivyCacheEnv = ivy-gather lockFile;
   self = stdenvNoCC.mkDerivation (lib.recursiveUpdate
     {
       name = "${name}-mill-local-ivy";
@@ -21,6 +23,8 @@ let
         mill
         configure-mill-env-hook
       ] ++ (args.nativeBuildInputs or [ ]);
+
+      buildInputs = [ ivyCacheEnv ];
 
       # It is hard to handle shell escape for bracket, let's just codegen build script
       buildPhase = lib.concatStringsSep "\n" (
@@ -56,22 +60,25 @@ let
       dontShrink = true;
       dontPatchELF = true;
 
-      passthru.setupHook = makeSetupHook
-        {
-          name = "mill-local-ivy-setup-hook.sh";
-          propagatedBuildInputs = [ mill configure-mill-env-hook ];
-        }
-        (writeText "mill-setup-hook" ''
-          setup${name}IvyLocalRepo() {
-            mkdir -p "$NIX_COURSIER_DIR/local"
-            ${lndir}/bin/lndir "${self}/local" "$NIX_COURSIER_DIR/local"
-
-            echo "Copy ivy repo to $NIX_COURSIER_DIR"
+      passthru = {
+        inherit ivyCacheEnv;
+        setupHook = makeSetupHook
+          {
+            name = "mill-local-ivy-setup-hook.sh";
+            propagatedBuildInputs = [ mill configure-mill-env-hook ];
           }
+          (writeText "mill-setup-hook" ''
+            setup${name}IvyLocalRepo() {
+              mkdir -p "$NIX_COURSIER_DIR/local"
+              ${lndir}/bin/lndir "${self}/local" "$NIX_COURSIER_DIR/local"
 
-          postUnpackHooks+=(setup${name}IvyLocalRepo)
-        '');
+              echo "Copy ivy repo to $NIX_COURSIER_DIR"
+            }
+
+            postUnpackHooks+=(setup${name}IvyLocalRepo)
+          '');
+      };
     }
-    (builtins.removeAttrs args [ "name" "src" "publishTargets" "nativeBuildInputs" ]));
+    (builtins.removeAttrs args [ "name" "src" "publishTargets" "nativeBuildInputs" "lockFile" ]));
 in
 self

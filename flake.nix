@@ -27,7 +27,7 @@
         formatter = pkgs.nixpkgs-fmt;
         legacyPackages = pkgs;
         packages.default = pkgs.mill-ivy-fetcher;
-        packages.lock = pkgs.callPackage ./lock.nix { };
+        packages.ci-test = pkgs.callPackage ./.github/integration/chisel.nix { };
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [
             mill

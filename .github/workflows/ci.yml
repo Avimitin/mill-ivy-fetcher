@@ -20,4 +20,5 @@ jobs:
         python-version: "3.13.2"
     - uses: DeterminateSystems/nix-installer-action@main
     - name: Integration test
-      run: ./test.sh
+      run: |
+        nix build '.#ci-test' --max-jobs auto
