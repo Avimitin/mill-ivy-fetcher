@@ -45,22 +45,37 @@ class Codegen(param: CodegenParams) {
     .filter(x => !x.module.orgName.contains("mill-internal"))
 
   def getMillDependencies() = {
-    val millVersion = os
-      .proc("mill", "--version")
-      .call()
-      .out
-      .trim()
-      .linesIterator
-      .takeWhile(l => l.startsWith("Mill Build Tool version"))
-      .next()
-      .stripPrefix("Mill Build Tool version")
-      .trim()
-    Seq(
-      Dependency(
-        Module(Organization("com.lihaoyi"), ModuleName("mill-dist"), Map.empty),
-        VersionConstraint(millVersion)
-      )
-    )
+    os
+      .walk(projectOutDir)
+      .filter(p => {
+        val segs = p.segments.toIndexedSeq.reverse
+        p.last == "scalacPluginClasspath.json"
+        || (segs(0) == "classpath.json" && segs(1) == "ZincWorkerModule")
+      })
+      .map(p => ujson.read(os.read(p)))
+      .map(json => {
+        json
+          .obj("value")
+          .arr
+          .map(v => os.Path(v.str.split(":").last))
+          .map(path => {
+            val it = path.segments.toSeq.reverse
+              .takeWhile(_ != "maven2")
+              .drop(1)
+            it match
+              case version :: modName :: orgSlice =>
+                val module = Module(
+                  Organization(orgSlice.reverse.mkString(".")),
+                  ModuleName(modName),
+                  Map.empty
+                )
+                val versionConstraint = VersionConstraint(version)
+                Dependency(module, versionConstraint)
+              case _ => throw new Exception("Invalid classpath")
+          })
+      })
+      .flatten
+      .distinct
   }
 
   def fetch(depsList: Seq[Dependency]) = {
