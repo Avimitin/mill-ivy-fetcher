@@ -1,7 +1,7 @@
-install_ivy_@ivyName@_to_repo() {
+install_ivy_cache() {
   COURSIER_CACHE=${COURSIER_CACHE:-$NIX_BUILD_TOP/.cache/coursier}
-  mkdir -p "$COURSIER_CACHE"
-  lndir "@cacheDir@" "$COURSIER_CACHE"
+  cp -vr "@cacheDir@" "$COURSIER_CACHE/"
+  chmod -R u+w -- "$COURSIER_CACHE"
 }
 
-postUnpackHooks+=(install_ivy_@ivyName@_to_repo)
+postUnpackHooks+=(install_ivy_cache)

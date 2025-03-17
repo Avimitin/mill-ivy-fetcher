@@ -17,8 +17,8 @@
       let
         pkgs = import nixpkgs {
           overlays = [
-            (import ./nix/local-overlay.nix)
             mill-ivy-fetcher-overlay
+            (import ./nix/local-overlay.nix)
           ];
           inherit system;
         };
@@ -27,12 +27,11 @@
         formatter = pkgs.nixpkgs-fmt;
         legacyPackages = pkgs;
         packages.default = pkgs.mill-ivy-fetcher;
-        packages.test-foo = pkgs.callPackage ./demo/default.nix { };
+        packages.ci-test = pkgs.callPackage ./.github/integration/chisel.nix { };
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [
-            python3
-            black
-            pyright
+            mill
+            metals
           ];
         };
       });
