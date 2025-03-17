@@ -2,7 +2,8 @@ package in.avimit.dev.mif
 
 case class PrepareParams(
     projectRoot: os.Path,
-    fetchTargets: Seq[String]
+    fetchTargets: Seq[String],
+    uCacheDir: Option[os.Path]
 )
 
 class PrepareRunner(parameter: PrepareParams) {
@@ -60,7 +61,7 @@ class PrepareRunner(parameter: PrepareParams) {
       os.remove.all(projectRoot / "out")
     }
 
-    val cacheDir = projectRoot / "out" / ".ivyCache"
+    val cacheDir = uCacheDir.getOrElse(projectRoot / "out" / ".ivyCache")
 
     val targets = fetchTargets.map(t => s"${t}.prepareOffline")
       ++ fetchTargets.map(t => s"${t}.scalaCompilerClasspath")

@@ -6,14 +6,17 @@ import mainargs.arg
 object MillIvyFetcher {
   @main
   def fetch(
-      @arg(short = 'c', doc = "change to dir")
-      cwd: String,
+      @arg(short = 'p', name = "project-dir", doc = "specify project directory")
+      projectDir: Option[String],
       @arg(short = 't', doc = "list of mill build target to fetch")
-      targets: Seq[String]
+      targets: Seq[String],
+      @arg(short = 'c', name = "cache", doc = "specify project directory")
+      cacheDir: Option[String]
   ) = {
     val param = PrepareParams(
-      os.Path(cwd, os.pwd),
-      if targets.isEmpty then Seq("__") else targets
+      os.Path(projectDir.getOrElse("."), os.pwd),
+      if targets.isEmpty then Seq("__") else targets,
+      cacheDir.map(os.Path(_, os.pwd))
     )
     val fetcher = new PrepareRunner(param)
     val outPath = fetcher.run()
@@ -23,7 +26,7 @@ object MillIvyFetcher {
 
   @main()
   def codegen(
-      @arg(name = "cache-dir", doc = "Cache dir for downloading dependencies")
+      @arg(name = "cache", doc = "Cache dir for downloading dependencies")
       cacheDir: String,
       @arg(
         short = 'o',

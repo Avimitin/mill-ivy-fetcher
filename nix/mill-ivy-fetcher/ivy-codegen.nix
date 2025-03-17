@@ -20,8 +20,7 @@ stdenvNoCC.mkDerivation (lib.recursiveUpdate
     mill
     cacert
 
-    nvfetcher
-    # required by nvfetcher, to run nix-prefetch-url
+    # required for running nix hash
     nix
   ];
 
@@ -40,30 +39,13 @@ stdenvNoCC.mkDerivation (lib.recursiveUpdate
     else
       "/no-cert-file.crt";
 
-  # nvfetcher will run nix hash to generate hash
-  NIX_CONFIG = ''
-    experimental-features = nix-command
-  '';
-
   buildPhase = ''
     runHook preBuild
 
-    export NIX_CONFIG=$(cat <<EOF
-    experimental-features = nix-command
-    store = file://$TMPDIR/nix/store
-    EOF
-    )
-    mkdir -p coursier build $TMPDIR/nix/store
+    mkdir -p build coursier
 
-    mill_ivy_fetcher fetch --work-dir coursier ${fetchArgs}
-    mill_ivy_fetcher dump --coursier-dir coursier/cache --dump-path build/nvfetcher.toml
-
-    cd build
-    # nvfetcher will write database lock to $HOME/.local/nvfetcher, but HOME is set to
-    # /homeless-shelter to protect chroot.
-    # https://github.com/berberman/nvfetcher/blob/master/src/NvFetcher/Utils.hs#L39
-    XDG_DATA_HOME=$NIX_BUILD_TOP \
-      nvfetcher
+    mif fetch --cache coursier ${fetchArgs}
+    mif dump --cache coursier --codegen-path build/${name}-mill-lock.nix
 
     runHook postBuild
   '';
@@ -73,7 +55,7 @@ stdenvNoCC.mkDerivation (lib.recursiveUpdate
     runHook preInstall
 
     mkdir -p "$out"
-    mv _sources/generated.nix "$out"/${name}-ivys.nix
+    cp build/${name}-mill-lock.nix "$out"/
 
     runHook postInstall
   '';
