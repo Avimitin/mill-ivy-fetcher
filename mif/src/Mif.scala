@@ -23,12 +23,6 @@ object MillIvyFetcher {
 
   @main()
   def codegen(
-      @arg(
-        short = 'i',
-        name = "project-out-dir",
-        doc = "out/ dir for a scala project"
-      )
-      projectOutDir: String,
       @arg(name = "cache-dir", doc = "Cache dir for downloading dependencies")
       cacheDir: String,
       @arg(
@@ -39,7 +33,6 @@ object MillIvyFetcher {
       codegenPath: String
   ) = {
     val param = CodegenParams(
-      os.Path(projectOutDir, os.pwd),
       os.Path(cacheDir, os.pwd),
       os.Path(codegenPath, os.pwd)
     )

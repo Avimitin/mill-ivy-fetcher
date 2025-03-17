@@ -1,7 +1,8 @@
 package in.avimit.dev.mif
 
+import scala.io.AnsiColor._
+
 object Logger {
-  import scala.io.AnsiColor._
 
   val level = sys.env.getOrElse("LOG_LEVEL", "INFO") match
     case "TRACE" | "trace" => 0
