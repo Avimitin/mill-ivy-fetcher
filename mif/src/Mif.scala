@@ -47,19 +47,6 @@ object MillIvyFetcher {
     generator.run()
   }
 
-  @main()
-  def download(
-      @arg(name = "dep", doc = "ivy dep full path")
-      dep: String,
-      @arg(name = "cache-path", doc = "cache path")
-      cachePath: String
-  ) = {
-    Fetcher.fetch(
-      os.Path(cachePath, os.pwd),
-      Fetcher.parse(dep)
-    )
-  }
-
   def main(args: Array[String]): Unit =
     ParserForMethods(this).runOrExit(args.toSeq)
 }

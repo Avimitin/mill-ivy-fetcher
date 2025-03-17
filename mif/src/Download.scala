@@ -12,13 +12,14 @@ object Fetcher {
     Dependency(module, versionConstraint)
   }
 
-  def fetch(cacheDir: os.Path, dep: Dependency) = {
+  def fetch(dep: Dependency, cacheDir: os.Path) = {
     Logger.info(
       s"* Fetching org: ${dep.module.organization.value}, name: ${dep.module.name.value}, version: ${dep.versionConstraint.asString}"
     )
     val cache = FileCache()
       .withLocation(cacheDir.toIO)
-    val _ = Fetch()
+
+    Fetch()
       .addDependencies(dep)
       .withRepositories(
         Seq(
@@ -26,6 +27,6 @@ object Fetcher {
         )
       )
       .withCache(cache)
-      .run()
+      .runResult()
   }
 }

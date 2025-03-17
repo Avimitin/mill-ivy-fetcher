@@ -50,65 +50,72 @@ class Codegen(param: CodegenParams) {
         val uniqName =
           (dep.module.organization.value + "_" + dep.module.name.value + "_" + dep.versionConstraint.asString)
         val dlDir = cacheDir / uniqName
-        Fetcher.fetch(dlDir, dep)
-        (dep, dlDir)
+        Fetcher
+          .fetch(dep, dlDir)
+          .detailedArtifacts0
+          .map { case (dep, _, artifact, file) =>
+            // TODO: add sha256sum URL here
+            (dep, artifact.url, os.Path(file))
+          }
       })
+      .flatten
+      .distinctBy { case (_, url, file) => url }
   }
 
+  // TODO: upstream sha256 first, then TOFU
   def hash(
-      files: Seq[(Dependency, os.Path)]
-  ): Map[Dependency, String] = {
+      files: Seq[(Dependency, String, os.Path)]
+  ): Map[Dependency, (String, String)] = {
     files
-      .distinctBy((_, p) => p)
-      .map((dep, dir) => {
-        println(s"Hashing ${dir}")
+      .distinctBy((_, _, p) => p)
+      .map((dep, url, jarPath) => {
+        println(s"Hashing ${jarPath}")
         val sha256 = os
           .proc(
             "nix",
             "--extra-experimental-features",
             "nix-command",
             "hash",
-            "path",
+            "file",
             "--sri",
-            "--algo",
+            "--type",
             "sha256",
-            "--mode",
-            "nar",
-            dir.toString
+            jarPath.toString
           )
           .call()
           .out
           .trim()
-        (dep, sha256)
+        (dep, (url, sha256))
       })
       .toMap
   }
 
-  def codegen(hashResult: Map[Dependency, String]) = {
-    val expr = hashResult.map { case (dep, sha256) =>
-      val uniqueName =
-        dep.module.organization.value + ":" + dep.module.name.value + ":" + dep.versionConstraint.asString
+  def codegen(hashResult: Map[Dependency, (String, String)]) = {
+    val expr = hashResult.map { case (dep, (url, sha256)) =>
+      val name = dep.module.organization.value
+        + "_"
+        + dep.module.name.value
+        + "-"
+        + dep.versionConstraint.asString
+      val installPath = {
+        val p = url.stripPrefix(Repositories.central.root)
+        // Canonicalize path to avoid any possible issue
+        os.RelPath(p.stripPrefix("/"))
+      }
+
       s"""
-        |"${uniqueName}" = stdenvNoCC.mkDerivation {
-        |  name = "${uniqueName}";
-        |  nativeBuildInputs = [ coursier ];
-        |  outputHash = "${sha256}";
-        |  outputHashAlgo = "sha256";
-        |  outputHashMode = "nar";
-        |  impureEnvVars = [ "https_proxy" "JAVA_OPTS" "JAVA_TOOL_OPTIONS" ];
-        |  buildCommand = ''
-        |    mkdir -p "cache"
-        |    export COURSIER_CACHE="$$PWD/cache"
-        |    cs fetch --cache "$$PWD/cache" -r central "${uniqueName}"
-        |    mv -v cache "$$out"
-        |  '';
-        |};
+        |  "${name}" = fetchurl {
+        |    name = "${name}";
+        |    hash = "${sha256}";
+        |    url = "${url}";
+        |    passthru.installPath = "${installPath}";
+        |  };
         |""".stripMargin
     }
 
     os.write.over(
       codegenPath,
-      s"""|{ stdenvNoCC, coursier }: {
+      s"""|{ fetchurl }: {
           |${expr.mkString}
           |}
           |""".stripMargin
