@@ -6,8 +6,8 @@ final: prev:
     Each Ivy dependencies will contains one or more files: the publish JAR file
     and the POM specification file. All those files are download separately to
     make nix-prefetch-file happy. This function can help group files to Ivy
-    recognizable dependencies layout by reading the nvfetcher generated src file.
-    Returning a set of Ivy dependencies.
+    recognizable dependencies layout by reading the generated nix lock file.
+    Returning a derivation containing the ivy cache.
 
 
     # Inputs
@@ -27,7 +27,7 @@ final: prev:
 
     ```nix
     ivy-gather ./codegenFiles/project-ivys.nix
-    => {ivyDeps={ scala-compiler = <derivation>; }; ivyDepsList = [ <derivations> ];}
+    => <derivation>
     ```
 
     :::
@@ -94,8 +94,8 @@ final: prev:
       extraBuildInputs = [];
     }
     => {
-      codegenFiles = <derivation>;
-      cache = { ivyDeps = { ... }; ivyDepsList = [ <derivation> ]; };
+      codegenFiles = <derivation-for-lock-file>;
+      cache = <derivation-to-ivy-cache>;
     }
     ```
 
@@ -104,7 +104,7 @@ final: prev:
   generateIvyCache = { name, ... }@args:
     rec {
       codegenFiles = final.ivy-codegen args;
-      cache = final.ivy-gather "${codegenFiles}/${name}-ivys.nix";
+      cache = final.ivy-gather "${codegenFiles}/${name}-mill-lock.nix";
     };
 
   /**
@@ -200,15 +200,11 @@ final: prev:
         "foo"
       ];
 
-      buildInputs = ivyCache.cache.ivyDepsList;
+      buildInputs = [ ivyCache ];
 
       passthru = {
         inherit ivyCache;
       };
-    }
-    => {
-      codegenFiles = <derivation>;
-      cache = { ivyDeps = { ... }; ivyDepsList = [ <derivation> ]; };
     }
     ```
 
