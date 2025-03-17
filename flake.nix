@@ -17,8 +17,8 @@
       let
         pkgs = import nixpkgs {
           overlays = [
-            (import ./nix/local-overlay.nix)
             mill-ivy-fetcher-overlay
+            (import ./nix/local-overlay.nix)
           ];
           inherit system;
         };
