@@ -63,34 +63,36 @@ class Codegen(param: CodegenParams) {
   }
 
   def codegen(hashResult: Map[os.Path, String]) = {
-    val expr = hashResult.map { case (depPath, sha256) =>
-      val (org, mod, ver) = pathToDeps(depPath)
+    val expr = hashResult.toSeq
+      .sortBy((p, _) => p)
+      .map { case (depPath, sha256) =>
+        val (org, mod, ver) = pathToDeps(depPath)
 
-      val nixName = org + "_" + mod + "-" + ver
+        val nixName = org + "_" + mod + "-" + ver
 
-      def extract(p: os.Path) = {
-        val installPath = p.segments.dropWhile(_ != "https").mkString("/")
-        val url = installPath.replace("https/", "https://")
-        val filename = p.last
-        (os.RelPath(installPath), url, filename)
-      }
+        def extract(p: os.Path) = {
+          val installPath = p.segments.dropWhile(_ != "https").mkString("/")
+          val url = installPath.replace("https/", "https://")
+          val filename = p.last
+          (os.RelPath(installPath), url, filename)
+        }
 
-      val (installPath, pomUrl, pomFilename) =
-        os.walk(depPath).filter(_.ext == "pom").map(extract).head
-      def generateDownloadScript(indent: Int) = os
-        .walk(depPath)
-        .filter(p => !(p.ext == "pom"))
-        .map(extract)
-        .map { case (_, url, filename) =>
-          s"""
+        val (installPath, pomUrl, pomFilename) =
+          os.walk(depPath).filter(_.ext == "pom").map(extract).head
+        def generateDownloadScript(indent: Int) = os
+          .walk(depPath)
+          .filter(p => !(p.ext == "pom"))
+          .map(extract)
+          .map { case (_, url, filename) =>
+            s"""
               |downloadedFile=$$TMPDIR/${filename}
               |tryDownload "${url}"
               |cp -v "$$TMPDIR/${filename}" "$$out/"
               |""".stripMargin.indent(indent)
-        }
-        .mkString("\n")
+          }
+          .mkString("\n")
 
-      s"""
+        s"""
         |  "${nixName}" = fetchurl {
         |    name = "${nixName}";
         |    hash = "${sha256}";
@@ -105,7 +107,7 @@ class Codegen(param: CodegenParams) {
         |    passthru.installPath = "${installPath / os.up}";
         |  };
         |""".stripMargin
-    }
+      }
 
     os.write.over(
       codegenPath,
