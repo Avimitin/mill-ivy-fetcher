@@ -69,17 +69,19 @@ object MillIvyFetcher {
   ): Unit = {
     val projectDirPath = projectDir.getOrElse(os.pwd)
     val projectHash = NixNarHash.run(Seq(projectDirPath))(projectDirPath)
-    val lastLineOfLockFile =
-      os.read(codegenPath).lines().toList().getLast().strip()
     val prefix = "# Project Source Hash:"
 
-    if lastLineOfLockFile.startsWith(prefix)
-      && lastLineOfLockFile.contains(projectHash)
-    then
-      Logger.info(
-        s"Source hash of ${projectDirPath} match lock file ${codegenPath}, skip codegen"
-      )
-      return ()
+    if os.exists(codegenPath) then
+      val lastLineOfLockFile =
+        os.read(codegenPath).lines().toList().getLast().strip()
+
+      if lastLineOfLockFile.startsWith(prefix)
+        && lastLineOfLockFile.contains(projectHash)
+      then
+        Logger.info(
+          s"Source hash of ${projectDirPath} match lock file ${codegenPath}, skip codegen"
+        )
+        return ()
 
     val cachePath = fetch(projectDirPath, targets, cacheDir)
     codegen(cachePath, codegenPath)
