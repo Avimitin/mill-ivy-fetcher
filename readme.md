@@ -32,6 +32,12 @@ mill -i mif.run fetch --project-dir <project> -c "$cacheDir"
 mill -i mif.run codegen --cache "$cacheDir" -o lock.nix
 ```
 
+* Don't care anything and just wanna generate a lock for current project
+
+```bash
+mill -i mif.run run -o lock.nix
+```
+
 ## Implementation Details
 
 Mill doesn't provide any straightforward CLI interface to get Ivy dependencies

@@ -43,6 +43,25 @@ object MillIvyFetcher {
     generator.run()
   }
 
+  @main()
+  def run(
+      @arg(short = 'p', name = "project-dir", doc = "specify project directory")
+      projectDir: Option[String],
+      @arg(short = 't', doc = "list of mill build target to fetch")
+      targets: Seq[String],
+      @arg(short = 'c', name = "cache", doc = "specify project directory")
+      cacheDir: Option[String],
+      @arg(
+        short = 'o',
+        name = "codegen-path",
+        doc = "Path to generated nix file"
+      )
+      codegenPath: String
+    ) = {
+    val cachePath = fetch(projectDir, targets, cacheDir)
+    codegen(cachePath.toString, codegenPath)
+  }
+
   def main(args: Array[String]): Unit =
     ParserForMethods(this).runOrExit(args.toSeq)
 }
