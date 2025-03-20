@@ -1,7 +1,6 @@
 package in.avimit.dev.mif
 
-import mainargs.{main, ParserForMethods}
-import mainargs.arg
+import mainargs.{main, ParserForMethods, arg}
 
 object MillIvyFetcher {
   @main
@@ -56,10 +55,27 @@ object MillIvyFetcher {
         name = "codegen-path",
         doc = "Path to generated nix file"
       )
-      codegenPath: String
-    ) = {
+      codegenPath: String,
+      @arg(
+        short = 'j',
+        name = "json-path",
+        doc = "Output information in JSON format, useful for scripting"
+      )
+      jsonPath: Option[String]
+  ) = {
     val cachePath = fetch(projectDir, targets, cacheDir)
     codegen(cachePath.toString, codegenPath)
+
+    jsonPath.foreach(path => {
+      os.write(
+        os.Path(path, os.pwd),
+        upickle.default.write(
+          Map(
+            "cachePath" -> cachePath.toString
+          )
+        )
+      )
+    })
   }
 
   def main(args: Array[String]): Unit =
