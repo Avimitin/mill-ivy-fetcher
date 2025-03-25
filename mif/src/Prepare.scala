@@ -15,7 +15,7 @@ class PrepareRunner(parameter: PrepareParams) {
         Logger.info(s"Using env ${env_key}: '${raw}'")
         raw
           .strip()
-          .split(" ")
+          .split("\\s+")
           .map(optDef => {
             val defs = optDef.split("=")
             (defs(0), defs(1))
