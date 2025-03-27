@@ -1,10 +1,87 @@
 package in.avimit.dev.mif
 
+import java.nio.file.{Path => _, _}
+
 case class PrepareParams(
     projectRoot: os.Path,
     fetchTargets: Seq[String],
     uCacheDir: Option[os.Path]
 )
+
+class WorkdirInfo(projectPath: os.Path, deleteOnExit: Boolean) {
+  def copyFix(
+      from: os.Path,
+      to: os.Path,
+      followLinks: Boolean = true,
+      replaceExisting: Boolean = false,
+      copyAttributes: Boolean = false,
+      createFolders: Boolean = false,
+      mergeFolders: Boolean = false
+  ): Unit = {
+    if (createFolders && to.segmentCount != 0) then os.makeDir.all(to / os.up)
+    val opts1 =
+      if (followLinks) then Array[CopyOption]()
+      else Array[CopyOption](LinkOption.NOFOLLOW_LINKS)
+    val opts2 =
+      if (replaceExisting) then
+        Array[CopyOption](StandardCopyOption.REPLACE_EXISTING)
+      else Array[CopyOption]()
+    val opts3 =
+      if (copyAttributes) then
+        Array[CopyOption](StandardCopyOption.COPY_ATTRIBUTES)
+      else Array[CopyOption]()
+    require(
+      !to.startsWith(from),
+      s"Can't copy a directory into itself: $to is inside $from"
+    )
+
+    def copyOne(p: os.Path): Unit = {
+      val target = to / p.relativeTo(from)
+      if (
+        mergeFolders
+        && os.isDir(p, followLinks)
+        && os.isDir(target, followLinks)
+      )
+      then {
+        // nothing to do
+      } else {
+        Files.copy(p.wrapped, target.wrapped, opts1 ++ opts2 ++ opts3: _*)
+        os.perms.set(target, "rwxr-xr-x")
+      }
+    }
+
+    copyOne(from)
+    if (os.stat(from, followLinks = followLinks).isDir) then
+      for (p <- os.walk(from)) copyOne(p)
+  }
+
+  lazy val workDir = os.temp.dir(
+    deleteOnExit = deleteOnExit,
+    prefix = s"${projectPath.last}_src_"
+  )
+
+  lazy val sourcePath = {
+    val p = workDir / "source"
+    copyFix(projectPath, p)
+    // Source might be read-only, and we need a writable out directory cuz mill doesn't allow us custom zinc output directory.
+    os.perms.set(p, "rwxr-xr-x")
+    p
+  }
+
+  lazy val ivyCachePath = {
+    val p = workDir / "cache"
+    os.makeDir.all(p)
+    p
+  }
+
+  override def toString(): String = workDir.toString
+
+  def toMap(): Map[String, String] = Map(
+    "workDir" -> workDir.toString,
+    "sourcePath" -> sourcePath.toString,
+    "ivyCachePath" -> ivyCachePath.toString
+  )
+}
 
 class PrepareRunner(parameter: PrepareParams) {
   import parameter.*
