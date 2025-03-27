@@ -156,7 +156,7 @@ class PrepareRunner(parameter: PrepareParams) {
       "MILL_JVM_OPTS_PATH" -> millOptFile
     )
     targets.foreach(t =>
-      os.proc(Seq("mill", "--no-server", t))
+      os.proc(Seq("mill", "--no-server", "--silent", "--disable-prompt", t))
         .call(
           cwd = workDir.sourcePath,
           env = env
