@@ -21,6 +21,7 @@ object MillIvyFetcher {
       )
       keepWorkDir: Flag = Flag(false)
   ) = {
+    Logger.info(s"Running mif fetch for ${projectDir}")
     val param = PrepareParams(
       os.Path(projectDir, os.pwd),
       if targets.isEmpty then Seq("__") else targets,
@@ -29,7 +30,7 @@ object MillIvyFetcher {
     )
     val fetcher = new PrepareRunner(param)
     val outPath = fetcher.run()
-    Logger.info(s"deps downloaded into ${outPath}")
+    Logger.info(s"Downloaded deps into ${outPath}")
     outPath
   }
 
@@ -44,6 +45,7 @@ object MillIvyFetcher {
       )
       codegenPath: os.Path
   ) = {
+    Logger.info(s"Running codegen for cache directory ${cacheDir}")
     val param = CodegenParams(
       os.Path(cacheDir, os.pwd),
       os.Path(codegenPath, os.pwd)
