@@ -1,12 +1,12 @@
-{ publishMillJar, fetchFromGitHub, git }:
-publishMillJar {
+{ publishMillJar, fetchFromGitHub, git, writeShellApplication, mill-ivy-fetcher }:
+publishMillJar rec {
   name = "chisel";
 
   src = fetchFromGitHub {
     owner = "chipsalliance";
     repo = "chisel";
-    rev = "cf353ccfcc754e797d9a2d8858fea8d4cbaac961";
-    hash = "sha256-btUKSaB5EYKGaOWVIw8Rr4vKTcbKRx4My8WIkL+aXy0=";
+    rev = "dd04d997dc8c74e446862040625b46604cba41a4";
+    hash = "sha256-gqn1HzfxMUwNPbYiQjTO8KNmGf4ozmWwTBWdZ59GLzg=";
   };
 
   lockFile = ./chisel-lock.nix;
@@ -18,4 +18,14 @@ publishMillJar {
   nativeBuildInputs = [
     git
   ];
+
+  passthru.bump = writeShellApplication {
+    name = "bump-chisel";
+    runtimeInputs = [
+      mill-ivy-fetcher
+    ];
+    text = ''
+      mif run -p "${src}" -o .github/integration/chisel-lock.nix
+    '';
+  };
 }
