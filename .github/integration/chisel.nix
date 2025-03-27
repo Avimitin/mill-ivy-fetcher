@@ -26,7 +26,7 @@ publishMillJar rec {
       mill
     ];
     text = ''
-      mif run -p "${src}" -o .github/integration/chisel-lock.nix
+      mif run -p "${src}" -o .github/integration/chisel-lock.nix "$@"
     '';
   };
 }

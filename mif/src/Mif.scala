@@ -78,13 +78,15 @@ object MillIvyFetcher {
         name = "keep-workdir",
         doc = "keep the temporary working directory, default delete on exit"
       )
-      keepWorkDir: Flag = Flag(false)
+      keepWorkDir: Flag = Flag(false),
+      @arg(doc = "force regenerate lock file")
+      force: Flag = Flag(false)
   ): Unit = {
     val projectDirPath = projectDir.getOrElse(os.pwd)
     val projectHash = NixNarHash.run(Seq(projectDirPath))(projectDirPath)
     val prefix = "# Project Source Hash:"
 
-    if os.exists(codegenPath) then
+    if !force.value && os.exists(codegenPath) then
       val lastLineOfLockFile =
         os.read(codegenPath).lines().toList().getLast().strip()
 
