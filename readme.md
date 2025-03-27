@@ -132,3 +132,13 @@ stdenv.mkDerivation {
 
 * See [`./.github/integration/chisel.nix`](./.github/integration/chisel.nix) for a detailed explanation.
 * See [`./nix/mill-ivy-fetcher-overlay.nix`](./nix/mill-ivy-fetcher-overlay.nix) for a function documents.
+
+# Dev env setup
+
+1. Install Nix package manager (Nix is not NixOS): <https://nixos.org/download/>
+2. Enable experimental features `nix-command` and `flakes`: <https://wiki.nixos.org/wiki/Flakes>
+
+```bash
+nix develop .
+$EDITOR .
+```
