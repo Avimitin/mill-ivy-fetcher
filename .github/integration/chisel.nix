@@ -1,4 +1,4 @@
-{ publishMillJar, fetchFromGitHub, git, writeShellApplication, mill-ivy-fetcher }:
+{ publishMillJar, fetchFromGitHub, git, writeShellApplication, mill-ivy-fetcher, mill }:
 publishMillJar rec {
   name = "chisel";
 
@@ -23,6 +23,7 @@ publishMillJar rec {
     name = "bump-chisel";
     runtimeInputs = [
       mill-ivy-fetcher
+      mill
     ];
     text = ''
       mif run -p "${src}" -o .github/integration/chisel-lock.nix
