@@ -48,48 +48,61 @@ class Codegen(param: CodegenParams) {
 
         val nixName = org + "_" + mod + "-" + ver
 
-        def extract(p: os.Path) = {
-          val installPath = p.segments.dropWhile(_ != "https").mkString("/")
-          val url = installPath.replace("https/", "https://")
-          val filename = p.last
-          (os.RelPath(installPath), url, filename)
-        }
-
-        val (installPath, pomUrl, pomFilename) =
-          os.walk(depPath).filter(_.ext == "pom").map(extract).head
-        def generateDownloadScript(indent: Int) = os
+        val pathInfo = os
           .walk(depPath)
-          .filter(p => !(p.ext == "pom"))
-          .map(extract)
-          .map { case (_, url, filename) =>
-            s"""
-              |downloadedFile=$$TMPDIR/${filename}
-              |tryDownload "${url}"
-              |cp -v "$$TMPDIR/${filename}" "$$out/"
-              |""".stripMargin.indent(indent)
-          }
-          .mkString("\n")
+          .map(p => {
+            val installPath = p.segments
+              .dropWhile(_ != "https")
+              .mkString("/")
+            (installPath, installPath.replace("https/", "https://"))
+          });
+
+        require(pathInfo.nonEmpty)
+
+        val installPath = os.RelPath(pathInfo.head._1)
+        // Wrap url as Nix expr
+        val urlElems = pathInfo.map((_, url) => s"\"${url}\"").mkString(" ")
 
         s"""
-        |  "${nixName}" = fetchurl {
+        |  "${nixName}" = fetchMaven {
         |    name = "${nixName}";
+        |    urls = [ ${urlElems} ];
         |    hash = "${sha256}";
-        |    url = "${pomUrl}";
-        |    recursiveHash = true;
-        |    downloadToTemp = true;
-        |    postFetch = ''
-        |      mkdir -p "$$out"
-        |      cp -v "$$downloadedFile" "$$out/${pomFilename}"
-        |      ${generateDownloadScript("      ".length())}
-        |    '';
-        |    passthru.installPath = "${installPath / os.up}";
+        |    installPath = "${installPath / os.up}";
         |  };
         |""".stripMargin
       }
 
     os.write.over(
       codegenPath,
-      s"""|{ fetchurl }: {
+      s"""|{ fetchurl }:
+          |let
+          |  fetchMaven = { name, urls, hash, installPath }: with builtins;
+          |    let
+          |      firstUrl = head urls;
+          |      otherUrls = filter (elem: elem != firstUrl) urls;
+          |    in
+          |    fetchurl {
+          |      inherit name hash;
+          |      passthru = { inherit installPath; };
+          |      url = firstUrl;
+          |      recursiveHash = true;
+          |      downloadToTemp = true;
+          |      postFetch = ''
+          |        mkdir -p "$$out"
+          |        cp -v "$$downloadedFile" "$$out/$${baseNameOf firstUrl}"
+          |      '' + concatStringsSep "\\n"
+          |        (map
+          |          (elem:
+          |            let filename = baseNameOf elem; in ''
+          |              downloadedFile=$$TMPDIR/$${filename}
+          |              tryDownload $${elem}
+          |              cp -v "$$TMPDIR/$${filename}" "$$out/"
+          |            '')
+          |          otherUrls);
+          |    };
+          |in
+          |{
           |${expr.mkString}
           |}
           |""".stripMargin
