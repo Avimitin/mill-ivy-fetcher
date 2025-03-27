@@ -5,7 +5,8 @@ import java.nio.file.{Path => _, _}
 case class PrepareParams(
     projectRoot: os.Path,
     fetchTargets: Seq[String],
-    uCacheDir: Option[os.Path]
+    uCacheDir: Option[os.Path],
+    keepWorkdir: Boolean
 )
 
 class WorkdirInfo(projectPath: os.Path, deleteOnExit: Boolean) {
@@ -134,11 +135,9 @@ class PrepareRunner(parameter: PrepareParams) {
   }
 
   def run() = {
-    if os.exists(projectRoot / "out") then {
-      os.remove.all(projectRoot / "out")
-    }
+    val workDir = WorkdirInfo(projectRoot, !keepWorkdir)
 
-    val cacheDir = uCacheDir.getOrElse(projectRoot / "out" / ".ivyCache")
+    val cacheDir = uCacheDir.getOrElse(workDir.ivyCachePath)
 
     val targets = fetchTargets.map(t => s"${t}.prepareOffline")
       ++ fetchTargets.map(t => s"${t}.scalaCompilerClasspath")
@@ -159,11 +158,11 @@ class PrepareRunner(parameter: PrepareParams) {
     targets.foreach(t =>
       os.proc(Seq("mill", "--no-server", t))
         .call(
-          cwd = projectRoot,
+          cwd = workDir.sourcePath,
           env = env
         )
     )
 
-    cacheDir
+    workDir
   }
 }
