@@ -103,6 +103,24 @@ class PrepareRunner(parameter: PrepareParams) {
       case _ => Map()
   }
 
+  def optionalMap[K, V](
+      condition: Boolean,
+      value: => Map[K, V]
+  ): Map[K, V] = {
+    if condition then value
+    else Map.empty
+  }
+
+  def ignoreEnv(key: String): Map[String, String] = optionalMap(
+    {
+      if sys.env.get(key).isDefined then
+        Logger.warning(s"env ${key} is set but ignored")
+        true
+      else false
+    },
+    Map(key -> null)
+  )
+
   def handleEnv(cacheDir: os.Path): (String, String) = {
     val ivyLocalRepo = cacheDir / "ivy2"
     val ivyDLCache = cacheDir / "cache"
@@ -110,17 +128,17 @@ class PrepareRunner(parameter: PrepareParams) {
     os.makeDir.all(ivyLocalRepo)
     os.makeDir.all(ivyDLCache)
 
-    val baseJvmOpts = Map(
-      // Override ~/.ivy2
-      "-Dcoursier.ivy.home" -> ivyLocalRepo.toString,
-      // Mill vendor an old logic
-      "-Divy.home" -> ivyLocalRepo.toString,
-      // Override ~/.cache/coursier/v1
-      "-Dcoursier.cache" -> ivyDLCache.toString
-    )
-    // Allow user to override or add new options
-      ++ jvm_opt_to_set("JAVA_OPTS")
+    val baseJvmOpts = jvm_opt_to_set("JAVA_OPTS")
       ++ jvm_opt_to_set("JAVA_TOOL_OPTIONS")
+      // Never allow user to override the cache settings
+      ++ Map(
+        // Override ~/.ivy2
+        "-Dcoursier.ivy.home" -> ivyLocalRepo.toString,
+        // Mill vendor an old logic
+        "-Divy.home" -> ivyLocalRepo.toString,
+        // Override ~/.cache/coursier/v1
+        "-Dcoursier.cache" -> ivyDLCache.toString
+      )
 
     val jvmOpts: Seq[String] = baseJvmOpts.map { case (k, v) =>
       s"${k}=${v}"
@@ -145,16 +163,19 @@ class PrepareRunner(parameter: PrepareParams) {
 
     val (millOptFile, jvmOptsEnv) = handleEnv(cacheDir)
 
-    val env: Map[String, String] = Map(
-      // base override
-      "JAVA_OPTS" -> jvmOptsEnv,
-      // OpenJDK use this env
-      "JAVA_TOOL_OPTIONS" -> jvmOptsEnv,
-      // Maven mirror sometime contains invalid dependency and make us hard to debug the problem, use maven central only.
-      "COURSIER_REPOSITORIES" -> "ivy2local|central",
-      // Mill will fork process without inherit the JAVA_OPTS env
-      "MILL_JVM_OPTS_PATH" -> millOptFile
-    )
+    val env: Map[String, String] = ignoreEnv("COURSIER_CACHE")
+      ++ ignoreEnv("MILL_JVM_OPTS_PATH")
+      ++ Map(
+        // base override
+        "JAVA_OPTS" -> jvmOptsEnv,
+        // OpenJDK use this env
+        "JAVA_TOOL_OPTIONS" -> jvmOptsEnv,
+        // Maven mirror sometime contains invalid dependency and make us hard to debug the problem, use maven central only.
+        "COURSIER_REPOSITORIES" -> "ivy2local|central",
+        // Mill will fork process without inherit the JAVA_OPTS env
+        "MILL_JVM_OPTS_PATH" -> millOptFile
+      )
+
     targets.foreach(t =>
       os.proc(Seq("mill", "--no-server", "--silent", "--disable-prompt", t))
         .call(
