@@ -90,12 +90,14 @@ class PrepareRunner(parameter: PrepareParams) {
   def jvm_opt_to_set(env_key: String): Map[String, String] = {
     sys.env.get(env_key) match
       case Some(raw) if raw.nonEmpty => {
-        Logger.info(s"Using env ${env_key}: '${raw}'")
+        Logger.info(s"Parsing env ${env_key}: '${raw}'")
         raw
           .strip()
           .split("\\s+")
           .map(optDef => {
             val defs = optDef.split("=")
+            if defs.length < 2 then
+              Logger.fatal(s"invalid option '${optDef}' from env ${env_key}")
             (defs(0), defs(1))
           })
           .toMap
