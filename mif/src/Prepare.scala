@@ -96,8 +96,20 @@ class PrepareRunner(parameter: PrepareParams) {
           .split("\\s+")
           .map(optDef => {
             val defs = optDef.split("=")
+
             if defs.length < 2 then
               Logger.fatal(s"invalid option '${optDef}' from env ${env_key}")
+            defs(0) match
+              case "-Dcoursier.ivy.home" | "-Divy.home" =>
+                Logger.warning(
+                  s"Env ${env_key} contains ${defs(0)}, it will override Coursier Local repo directory settings"
+                )
+              case "-Dcoursier.cache" =>
+                Logger.warning(
+                  s"Env ${env_key} contains ${defs(0)}, it will override Coursier download cache directory settings"
+                )
+              case _ => ()
+
             (defs(0), defs(1))
           })
           .toMap
@@ -130,17 +142,15 @@ class PrepareRunner(parameter: PrepareParams) {
     os.makeDir.all(ivyLocalRepo)
     os.makeDir.all(ivyDLCache)
 
-    val baseJvmOpts = jvm_opt_to_set("JAVA_OPTS")
+    val baseJvmOpts = Map(
+      // Override ~/.ivy2
+      "-Dcoursier.ivy.home" -> ivyLocalRepo.toString,
+      // Mill vendor an old logic
+      "-Divy.home" -> ivyLocalRepo.toString,
+      // Override ~/.cache/coursier/v1
+      "-Dcoursier.cache" -> ivyDLCache.toString
+    ) ++ jvm_opt_to_set("JAVA_OPTS")
       ++ jvm_opt_to_set("JAVA_TOOL_OPTIONS")
-      // Never allow user to override the cache settings
-      ++ Map(
-        // Override ~/.ivy2
-        "-Dcoursier.ivy.home" -> ivyLocalRepo.toString,
-        // Mill vendor an old logic
-        "-Divy.home" -> ivyLocalRepo.toString,
-        // Override ~/.cache/coursier/v1
-        "-Dcoursier.cache" -> ivyDLCache.toString
-      )
 
     val jvmOpts: Seq[String] = baseJvmOpts.map { case (k, v) =>
       s"${k}=${v}"
