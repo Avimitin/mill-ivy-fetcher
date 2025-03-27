@@ -22,11 +22,15 @@ stdenv.mkDerivation {
     };
 
   nativeBuildInputs = [
-    mill
     makeWrapper
+    add-determinism
   ];
 
-  buildInputs = [ add-determinism ivyCache ];
+  propagatedBuildInputs = [
+    mill
+  ];
+
+  buildInputs = [ ivyCache ];
 
   passthru = { inherit ivyCache; };
 
