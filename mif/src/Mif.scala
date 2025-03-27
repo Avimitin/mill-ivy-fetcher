@@ -1,6 +1,6 @@
 package in.avimit.dev.mif
 
-import mainargs.{main, ParserForMethods, arg, TokensReader}
+import mainargs.{main, ParserForMethods, arg, TokensReader, Flag}
 
 object MillIvyFetcher {
   implicit object PathRead extends TokensReader.Simple[os.Path]:
@@ -14,12 +14,18 @@ object MillIvyFetcher {
       @arg(short = 't', doc = "list of mill build target to fetch")
       targets: Seq[String],
       @arg(short = 'c', name = "cache", doc = "specify project directory")
-      cacheDir: Option[os.Path]
+      cacheDir: Option[os.Path],
+      @arg(
+        name = "keep-workdir",
+        doc = "keep the temporary working directory, default delete on exit"
+      )
+      keepWorkDir: Flag = Flag(false)
   ) = {
     val param = PrepareParams(
       os.Path(projectDir, os.pwd),
       if targets.isEmpty then Seq("__") else targets,
-      cacheDir.map(os.Path(_, os.pwd))
+      cacheDir.map(os.Path(_, os.pwd)),
+      keepWorkDir.value
     )
     val fetcher = new PrepareRunner(param)
     val outPath = fetcher.run()
@@ -65,7 +71,12 @@ object MillIvyFetcher {
         name = "json-path",
         doc = "Output information in JSON format, useful for scripting"
       )
-      jsonPath: Option[os.Path]
+      jsonPath: Option[os.Path],
+      @arg(
+        name = "keep-workdir",
+        doc = "keep the temporary working directory, default delete on exit"
+      )
+      keepWorkDir: Flag = Flag(false)
   ): Unit = {
     val projectDirPath = projectDir.getOrElse(os.pwd)
     val projectHash = NixNarHash.run(Seq(projectDirPath))(projectDirPath)
@@ -83,20 +94,13 @@ object MillIvyFetcher {
         )
         return ()
 
-    val cachePath = fetch(projectDirPath, targets, cacheDir)
-    codegen(cachePath, codegenPath)
+    val workDir = fetch(projectDirPath, targets, cacheDir, keepWorkDir)
+    codegen(workDir.ivyCachePath, codegenPath)
 
-    os.write.append(codegenPath, s"${prefix}${projectHash}")
+    os.write.append(codegenPath, s"${prefix}${projectHash}\n")
 
     jsonPath.foreach(path => {
-      os.write(
-        os.Path(path, os.pwd),
-        upickle.default.write(
-          Map(
-            "cachePath" -> cachePath.toString
-          )
-        )
-      )
+      os.write(os.Path(path, os.pwd), upickle.default.write(workDir.toMap()))
     })
   }
 
