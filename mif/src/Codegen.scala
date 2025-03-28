@@ -55,7 +55,8 @@ class Codegen(param: CodegenParams) {
               .dropWhile(_ != "https")
               .mkString("/")
             (installPath, installPath.replace("https/", "https://"))
-          });
+          })
+          .sortBy((_, url) => url)
 
         require(pathInfo.nonEmpty)
 
