@@ -4,7 +4,7 @@
 
 , mill
 , ivy-gather
-, add-determinism
+, add-determinism-hook
 }:
 let
   ivyCache = ivy-gather ../../lock.nix;
@@ -23,7 +23,7 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [
     makeWrapper
-    add-determinism
+    add-determinism-hook
   ];
 
   propagatedBuildInputs = [
@@ -40,9 +40,6 @@ stdenv.mkDerivation {
 
   installPhase = ''
     mkdir -p $out/share/java
-
-    export SOURCE_DATE_EPOCH=1669810380
-    add-determinism -j $NIX_BUILD_CORES out/mif/assembly.dest/out.jar
 
     mv out/mif/assembly.dest/out.jar $out/share/java/mif.jar
 

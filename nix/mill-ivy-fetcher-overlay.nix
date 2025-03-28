@@ -140,4 +140,6 @@ final: prev:
   publishMillJar = final.callPackage ./mill-ivy-fetcher/publish-mill-jar.nix { };
 
   configure-mill-env-hook = final.callPackage ./mill-ivy-fetcher/configure-mill-env.nix { };
+
+  add-determinism-hook = final.callPackage ./mill-ivy-fetcher/add-determinism-hook.nix { };
 }

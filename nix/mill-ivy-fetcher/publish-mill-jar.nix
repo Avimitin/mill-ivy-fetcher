@@ -6,7 +6,7 @@
 , lib
 , lndir
 , configure-mill-env-hook
-, add-determinism
+, add-determinism-hook
 , ivy-gather
 }:
 
@@ -24,7 +24,7 @@ let
         configure-mill-env-hook
       ] ++ (args.nativeBuildInputs or [ ]);
 
-      buildInputs = [ ivyCacheEnv ] ++ (args.buildInputs or [ ]);
+      buildInputs = [ add-determinism-hook ivyCacheEnv ] ++ (args.buildInputs or [ ]);
 
       # It is hard to handle shell escape for bracket, let's just codegen build script
       buildPhase = lib.concatStringsSep "\n" (
@@ -49,10 +49,6 @@ let
 
         # https://github.com/chipsalliance/chisel/issues/4666
         find $out/local -wholename '*/docs/*.jar' -type f -delete
-
-        # Align datetime
-        export SOURCE_DATE_EPOCH=1669810380
-        find $out/local -type f -name '*.jar' -exec '${add-determinism}/bin/add-determinism' -j "$NIX_BUILD_CORES" '{}' ';'
 
         runHook postFixup
       '';
