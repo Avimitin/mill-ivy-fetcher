@@ -94,9 +94,7 @@ maven central download URL. Then convert that URL to a nix `fetchurl` expression
 2. Use the provided `mif` executable to generate lock file for a project:
 
 ```bash
-cacheDir=$(mktemp -d)
-nix shell '.#mill' '.#mill-ivy-fetcher' -c mif fetch -p path/to/project --cache "$cacheDir"
-nix shell '.#mill' '.#mill-ivy-fetcher' -c mif codegen --cache "$cacheDir" -o project-lock.nix
+nix shell '.#mill' '.#mill-ivy-fetcher' -c mif run -p path/to/project -o project-lock.nix
 ```
 
 3. Add the lock file to `publishMillJar` (optional)
