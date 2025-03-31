@@ -19,6 +19,8 @@ publishMillJar rec {
     git
   ];
 
+  env.NIX_DEBUG = 4;
+
   passthru.bump = writeShellApplication {
     name = "bump-chisel";
     runtimeInputs = [

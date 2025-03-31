@@ -140,3 +140,15 @@ stdenv.mkDerivation {
 nix develop .
 $EDITOR .
 ```
+
+# Debug installation
+
+You can set `NIX_DEBUG` larger than `4` to have cache installation log:
+
+```
+publishMillJar {
+  # ...
+  env.NIX_DEBUG = 4;
+  # ...
+}
+```
