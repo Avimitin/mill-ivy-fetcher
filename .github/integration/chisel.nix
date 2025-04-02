@@ -1,4 +1,11 @@
-{ publishMillJar, fetchFromGitHub, git, writeShellApplication, mill-ivy-fetcher, mill }:
+{
+  publishMillJar,
+  fetchFromGitHub,
+  git,
+  writeShellApplication,
+  mill-ivy-fetcher,
+  mill,
+}:
 publishMillJar rec {
   name = "chisel";
 

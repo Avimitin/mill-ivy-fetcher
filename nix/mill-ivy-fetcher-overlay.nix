@@ -1,5 +1,4 @@
-final: prev:
-{
+final: prev: {
   mill-ivy-fetcher = final.callPackage ./mill-ivy-fetcher/package.nix { };
 
   /**
@@ -8,7 +7,6 @@ final: prev:
     make nix-prefetch-file happy. This function can help group files to Ivy
     recognizable dependencies layout by reading the generated nix lock file.
     Returning a derivation containing the ivy cache.
-
 
     # Inputs
 

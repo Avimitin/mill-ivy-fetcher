@@ -1,5 +1,8 @@
 final: prev: {
-  mill = let jre = final.jdk21; in
+  mill =
+    let
+      jre = final.jdk21;
+    in
     (prev.mill.override { inherit jre; }).overrideAttrs rec {
       # Fixed the buggy sorting issue in target resolve
       version = "0.12.8-1-46e216";

@@ -1,9 +1,10 @@
-{ makeSetupHook
-, add-determinism
-, writeScript
+{
+  makeSetupHook,
+  add-determinism,
+  writeScript,
 }:
-makeSetupHook { name = "add-determinism-hook"; }
-  (writeScript "run-add-determinism" ''
+makeSetupHook { name = "add-determinism-hook"; } (
+  writeScript "run-add-determinism" ''
     #!@shell@
     addDeterminismToJar() {
       echo "replacing normalized data in JAR"
@@ -12,4 +13,5 @@ makeSetupHook { name = "add-determinism-hook"; }
         -exec ${add-determinism}/bin/add-determinism -j $NIX_BUILD_CORES '{}' ';'
     }
     postFixupHooks+=(addDeterminismToJar)
-  '')
+  ''
+)

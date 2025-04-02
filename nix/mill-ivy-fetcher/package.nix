@@ -1,10 +1,11 @@
-{ lib
-, stdenv
-, makeWrapper
+{
+  lib,
+  stdenv,
+  makeWrapper,
 
-, mill
-, ivy-gather
-, add-determinism-hook
+  mill,
+  ivy-gather,
+  add-determinism-hook,
 }:
 let
   ivyCache = ivy-gather ../../lock.nix;
@@ -12,7 +13,8 @@ in
 stdenv.mkDerivation {
   name = "mill-ivy-fetcher";
 
-  src = with lib.fileset;
+  src =
+    with lib.fileset;
     toSource {
       root = ./../..;
       fileset = unions [
