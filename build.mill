@@ -15,7 +15,7 @@ trait MIFModule extends ScalaModule with ScalafmtModule with PublishModule {
   val upickle  = ivy"com.lihaoyi::upickle:3.3.1"
   val coursier = ivy"io.get-coursier:coursier_2.13:2.1.25-M3"
 
-  def scalaVersion     = "3.3.3"
+  def scalaVersion     = "3.6.4"
   def scalacOptions    = Seq("-new-syntax", "-deprecation")
   override def ivyDeps = Agg(mainargs, oslib, upickle, coursier)
 
@@ -30,7 +30,7 @@ trait MIFModule extends ScalaModule with ScalafmtModule with PublishModule {
     )
   )
 
-  def publishVersion = "0.1.0"
+  def publishVersion = "0.2.4"
 }
 
 
