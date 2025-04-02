@@ -108,6 +108,19 @@ class Codegen(param: CodegenParams) {
           |}
           |""".stripMargin
     )
+
+    // Try user flake configuration first
+    val flakeFmtProc = os
+      .proc("nix", "fmt", codegenPath)
+      .call(check = false, mergeErrIntoOut = true)
+    if flakeFmtProc.exitCode != 0 then
+      Logger.trace(flakeFmtProc.out.trim())
+      // If it fail, maybe missing formatter, maybe missing experimental features,
+      // try format the generated file in RFC style.
+      val nixfmtProc = os
+        .proc("nixfmt", codegenPath)
+        .call(check = false, mergeErrIntoOut = true)
+      if nixfmtProc.exitCode != 0 then Logger.trace(nixfmtProc.out.trim())
   }
 
   def run() = {
