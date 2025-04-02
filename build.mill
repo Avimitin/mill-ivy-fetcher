@@ -30,7 +30,7 @@ trait MIFModule extends ScalaModule with ScalafmtModule with PublishModule {
     )
   )
 
-  def publishVersion = "0.2.4"
+  def publishVersion = "0.2.5"
 }
 
 
