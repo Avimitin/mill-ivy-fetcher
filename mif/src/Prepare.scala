@@ -46,7 +46,7 @@ class WorkdirInfo(projectPath: os.Path, deleteOnExit: Boolean) {
       then {
         // nothing to do
       } else {
-        Files.copy(p.wrapped, target.wrapped, opts1 ++ opts2 ++ opts3: _*)
+        Files.copy(p.wrapped, target.wrapped, (opts1 ++ opts2 ++ opts3)*)
         os.perms.set(target, "rwxr-xr-x")
       }
     }
