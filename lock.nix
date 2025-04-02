@@ -703,13 +703,6 @@ in
     installPath = "https/repo1.maven.org/maven2/org/jline/jline-native/3.27.1";
   };
 
-  "org.jline_jline-parent-3.19.0" = fetchMaven {
-    name = "org.jline_jline-parent-3.19.0";
-    urls = [ "https://repo1.maven.org/maven2/org/jline/jline-parent/3.19.0/jline-parent-3.19.0.pom" ];
-    hash = "sha256-+mzsNCct3XevO2H6GuvRBMPOOeKU1tbZsOVZyzqnphU=";
-    installPath = "https/repo1.maven.org/maven2/org/jline/jline-parent/3.19.0";
-  };
-
   "org.jline_jline-parent-3.27.1" = fetchMaven {
     name = "org.jline_jline-parent-3.27.1";
     urls = [ "https://repo1.maven.org/maven2/org/jline/jline-parent/3.27.1/jline-parent-3.27.1.pom" ];
@@ -717,24 +710,14 @@ in
     installPath = "https/repo1.maven.org/maven2/org/jline/jline-parent/3.27.1";
   };
 
-  "org.jline_jline-reader-3.19.0" = fetchMaven {
-    name = "org.jline_jline-reader-3.19.0";
+  "org.jline_jline-reader-3.27.1" = fetchMaven {
+    name = "org.jline_jline-reader-3.27.1";
     urls = [
-      "https://repo1.maven.org/maven2/org/jline/jline-reader/3.19.0/jline-reader-3.19.0.jar"
-      "https://repo1.maven.org/maven2/org/jline/jline-reader/3.19.0/jline-reader-3.19.0.pom"
+      "https://repo1.maven.org/maven2/org/jline/jline-reader/3.27.1/jline-reader-3.27.1.jar"
+      "https://repo1.maven.org/maven2/org/jline/jline-reader/3.27.1/jline-reader-3.27.1.pom"
     ];
-    hash = "sha256-BhriYLrCDi8D4STJn8OkuenkzuX3wWzy7GGiEaFHaPg=";
-    installPath = "https/repo1.maven.org/maven2/org/jline/jline-reader/3.19.0";
-  };
-
-  "org.jline_jline-terminal-3.19.0" = fetchMaven {
-    name = "org.jline_jline-terminal-3.19.0";
-    urls = [
-      "https://repo1.maven.org/maven2/org/jline/jline-terminal/3.19.0/jline-terminal-3.19.0.jar"
-      "https://repo1.maven.org/maven2/org/jline/jline-terminal/3.19.0/jline-terminal-3.19.0.pom"
-    ];
-    hash = "sha256-8F11Dw3/pQMOVunnEu29xwnflUXlXwhPYkfjTB0QA6k=";
-    installPath = "https/repo1.maven.org/maven2/org/jline/jline-terminal/3.19.0";
+    hash = "sha256-ga5nqpaB2qqOhpTFf/kteYVRSthFQZ/ZxdVTHaGBPSg=";
+    installPath = "https/repo1.maven.org/maven2/org/jline/jline-reader/3.27.1";
   };
 
   "org.jline_jline-terminal-3.27.1" = fetchMaven {
@@ -745,16 +728,6 @@ in
     ];
     hash = "sha256-WV77BAEncauTljUBrlYi9v3GxDDeskqQpHHD9Fdbqjw=";
     installPath = "https/repo1.maven.org/maven2/org/jline/jline-terminal/3.27.1";
-  };
-
-  "org.jline_jline-terminal-jna-3.19.0" = fetchMaven {
-    name = "org.jline_jline-terminal-jna-3.19.0";
-    urls = [
-      "https://repo1.maven.org/maven2/org/jline/jline-terminal-jna/3.19.0/jline-terminal-jna-3.19.0.jar"
-      "https://repo1.maven.org/maven2/org/jline/jline-terminal-jna/3.19.0/jline-terminal-jna-3.19.0.pom"
-    ];
-    hash = "sha256-RYPfEF1poc5Fp35We6VidZBC4a/3tl6MEYzOkrGGyD8=";
-    installPath = "https/repo1.maven.org/maven2/org/jline/jline-terminal-jna/3.19.0";
   };
 
   "org.jline_jline-terminal-jni-3.27.1" = fetchMaven {
@@ -843,16 +816,6 @@ in
     installPath = "https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.13.15";
   };
 
-  "org.scala-lang_scala-library-2.13.12" = fetchMaven {
-    name = "org.scala-lang_scala-library-2.13.12";
-    urls = [
-      "https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.12/scala-library-2.13.12.jar"
-      "https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.12/scala-library-2.13.12.pom"
-    ];
-    hash = "sha256-lXKrUcaYvYFyltW8AxZb1apsFCr5H/5I8oF8/QWDOKQ=";
-    installPath = "https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.12";
-  };
-
   "org.scala-lang_scala-library-2.13.15" = fetchMaven {
     name = "org.scala-lang_scala-library-2.13.15";
     urls = [
@@ -883,64 +846,64 @@ in
     installPath = "https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.15";
   };
 
-  "org.scala-lang_scala3-compiler_3-3.3.3" = fetchMaven {
-    name = "org.scala-lang_scala3-compiler_3-3.3.3";
+  "org.scala-lang_scala3-compiler_3-3.6.4" = fetchMaven {
+    name = "org.scala-lang_scala3-compiler_3-3.6.4";
     urls = [
-      "https://repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.3.3/scala3-compiler_3-3.3.3.jar"
-      "https://repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.3.3/scala3-compiler_3-3.3.3.pom"
+      "https://repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.6.4/scala3-compiler_3-3.6.4.jar"
+      "https://repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.6.4/scala3-compiler_3-3.6.4.pom"
     ];
-    hash = "sha256-92h7lk0HzRY196TWvz0WC+mzvsMhKTX3Kw1VQmQ0J2U=";
-    installPath = "https/repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.3.3";
+    hash = "sha256-Yg2GQ13qGkQi4Jb/14TT8E0JrnfrS+4ZoCDyZn/Dmq0=";
+    installPath = "https/repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.6.4";
   };
 
-  "org.scala-lang_scala3-interfaces-3.3.3" = fetchMaven {
-    name = "org.scala-lang_scala3-interfaces-3.3.3";
+  "org.scala-lang_scala3-interfaces-3.6.4" = fetchMaven {
+    name = "org.scala-lang_scala3-interfaces-3.6.4";
     urls = [
-      "https://repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.3.3/scala3-interfaces-3.3.3.jar"
-      "https://repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.3.3/scala3-interfaces-3.3.3.pom"
+      "https://repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.6.4/scala3-interfaces-3.6.4.jar"
+      "https://repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.6.4/scala3-interfaces-3.6.4.pom"
     ];
-    hash = "sha256-mhWI7z4UNPcHKKUSk8Zj10VI4wyWl0ZmQdTogQYbaig=";
-    installPath = "https/repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.3.3";
+    hash = "sha256-49s8DVix0tHOqEA7orl/sfpGEO3g48i5w0Q4CmrlhAY=";
+    installPath = "https/repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.6.4";
   };
 
-  "org.scala-lang_scala3-library_3-3.3.3" = fetchMaven {
-    name = "org.scala-lang_scala3-library_3-3.3.3";
+  "org.scala-lang_scala3-library_3-3.6.4" = fetchMaven {
+    name = "org.scala-lang_scala3-library_3-3.6.4";
     urls = [
-      "https://repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.3.3/scala3-library_3-3.3.3.jar"
-      "https://repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.3.3/scala3-library_3-3.3.3.pom"
+      "https://repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.6.4/scala3-library_3-3.6.4.jar"
+      "https://repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.6.4/scala3-library_3-3.6.4.pom"
     ];
-    hash = "sha256-FP9HXhGNrMqWvFOiZd4DzFySPzoKLjw19HsVFNFd/EU=";
-    installPath = "https/repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.3.3";
+    hash = "sha256-Wd1BVHaJodqoQw0mok0/tcvwYoXKR1K9CzkTr6V0PgU=";
+    installPath = "https/repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.6.4";
   };
 
-  "org.scala-lang_scala3-sbt-bridge-3.3.3" = fetchMaven {
-    name = "org.scala-lang_scala3-sbt-bridge-3.3.3";
+  "org.scala-lang_scala3-sbt-bridge-3.6.4" = fetchMaven {
+    name = "org.scala-lang_scala3-sbt-bridge-3.6.4";
     urls = [
-      "https://repo1.maven.org/maven2/org/scala-lang/scala3-sbt-bridge/3.3.3/scala3-sbt-bridge-3.3.3.jar"
-      "https://repo1.maven.org/maven2/org/scala-lang/scala3-sbt-bridge/3.3.3/scala3-sbt-bridge-3.3.3.pom"
+      "https://repo1.maven.org/maven2/org/scala-lang/scala3-sbt-bridge/3.6.4/scala3-sbt-bridge-3.6.4.jar"
+      "https://repo1.maven.org/maven2/org/scala-lang/scala3-sbt-bridge/3.6.4/scala3-sbt-bridge-3.6.4.pom"
     ];
-    hash = "sha256-UoQFVHgo+ozy13xPO0APB7MMsbBiPNrEemJ/X7hXVbo=";
-    installPath = "https/repo1.maven.org/maven2/org/scala-lang/scala3-sbt-bridge/3.3.3";
+    hash = "sha256-kClik9PgF0eTcOI7Z7GxFqWdid/ICAi7jOyXJSR2whQ=";
+    installPath = "https/repo1.maven.org/maven2/org/scala-lang/scala3-sbt-bridge/3.6.4";
   };
 
-  "org.scala-lang_scala3-tasty-inspector_3-3.3.3" = fetchMaven {
-    name = "org.scala-lang_scala3-tasty-inspector_3-3.3.3";
+  "org.scala-lang_scala3-tasty-inspector_3-3.6.4" = fetchMaven {
+    name = "org.scala-lang_scala3-tasty-inspector_3-3.6.4";
     urls = [
-      "https://repo1.maven.org/maven2/org/scala-lang/scala3-tasty-inspector_3/3.3.3/scala3-tasty-inspector_3-3.3.3.jar"
-      "https://repo1.maven.org/maven2/org/scala-lang/scala3-tasty-inspector_3/3.3.3/scala3-tasty-inspector_3-3.3.3.pom"
+      "https://repo1.maven.org/maven2/org/scala-lang/scala3-tasty-inspector_3/3.6.4/scala3-tasty-inspector_3-3.6.4.jar"
+      "https://repo1.maven.org/maven2/org/scala-lang/scala3-tasty-inspector_3/3.6.4/scala3-tasty-inspector_3-3.6.4.pom"
     ];
-    hash = "sha256-0iZf0Y8GaPX00hFmnEMV9CsjBnatYb2r3Rj3TycvQ1o=";
-    installPath = "https/repo1.maven.org/maven2/org/scala-lang/scala3-tasty-inspector_3/3.3.3";
+    hash = "sha256-7d8qvQRg8zqtgPiLIJrgMAWrBVeZ4Oz2PIXCjZ/p0h4=";
+    installPath = "https/repo1.maven.org/maven2/org/scala-lang/scala3-tasty-inspector_3/3.6.4";
   };
 
-  "org.scala-lang_scaladoc_3-3.3.3" = fetchMaven {
-    name = "org.scala-lang_scaladoc_3-3.3.3";
+  "org.scala-lang_scaladoc_3-3.6.4" = fetchMaven {
+    name = "org.scala-lang_scaladoc_3-3.6.4";
     urls = [
-      "https://repo1.maven.org/maven2/org/scala-lang/scaladoc_3/3.3.3/scaladoc_3-3.3.3.jar"
-      "https://repo1.maven.org/maven2/org/scala-lang/scaladoc_3/3.3.3/scaladoc_3-3.3.3.pom"
+      "https://repo1.maven.org/maven2/org/scala-lang/scaladoc_3/3.6.4/scaladoc_3-3.6.4.jar"
+      "https://repo1.maven.org/maven2/org/scala-lang/scaladoc_3/3.6.4/scaladoc_3-3.6.4.pom"
     ];
-    hash = "sha256-nLhLFKJxDAZdpyNRyGubAc3KO5m09znF9C/zcddnkHc=";
-    installPath = "https/repo1.maven.org/maven2/org/scala-lang/scaladoc_3/3.3.3";
+    hash = "sha256-IcFkGKabnn3GTWJoF53ob63iFCnuLMf+e0+tH1Sd+FM=";
+    installPath = "https/repo1.maven.org/maven2/org/scala-lang/scaladoc_3/3.6.4";
   };
 
   "org.scala-lang_scalap-2.13.15" = fetchMaven {
@@ -953,14 +916,14 @@ in
     installPath = "https/repo1.maven.org/maven2/org/scala-lang/scalap/2.13.15";
   };
 
-  "org.scala-lang_tasty-core_3-3.3.3" = fetchMaven {
-    name = "org.scala-lang_tasty-core_3-3.3.3";
+  "org.scala-lang_tasty-core_3-3.6.4" = fetchMaven {
+    name = "org.scala-lang_tasty-core_3-3.6.4";
     urls = [
-      "https://repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.3.3/tasty-core_3-3.3.3.jar"
-      "https://repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.3.3/tasty-core_3-3.3.3.pom"
+      "https://repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.6.4/tasty-core_3-3.6.4.jar"
+      "https://repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.6.4/tasty-core_3-3.6.4.pom"
     ];
-    hash = "sha256-EpC3+u+yvlc/bEUOKASRrQf9DqB3d7OrM2I0Y3ECSL0=";
-    installPath = "https/repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.3.3";
+    hash = "sha256-GmfOQYZIUiaiCEcycx8WNFrKo7WwbCkUO4GUCZdNUUI=";
+    installPath = "https/repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.6.4";
   };
 
   "org.scala-sbt_collections_2.13-1.10.7" = fetchMaven {
@@ -993,6 +956,16 @@ in
     installPath = "https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.3";
   };
 
+  "org.scala-sbt_compiler-interface-1.10.4" = fetchMaven {
+    name = "org.scala-sbt_compiler-interface-1.10.4";
+    urls = [
+      "https://repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.4/compiler-interface-1.10.4.jar"
+      "https://repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.4/compiler-interface-1.10.4.pom"
+    ];
+    hash = "sha256-UonQKD3Ka3opFfm53zRNu4v2kBdirGtS0Yw+Bagr1f8=";
+    installPath = "https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.4";
+  };
+
   "org.scala-sbt_compiler-interface-1.10.7" = fetchMaven {
     name = "org.scala-sbt_compiler-interface-1.10.7";
     urls = [
@@ -1001,16 +974,6 @@ in
     ];
     hash = "sha256-nFVs4vEVTEPSiGce3C77TTjvffSU+SMrn9KgV9xGVP0=";
     installPath = "https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.10.7";
-  };
-
-  "org.scala-sbt_compiler-interface-1.9.3" = fetchMaven {
-    name = "org.scala-sbt_compiler-interface-1.9.3";
-    urls = [
-      "https://repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.9.3/compiler-interface-1.9.3.jar"
-      "https://repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.9.3/compiler-interface-1.9.3.pom"
-    ];
-    hash = "sha256-DNLv/1XHJtlITUoZrAu0b7UqTGlyN38sjTUf7cGgvZE=";
-    installPath = "https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.9.3";
   };
 
   "org.scala-sbt_core-macros_2.13-1.10.7" = fetchMaven {
@@ -1083,6 +1046,16 @@ in
     installPath = "https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.3";
   };
 
+  "org.scala-sbt_util-interface-1.10.4" = fetchMaven {
+    name = "org.scala-sbt_util-interface-1.10.4";
+    urls = [
+      "https://repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.4/util-interface-1.10.4.jar"
+      "https://repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.4/util-interface-1.10.4.pom"
+    ];
+    hash = "sha256-ogoVj+GPn5LfD0P2f+oxWCpuZPQ2qAhgf5CP5/13H2w=";
+    installPath = "https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.4";
+  };
+
   "org.scala-sbt_util-interface-1.10.7" = fetchMaven {
     name = "org.scala-sbt_util-interface-1.10.7";
     urls = [
@@ -1091,16 +1064,6 @@ in
     ];
     hash = "sha256-cIOD5+vCDptOP6jwds5yG+23h2H54npBzGu3jrCQlvQ=";
     installPath = "https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.10.7";
-  };
-
-  "org.scala-sbt_util-interface-1.9.2" = fetchMaven {
-    name = "org.scala-sbt_util-interface-1.9.2";
-    urls = [
-      "https://repo1.maven.org/maven2/org/scala-sbt/util-interface/1.9.2/util-interface-1.9.2.jar"
-      "https://repo1.maven.org/maven2/org/scala-sbt/util-interface/1.9.2/util-interface-1.9.2.pom"
-    ];
-    hash = "sha256-A9Nf8+YZOXa5DBozMLu0hMRdTwGZvsqHi10OUUHd77s=";
-    installPath = "https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.9.2";
   };
 
   "org.scala-sbt_util-logging_2.13-1.10.7" = fetchMaven {
@@ -1909,14 +1872,14 @@ in
     installPath = "https/repo1.maven.org/maven2/org/nibor/autolink/autolink/0.6.0";
   };
 
-  "org.scala-lang.modules_scala-asm-9.5.0-scala-1" = fetchMaven {
-    name = "org.scala-lang.modules_scala-asm-9.5.0-scala-1";
+  "org.scala-lang.modules_scala-asm-9.7.1-scala-1" = fetchMaven {
+    name = "org.scala-lang.modules_scala-asm-9.7.1-scala-1";
     urls = [
-      "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.5.0-scala-1/scala-asm-9.5.0-scala-1.jar"
-      "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.5.0-scala-1/scala-asm-9.5.0-scala-1.pom"
+      "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.7.1-scala-1/scala-asm-9.7.1-scala-1.jar"
+      "https://repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.7.1-scala-1/scala-asm-9.7.1-scala-1.pom"
     ];
-    hash = "sha256-5HggTWGWJaioO240uFk7mSFpKhRSff9DZHjJj0HKuhI=";
-    installPath = "https/repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.5.0-scala-1";
+    hash = "sha256-yr5dLyInfmnKLQzsjmU51SKTwAN9hxR3naRcy/ZungM=";
+    installPath = "https/repo1.maven.org/maven2/org/scala-lang/modules/scala-asm/9.7.1-scala-1";
   };
 
   "org.scala-lang.modules_scala-collection-compat_2.13-2.12.0" = fetchMaven {
@@ -2149,16 +2112,6 @@ in
     installPath = "https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.14.0";
   };
 
-  "net.java.dev.jna_jna-5.3.1" = fetchMaven {
-    name = "net.java.dev.jna_jna-5.3.1";
-    urls = [
-      "https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1/jna-5.3.1.jar"
-      "https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1/jna-5.3.1.pom"
-    ];
-    hash = "sha256-8K89u5fF/HyXdqWLLYrrRfgqZq8GQdNP+ta83vBQwUA=";
-    installPath = "https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.3.1";
-  };
-
   "org.apache.geronimo.genesis_genesis-2.0" = fetchMaven {
     name = "org.apache.geronimo.genesis_genesis-2.0";
     urls = [ "https://repo1.maven.org/maven2/org/apache/geronimo/genesis/genesis/2.0/genesis-2.0.pom" ];
@@ -2221,4 +2174,4 @@ in
   };
 
 }
-# Project Source Hash:sha256-yEO++GkZkApktJB0rJXxXpPUuJjdK+1Qov076HlDiY0=
+# Project Source Hash:sha256-mQHpdQkT92Ng7ad6S8zeRCbfFXTMWz0JGBGVz/ydhqk=
