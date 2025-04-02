@@ -1,30 +1,46 @@
 {
   description = "Generic devshell setup";
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
-  };
-
-  outputs = inputs@{ self, nixpkgs, flake-utils }:
+  outputs =
+    _:
     let
+      jsonToSrc =
+        file:
+        with builtins;
+        let
+          srcDefines = fromJSON (readFile file);
+        in
+        mapAttrs (
+          name: value:
+          import (fetchTarball {
+            inherit (value.src) url sha256;
+          })
+        ) srcDefines;
       mill-ivy-fetcher-overlay = import ./nix/mill-ivy-fetcher-overlay.nix;
+      inputs = jsonToSrc ./flake-lock/generated.json;
     in
     {
       inherit inputs;
       overlays.default = mill-ivy-fetcher-overlay;
-    } // flake-utils.lib.eachDefaultSystem (system:
+    }
+    // inputs.flake-utils.eachDefaultSystem (
+      system:
       let
-        pkgs = import nixpkgs {
+        pkgs = inputs.nixpkgs {
           overlays = [
             mill-ivy-fetcher-overlay
             (import ./nix/local-overlay.nix)
           ];
           inherit system;
         };
+        treefmtEval = inputs.treefmt-nix.evalModule pkgs {
+          projectRootFile = "flake.nix";
+          settings.verbose = 1;
+          programs.nixfmt.enable = true;
+        };
       in
       {
-        formatter = pkgs.nixpkgs-fmt;
+        formatter = treefmtEval.config.build.wrapper;
         legacyPackages = pkgs;
         packages.default = pkgs.mill-ivy-fetcher;
         packages.ci-test = pkgs.callPackage ./.github/integration/chisel.nix { };
@@ -34,5 +50,6 @@
             metals
           ];
         };
-      });
+      }
+    );
 }

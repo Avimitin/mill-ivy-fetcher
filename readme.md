@@ -152,3 +152,9 @@ publishMillJar {
   # ...
 }
 ```
+
+# Bump Nixpkgs lock
+
+```bash
+nix run nixpkgs#nvfetcher -- -o flake-lock
+```
