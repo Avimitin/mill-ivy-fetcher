@@ -15,30 +15,30 @@
     },
     "nixpkgs": {
         "cargoLocks": null,
-        "date": "2025-04-02",
+        "date": "2025-04-03",
         "extract": null,
         "name": "nixpkgs",
         "passthru": null,
         "pinned": false,
         "src": {
-            "sha256": "sha256-ZID5T65E8ruHqWRcdvZLsczWDOAWIE7om+vQOREwiX0=",
+            "sha256": "sha256-y7Hg5lwWhEOgflEHRfzSH96BOt26LaYfrYWzZ+VoVdg=",
             "type": "tarball",
-            "url": "https://github.com/NixOS/nixpkgs/archive/b7ba7f9f45c5cd0d8625e9e217c28f8eb6a19a76.tar.gz"
+            "url": "https://github.com/NixOS/nixpkgs/archive/2bfc080955153be0be56724be6fa5477b4eefabb.tar.gz"
         },
-        "version": "b7ba7f9f45c5cd0d8625e9e217c28f8eb6a19a76"
+        "version": "2bfc080955153be0be56724be6fa5477b4eefabb"
     },
     "treefmt-nix": {
         "cargoLocks": null,
-        "date": "2025-04-02",
+        "date": "2025-04-03",
         "extract": null,
         "name": "treefmt-nix",
         "passthru": null,
         "pinned": false,
         "src": {
-            "sha256": "sha256-iBzr7Zb11nQxwX90bO1+Bm1MGlhMSmu4ixgnQFB+j4E=",
+            "sha256": "sha256-eWZln+k+L/VHO69tUTzEmgeDWNQNKIpSUa9nqQgBrSE=",
             "type": "tarball",
-            "url": "https://github.com/numtide/treefmt-nix/archive/18bed671738e36c5504e188aadc18b7e2a6e408f.tar.gz"
+            "url": "https://github.com/numtide/treefmt-nix/archive/57dabe2a6255bd6165b2437ff6c2d1f6ee78421a.tar.gz"
         },
-        "version": "18bed671738e36c5504e188aadc18b7e2a6e408f"
+        "version": "57dabe2a6255bd6165b2437ff6c2d1f6ee78421a"
     }
 }
