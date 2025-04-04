@@ -68,8 +68,8 @@ final: prev: {
     :::
   */
   mill-ivy-env-shell-hook = ''
-    if [[ ! -d ".git" || ! -f "build.mill" ]]; then
-      echo "Not in mill project root, exit" >&2
+    if [[ ! -f "build.mill" ]]; then
+      echo "No build.mill file found, exit" >&2
       exit 1
     fi
 
