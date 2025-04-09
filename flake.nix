@@ -16,19 +16,16 @@
             inherit (value.src) url sha256;
           })
         ) srcDefines;
-      mill-ivy-fetcher-overlay = import ./nix/mill-ivy-fetcher-overlay.nix;
       inputs = jsonToSrc ./flake-lock/generated.json;
     in
     {
       inherit inputs;
-      overlays.default = mill-ivy-fetcher-overlay;
     }
     // inputs.flake-utils.eachDefaultSystem (
       system:
       let
         pkgs = inputs.nixpkgs {
           overlays = [
-            mill-ivy-fetcher-overlay
             (import ./nix/local-overlay.nix)
           ];
           inherit system;
@@ -38,12 +35,20 @@
           settings.verbose = 1;
           programs.nixfmt.enable = true;
         };
+
+        mifPackages = pkgs.callPackage ./nix/packages.nix { };
       in
       {
         formatter = treefmtEval.config.build.wrapper;
         legacyPackages = pkgs;
-        packages.default = pkgs.mill-ivy-fetcher;
-        packages.ci-test = pkgs.callPackage ./.github/integration/chisel.nix { };
+        packages =
+          let
+            callPackage = pkgs.lib.callPackageWith (pkgs // mifPackages);
+          in
+          mifPackages
+          // {
+            ci-test = callPackage ./.github/integration/chisel.nix { };
+          };
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [
             mill
