@@ -12,4 +12,6 @@ final: prev: {
       };
       passthru = { inherit jre; };
     };
+
+  mill-ivy-fetcher = final.callPackage ./mill-ivy-fetcher/package.nix { };
 }
