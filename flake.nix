@@ -16,6 +16,7 @@
             inherit (value.src) url sha256;
           })
         ) srcDefines;
+      # These packages use mill as input and should depend on the downstream mill version, so put them in overlay.
       mill-ivy-fetcher-overlay = import ./nix/mill-ivy-fetcher-overlay.nix;
       inputs = jsonToSrc ./flake-lock/generated.json;
     in
@@ -42,6 +43,7 @@
       {
         formatter = treefmtEval.config.build.wrapper;
         legacyPackages = pkgs;
+        # mif has a lock file in this repo that cannot depend on the downstream mill to build
         packages.default = pkgs.mill-ivy-fetcher;
         packages.ci-test = pkgs.callPackage ./.github/integration/chisel.nix { };
         devShells.default = pkgs.mkShell {
