@@ -1,57 +1,76 @@
 {
   description = "Generic devshell setup";
 
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
   outputs =
-    _:
+    { flake-parts, nixpkgs, ... }@inputs:
     let
-      jsonToSrc =
-        file:
-        with builtins;
-        let
-          srcDefines = fromJSON (readFile file);
-        in
-        mapAttrs (
-          name: value:
-          import (fetchTarball {
-            inherit (value.src) url sha256;
-          })
-        ) srcDefines;
-      # These packages use mill as input and should depend on the downstream mill version, so put them in overlay.
       mill-ivy-fetcher-overlay = import ./nix/mill-ivy-fetcher-overlay.nix;
-      inputs = jsonToSrc ./flake-lock/generated.json;
     in
-    {
-      inherit inputs;
-      overlays.default = mill-ivy-fetcher-overlay;
-    }
-    // inputs.flake-utils.eachDefaultSystem (
-      system:
-      let
-        pkgs = inputs.nixpkgs {
-          overlays = [
-            mill-ivy-fetcher-overlay
-            (import ./nix/local-overlay.nix)
-          ];
-          inherit system;
+    flake-parts.lib.mkFlake { inherit inputs; } (topLevel: {
+      flake = {
+        overlays = {
+          default = mill-ivy-fetcher-overlay;
+          inherit mill-ivy-fetcher-overlay;
         };
-        treefmtEval = inputs.treefmt-nix.evalModule pkgs {
-          projectRootFile = "flake.nix";
-          settings.verbose = 1;
-          programs.nixfmt.enable = true;
+      };
+
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
+
+      imports = [
+        inputs.treefmt-nix.flakeModule
+      ];
+
+      perSystem =
+        { system, config, ... }:
+        let
+          pkgs = import inputs.nixpkgs {
+            inherit system;
+            overlays = [
+              mill-ivy-fetcher-overlay
+              (import ./nix/local-overlay.nix)
+            ];
+          };
+        in
+        {
+          _module.args.pkgs = pkgs;
+
+          legacyPackages = pkgs;
+
+          packages = {
+            # mif has a lock file in this repo that cannot depend on the downstream mill to build
+            default = pkgs.mill-ivy-fetcher;
+            inherit (pkgs) mill-ivy-fetcher;
+            ci-test = pkgs.callPackage ./.github/integration/chisel.nix { };
+          };
+
+          devShells.default = pkgs.mkShell {
+            nativeBuildInputs = with pkgs; [
+              mill
+              metals
+            ];
+          };
+
+          treefmt = {
+            projectRootFile = "flake.nix";
+            settings.verbose = 1;
+            programs.nixfmt.enable = pkgs.lib.meta.availableOn pkgs.stdenv.buildPlatform pkgs.nixfmt-rfc-style.compiler;
+          };
         };
-      in
-      {
-        formatter = treefmtEval.config.build.wrapper;
-        legacyPackages = pkgs;
-        # mif has a lock file in this repo that cannot depend on the downstream mill to build
-        packages.default = pkgs.mill-ivy-fetcher;
-        packages.ci-test = pkgs.callPackage ./.github/integration/chisel.nix { };
-        devShells.default = pkgs.mkShell {
-          nativeBuildInputs = with pkgs; [
-            mill
-            metals
-          ];
-        };
-      }
-    );
+    });
 }
