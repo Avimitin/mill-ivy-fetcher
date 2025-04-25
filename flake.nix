@@ -21,12 +21,16 @@
         mill-ivy-fetcher-overlay = import ./nix/mill-ivy-fetcher-overlay.nix (system: {
           inherit ((getSystem system).packages) mill-ivy-fetcher;
         });
+
+        mill-versions-overlay = import ./nix/mill-versions.nix;
       in
       {
         flake = {
           overlays = {
             default = mill-ivy-fetcher-overlay;
             inherit mill-ivy-fetcher-overlay;
+
+            mill-versions = mill-versions-overlay;
           };
         };
 
@@ -48,6 +52,7 @@
               overlays = [
                 mill-ivy-fetcher-overlay
                 (import ./nix/local-overlay.nix)
+                (mill-versions-overlay)
               ];
             };
           in
