@@ -19,6 +19,10 @@ let
       version = "0.12.10";
       hash = "sha256-TESwISFz4Xf/F4kgnaTQbi/uVrc75bearih8mydPqHM=";
     };
+    "mill_0_12_14" = {
+      version = "0.12.14";
+      hash = "sha256-2MyufFcgKH/bxVB83qXNESByAdgbzhyIHqAr36Bb9o0=";
+    };
   };
 in
 prev.lib.mapAttrs (
@@ -29,7 +33,10 @@ prev.lib.mapAttrs (
   (prev.mill.override { inherit jre; }).overrideAttrs rec {
     inherit version;
     src = final.fetchurl {
-      url = "https://repo1.maven.org/maven2/com/lihaoyi/mill-dist/${version}/mill-dist-${version}-assembly.jar";
+      url = if (builtins.compareVersions version "0.12.12" >= 0) then
+        "https://repo1.maven.org/maven2/com/lihaoyi/mill-dist/${version}/mill-dist-${version}.exe"
+      else
+        "https://repo1.maven.org/maven2/com/lihaoyi/mill-dist/${version}/mill-dist-${version}-assembly.jar";
       inherit hash;
     };
     passthru = { inherit jre; };
