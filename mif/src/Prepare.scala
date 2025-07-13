@@ -1,6 +1,7 @@
 package in.avimit.dev.mif
 
 import java.nio.file.{Path => _, _}
+import scala.util.chaining.*
 
 case class PrepareParams(
     projectRoot: os.Path,
@@ -87,82 +88,42 @@ class WorkdirInfo(projectPath: os.Path, deleteOnExit: Boolean) {
 class PrepareRunner(parameter: PrepareParams) {
   import parameter.*
 
-  def jvm_opt_to_set(env_key: String): Map[String, String] = {
-    sys.env.get(env_key) match
-      case Some(raw) if raw.nonEmpty => {
-        Logger.info(s"Parsing env ${env_key}: '${raw}'")
-        raw
-          .strip()
-          .split("\\s+")
-          .map(optDef => {
-            val defs = optDef.split("=")
-
-            if defs.length < 2 then
-              Logger.fatal(s"invalid option '${optDef}' from env ${env_key}")
-            defs(0) match
-              case "-Dcoursier.ivy.home" | "-Divy.home" =>
-                Logger.warning(
-                  s"Env ${env_key} contains ${defs(0)}, it will override Coursier Local repo directory settings"
-                )
-              case "-Dcoursier.cache" =>
-                Logger.warning(
-                  s"Env ${env_key} contains ${defs(0)}, it will override Coursier download cache directory settings"
-                )
-              case _ => ()
-
-            (defs(0), defs(1))
-          })
-          .toMap
-      }
-      case _ => Map()
-  }
-
-  def optionalMap[K, V](
-      condition: Boolean,
-      value: => Map[K, V]
-  ): Map[K, V] = {
-    if condition then value
-    else Map.empty
-  }
-
-  def ignoreEnv(key: String): Map[String, String] = optionalMap(
-    {
-      if sys.env.get(key).isDefined then
-        Logger.warning(s"env ${key} is set but ignored")
-        true
-      else false
-    },
-    Map(key -> null)
-  )
-
-  def handleEnv(cacheDir: os.Path): (String, String) = {
+  def processJavaOpts(env: String, cacheDir: os.Path): (String, String) =
     val ivyLocalRepo = cacheDir / "ivy2"
     val ivyDLCache = cacheDir / "cache"
     os.makeDir.all(cacheDir)
     os.makeDir.all(ivyLocalRepo)
     os.makeDir.all(ivyDLCache)
 
-    val baseJvmOpts = Map(
+    val baseOpts = Map(
       // Override ~/.ivy2
       "-Dcoursier.ivy.home" -> ivyLocalRepo.toString,
       // Mill vendor an old logic
       "-Divy.home" -> ivyLocalRepo.toString,
       // Override ~/.cache/coursier/v1
       "-Dcoursier.cache" -> ivyDLCache.toString
-    ) ++ jvm_opt_to_set("JAVA_OPTS")
-      ++ jvm_opt_to_set("JAVA_TOOL_OPTIONS")
+    )
+    val userOpts = sys.env.get(env) match
+      case Some(raw) if raw.nonEmpty =>
+        raw
+          .strip()
+          .split("\\s+")
+          .map(optDef =>
+            val defs = optDef.split("=")
+            if baseOpts.contains(defs(0)) then
+              Logger.warning(
+                s"Env ${env} contains ${defs(0)} which will override mif's environment"
+              )
+            optDef
+          )
+          .toSeq
+      case _ => Seq.empty
 
-    val jvmOpts: Seq[String] = baseJvmOpts.map { case (k, v) =>
+    val opts = (baseOpts.map { case (k, v) =>
       s"${k}=${v}"
-    }.toSeq
+    }.toSeq ++ userOpts).mkString(" ")
 
-    val millOptFile = os.temp()
-    os.write.over(millOptFile, jvmOpts.mkString("\n"))
-
-    val jvmOptsEnv = jvmOpts.mkString(" ")
-
-    (millOptFile.toString, jvmOptsEnv)
-  }
+    (env -> opts)
 
   def run() = {
     val workDir = WorkdirInfo(projectRoot, !keepWorkdir)
@@ -173,20 +134,16 @@ class PrepareRunner(parameter: PrepareParams) {
       ++ fetchTargets.map(t => s"${t}.scalaCompilerClasspath")
       ++ fetchTargets.map(t => s"${t}.scalaDocClasspath")
 
-    val (millOptFile, jvmOptsEnv) = handleEnv(cacheDir)
-
-    val env: Map[String, String] = ignoreEnv("COURSIER_CACHE")
-      ++ ignoreEnv("MILL_JVM_OPTS_PATH")
-      ++ Map(
-        // base override
-        "JAVA_OPTS" -> jvmOptsEnv,
-        // OpenJDK use this env
-        "JAVA_TOOL_OPTIONS" -> jvmOptsEnv,
-        // Maven mirror sometime contains invalid dependency and make us hard to debug the problem, use maven central only.
-        "COURSIER_REPOSITORIES" -> "ivy2local|central",
-        // Mill will fork process without inherit the JAVA_OPTS env
-        "MILL_JVM_OPTS_PATH" -> millOptFile
+    val env: Map[String, String] = Map(
+      // Maven mirror sometime contains invalid dependency and make us hard to debug the problem, use maven central only.
+      "COURSIER_REPOSITORIES" -> "ivy2local|central"
+    ).tap(
+      _.foreach(e =>
+        if sys.env.get(e._1).isDefined then
+          Logger.warning(s"env ${e._1} is set but ignored")
       )
+    ) + processJavaOpts("JAVA_OPTS", cacheDir)
+      + processJavaOpts("JAVA_TOOL_OPTIONS", cacheDir)
 
     targets.foreach(t =>
       os.proc(Seq("mill", "--no-server", "--silent", "--disable-prompt", t))
