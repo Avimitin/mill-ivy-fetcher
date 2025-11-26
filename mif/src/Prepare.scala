@@ -137,7 +137,6 @@ class PrepareRunner(parameter: PrepareParams) {
     val env: Map[String, String] = Map(
       // Maven mirror sometime contains invalid dependency and make us hard to debug the problem, use maven central only.
       "COURSIER_REPOSITORIES" -> "ivy2local|central",
-      "COURSIER_CACHE" -> ""
     ).tap(
       _.foreach(e =>
         if sys.env.get(e._1).isDefined then
