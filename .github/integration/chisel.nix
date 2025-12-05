@@ -12,8 +12,8 @@ publishMillJar rec {
   src = fetchFromGitHub {
     owner = "chipsalliance";
     repo = "chisel";
-    rev = "dd04d997dc8c74e446862040625b46604cba41a4";
-    hash = "sha256-gqn1HzfxMUwNPbYiQjTO8KNmGf4ozmWwTBWdZ59GLzg=";
+    rev = "5e0ae3f46327c9ff15898f13ea8b94bbad90f653";
+    hash = "sha256-TU3AlrbWcps6zYbfLD677jfZ/UcBO1M9FcG1nb98Nhk=";
   };
 
   lockFile = ./chisel-lock.nix;
@@ -27,6 +27,11 @@ publishMillJar rec {
   ];
 
   env.NIX_DEBUG = 4;
+
+  preBuild = ''
+    # Fix mill JVM version detection, use JVM version of the system
+    sed -i '1i //| mill-jvm-version: system' build.mill
+  '';
 
   passthru.bump = writeShellApplication {
     name = "bump-chisel";
