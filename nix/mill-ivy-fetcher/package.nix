@@ -37,7 +37,7 @@ stdenv.mkDerivation {
   passthru = { inherit ivyCache; };
 
   buildPhase = ''
-    mill -i '__.assembly'
+    mill -i --offline '__.assembly'
   '';
 
   installPhase = ''

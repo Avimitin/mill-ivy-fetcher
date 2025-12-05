@@ -2,7 +2,7 @@ package build
 
 import mill._
 import mill.scalalib._
-import mill.define.{Command, TaskModule}
+import mill.Command
 import mill.scalalib.scalafmt._
 import mill.scalalib.TestModule.Utest
 import mill.util.Jvm
@@ -10,14 +10,14 @@ import mill.scalalib.publish._
 import coursier.maven.MavenRepository
 
 trait MIFModule extends ScalaModule with ScalafmtModule with PublishModule {
-  val mainargs = ivy"com.lihaoyi::mainargs:0.5.0"
-  val oslib    = ivy"com.lihaoyi::os-lib:0.10.0"
-  val upickle  = ivy"com.lihaoyi::upickle:3.3.1"
-  val coursier = ivy"io.get-coursier:coursier_2.13:2.1.25-M3"
+  val mainargs = mvn"com.lihaoyi::mainargs:0.5.0"
+  val oslib    = mvn"com.lihaoyi::os-lib:0.10.0"
+  val upickle  = mvn"com.lihaoyi::upickle:3.3.1"
+  val coursier = mvn"io.get-coursier:coursier_2.13:2.1.25-M3"
 
   def scalaVersion     = "3.6.4"
   def scalacOptions    = Seq("-new-syntax", "-deprecation")
-  override def ivyDeps = Agg(mainargs, oslib, upickle, coursier)
+  override def mvnDeps = Seq(mainargs, oslib, upickle, coursier)
 
   def pomSettings = PomSettings(
     description = "MIF is a project to help you generate Nix lock from a Mill project",
@@ -38,7 +38,7 @@ def testSrcs = Task.Sources("build.mill", "mif")
 
 object mif extends MIFModule {
   object test extends ScalaTests {
-    def ivyDeps = Agg(ivy"com.lihaoyi::utest:0.8.5")
+    def mvnDeps = Seq(mvn"com.lihaoyi::utest:0.8.5")
     def testFramework = "utest.runner.Framework"
     def projectDemoSources = Task {
       testSrcs().foreach(src => {
