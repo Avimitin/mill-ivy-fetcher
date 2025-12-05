@@ -20,13 +20,18 @@ stdenvNoCC.mkDerivation {
     configure-mill-env-hook
   ];
 
-  buildPhase =
-    "runHook preBuild\n"
-    + lib.concatMapStringsSep "\n" (x: ''
-      mkdir -p "$out/cache/${x.installPath}"
-      lndir ${x} "$out"/cache/${x.installPath}
-    '') (lib.attrValues sources)
-    + "\nrunHook postBuild";
+  passAsFile = [ "buildScript" ];
+
+  buildScript = lib.concatMapStringsSep "\n" (x: ''
+    mkdir -p "$out/cache/${x.installPath}"
+    lndir ${x} "$out"/cache/${x.installPath}
+  '') (lib.attrValues sources);
+
+  buildPhase = ''
+    runHook preBuild
+    source "$buildScriptPath"
+    runHook postBuild
+  '';
 
   installPhase = ''
     runHook preInstall
