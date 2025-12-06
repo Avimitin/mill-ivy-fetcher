@@ -63,14 +63,14 @@ maven central download URL. Then convert that URL to a nix `fetchurl` expression
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    mill-ivy-fetcher = "github:Avimitin/mill-ivy-fetcher";
+    mill-ivy-fetcher.url = "github:Avimitin/mill-ivy-fetcher";
   };
 
   outputs = { self, nixpkgs, flake-utils, mill-ivy-fetcher }@inputs:
     flake-utils.lib.eachDefaultSystem
       (system:
         let
-          pkgs = import nixpkgs { inherit system; overlays = [ mill-ivy-fetcher.overlays.mill-flows ]; };
+          pkgs = import nixpkgs { inherit system; overlays = [ mill-ivy-fetcher.overlays.default ]; };
         in
         {
           legacyPackages = pkgs;
