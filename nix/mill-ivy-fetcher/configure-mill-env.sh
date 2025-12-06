@@ -23,6 +23,9 @@ configureMillHome() {
   export JAVA_OPTS="-Divy.home=$NIX_COURSIER_DIR $JAVA_OPTS"
   ## Support both could help us reduce debug time
 
+  # Set user.home to a writable directory to avoid /var/empty access issues on darwin
+  export JAVA_OPTS="-Duser.home=$NIX_BUILD_TOP $JAVA_OPTS"
+
   # Oracle Java use this env
   export JAVA_TOOL_OPTIONS="$JAVA_OPTS $JAVA_TOOL_OPTIONS"
 
