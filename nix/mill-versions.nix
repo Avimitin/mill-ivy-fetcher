@@ -33,10 +33,11 @@ prev.lib.mapAttrs (
   (prev.mill.override { inherit jre; }).overrideAttrs rec {
     inherit version;
     src = final.fetchurl {
-      url = if (builtins.compareVersions version "0.12.12" >= 0) then
-        "https://repo1.maven.org/maven2/com/lihaoyi/mill-dist/${version}/mill-dist-${version}.exe"
-      else
-        "https://repo1.maven.org/maven2/com/lihaoyi/mill-dist/${version}/mill-dist-${version}-assembly.jar";
+      url =
+        if (builtins.compareVersions version "0.12.12" >= 0) then
+          "https://repo1.maven.org/maven2/com/lihaoyi/mill-dist/${version}/mill-dist-${version}.exe"
+        else
+          "https://repo1.maven.org/maven2/com/lihaoyi/mill-dist/${version}/mill-dist-${version}-assembly.jar";
       inherit hash;
     };
     passthru = { inherit jre; };

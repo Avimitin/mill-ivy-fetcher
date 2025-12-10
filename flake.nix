@@ -78,7 +78,7 @@
             treefmt = {
               projectRootFile = "flake.nix";
               settings.verbose = 1;
-              programs.nixfmt.enable = pkgs.lib.meta.availableOn pkgs.stdenv.buildPlatform pkgs.nixfmt-rfc-style.compiler;
+              programs.nixfmt.enable = pkgs.lib.meta.availableOn pkgs.stdenv.buildPlatform pkgs.nixfmt.compiler;
             };
           };
       }

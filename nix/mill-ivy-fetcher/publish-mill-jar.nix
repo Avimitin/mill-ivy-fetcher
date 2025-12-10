@@ -30,12 +30,14 @@ let
         nativeBuildInputs = [
           mill
           configure-mill-env-hook
-        ] ++ (args.nativeBuildInputs or [ ]);
+        ]
+        ++ (args.nativeBuildInputs or [ ]);
 
         buildInputs = [
           add-determinism-hook
           ivyCacheEnv
-        ] ++ (args.buildInputs or [ ]);
+        ]
+        ++ (args.buildInputs or [ ]);
 
         # It is hard to handle shell escape for bracket, let's just codegen build script
         buildPhase = lib.concatStringsSep "\n" (
