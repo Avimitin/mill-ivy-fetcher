@@ -142,4 +142,4 @@ final: prev:
 
   add-determinism-hook = final.callPackage ./mill-ivy-fetcher/add-determinism-hook.nix { };
 }
-// (extraPkgsBuilder final.system)
+// (extraPkgsBuilder final.stdenv.hostPlatform.system)
