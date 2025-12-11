@@ -635,6 +635,116 @@ in
     installPath = "https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-autooverride-plugin_3.8.0-RC2/1.1.0-RC3";
   };
 
+  "com.lihaoyi_mill-runner-bsp-worker_3-1.1.0-RC3" = fetchMaven {
+    name = "com.lihaoyi_mill-runner-bsp-worker_3-1.1.0-RC3";
+    urls = [
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-bsp-worker_3/1.1.0-RC3/mill-runner-bsp-worker_3-1.1.0-RC3.jar"
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-bsp-worker_3/1.1.0-RC3/mill-runner-bsp-worker_3-1.1.0-RC3.pom"
+    ];
+    hash = "sha256-K1CHeeI1oKJRfsQKRRNt7RA4iJGbsO0X9RBsE02E6y0=";
+    installPath = "https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-bsp-worker_3/1.1.0-RC3";
+  };
+
+  "com.lihaoyi_mill-runner-bsp_3-1.1.0-RC3" = fetchMaven {
+    name = "com.lihaoyi_mill-runner-bsp_3-1.1.0-RC3";
+    urls = [
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-bsp_3/1.1.0-RC3/mill-runner-bsp_3-1.1.0-RC3.jar"
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-bsp_3/1.1.0-RC3/mill-runner-bsp_3-1.1.0-RC3.pom"
+    ];
+    hash = "sha256-lWvphIfkmECbVd+yCk161POaOiUvJuVxMaepiuIsCJ0=";
+    installPath = "https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-bsp_3/1.1.0-RC3";
+  };
+
+  "com.lihaoyi_mill-runner-client-1.1.0-RC3" = fetchMaven {
+    name = "com.lihaoyi_mill-runner-client-1.1.0-RC3";
+    urls = [
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-client/1.1.0-RC3/mill-runner-client-1.1.0-RC3.jar"
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-client/1.1.0-RC3/mill-runner-client-1.1.0-RC3.pom"
+    ];
+    hash = "sha256-/7RBhSemfrYQFOJwUZybd5jIWd4DASXMwqem0o2dCLg=";
+    installPath = "https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-client/1.1.0-RC3";
+  };
+
+  "com.lihaoyi_mill-runner-codesig_3-1.1.0-RC3" = fetchMaven {
+    name = "com.lihaoyi_mill-runner-codesig_3-1.1.0-RC3";
+    urls = [
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-codesig_3/1.1.0-RC3/mill-runner-codesig_3-1.1.0-RC3.jar"
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-codesig_3/1.1.0-RC3/mill-runner-codesig_3-1.1.0-RC3.pom"
+    ];
+    hash = "sha256-zceeo3LpA8NYtrm55s3oNajLwAXox2iv/oFjiz9wFbg=";
+    installPath = "https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-codesig_3/1.1.0-RC3";
+  };
+
+  "com.lihaoyi_mill-runner-daemon_3-1.1.0-RC3" = fetchMaven {
+    name = "com.lihaoyi_mill-runner-daemon_3-1.1.0-RC3";
+    urls = [
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-daemon_3/1.1.0-RC3/mill-runner-daemon_3-1.1.0-RC3.jar"
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-daemon_3/1.1.0-RC3/mill-runner-daemon_3-1.1.0-RC3.pom"
+    ];
+    hash = "sha256-hJBxR3hQ0v7DdcC5h3nZqwPSpkJkitQW5lq1BvoxS2Q=";
+    installPath = "https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-daemon_3/1.1.0-RC3";
+  };
+
+  "com.lihaoyi_mill-runner-eclipse_3-1.1.0-RC3" = fetchMaven {
+    name = "com.lihaoyi_mill-runner-eclipse_3-1.1.0-RC3";
+    urls = [
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-eclipse_3/1.1.0-RC3/mill-runner-eclipse_3-1.1.0-RC3.jar"
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-eclipse_3/1.1.0-RC3/mill-runner-eclipse_3-1.1.0-RC3.pom"
+    ];
+    hash = "sha256-XwOicDRQtTY58RP1ahsMWuhRfNoCtEp1HpFgXUbVy+8=";
+    installPath = "https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-eclipse_3/1.1.0-RC3";
+  };
+
+  "com.lihaoyi_mill-runner-idea_3-1.1.0-RC3" = fetchMaven {
+    name = "com.lihaoyi_mill-runner-idea_3-1.1.0-RC3";
+    urls = [
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-idea_3/1.1.0-RC3/mill-runner-idea_3-1.1.0-RC3.jar"
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-idea_3/1.1.0-RC3/mill-runner-idea_3-1.1.0-RC3.pom"
+    ];
+    hash = "sha256-c/xrIYN8+Yaeeal6OzqoRlXUscBNP34REbpMLPAIDwg=";
+    installPath = "https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-idea_3/1.1.0-RC3";
+  };
+
+  "com.lihaoyi_mill-runner-launcher_3-1.1.0-RC3" = fetchMaven {
+    name = "com.lihaoyi_mill-runner-launcher_3-1.1.0-RC3";
+    urls = [
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-launcher_3/1.1.0-RC3/mill-runner-launcher_3-1.1.0-RC3.jar"
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-launcher_3/1.1.0-RC3/mill-runner-launcher_3-1.1.0-RC3.pom"
+    ];
+    hash = "sha256-XCm7lvhdYWcb2BQqs3VH+LAOtLhM5/iZacAmLdeKZxE=";
+    installPath = "https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-launcher_3/1.1.0-RC3";
+  };
+
+  "com.lihaoyi_mill-runner-meta_3-1.1.0-RC3" = fetchMaven {
+    name = "com.lihaoyi_mill-runner-meta_3-1.1.0-RC3";
+    urls = [
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-meta_3/1.1.0-RC3/mill-runner-meta_3-1.1.0-RC3.jar"
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-meta_3/1.1.0-RC3/mill-runner-meta_3-1.1.0-RC3.pom"
+    ];
+    hash = "sha256-6QxIi5+kMFCpEwGgq3a1mmEGlVtZK5P0tteMLJJ61YI=";
+    installPath = "https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-meta_3/1.1.0-RC3";
+  };
+
+  "com.lihaoyi_mill-runner-server_3-1.1.0-RC3" = fetchMaven {
+    name = "com.lihaoyi_mill-runner-server_3-1.1.0-RC3";
+    urls = [
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-server_3/1.1.0-RC3/mill-runner-server_3-1.1.0-RC3.jar"
+      "https://repo1.maven.org/maven2/com/lihaoyi/mill-runner-server_3/1.1.0-RC3/mill-runner-server_3-1.1.0-RC3.pom"
+    ];
+    hash = "sha256-2cxY03DxxEXe6NGY3buGSKbKaPYA+D9XOt8pYOUmvrs=";
+    installPath = "https/repo1.maven.org/maven2/com/lihaoyi/mill-runner-server_3/1.1.0-RC3";
+  };
+
+  "com.lihaoyi_os-lib-watch_3-0.11.5" = fetchMaven {
+    name = "com.lihaoyi_os-lib-watch_3-0.11.5";
+    urls = [
+      "https://repo1.maven.org/maven2/com/lihaoyi/os-lib-watch_3/0.11.5/os-lib-watch_3-0.11.5.jar"
+      "https://repo1.maven.org/maven2/com/lihaoyi/os-lib-watch_3/0.11.5/os-lib-watch_3-0.11.5.pom"
+    ];
+    hash = "sha256-BgK3+PLSFeZDn3NtQ8r38HQXKXbIPawLAgJhOVDZbvI=";
+    installPath = "https/repo1.maven.org/maven2/com/lihaoyi/os-lib-watch_3/0.11.5";
+  };
+
   "com.lihaoyi_os-lib_3-0.10.0" = fetchMaven {
     name = "com.lihaoyi_os-lib_3-0.10.0";
     urls = [
@@ -1288,6 +1398,16 @@ in
     urls = [ "https://repo1.maven.org/maven2/org/apache/apache/6/apache-6.pom" ];
     hash = "sha256-A7aDRlGjS4P3/QlZmvMRdVHhP4yqTFL4wZbRnp1lJ9U=";
     installPath = "https/repo1.maven.org/maven2/org/apache/apache/6";
+  };
+
+  "org.checkerframework_checker-qual-3.5.0" = fetchMaven {
+    name = "org.checkerframework_checker-qual-3.5.0";
+    urls = [
+      "https://repo1.maven.org/maven2/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar"
+      "https://repo1.maven.org/maven2/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.pom"
+    ];
+    hash = "sha256-7lxlpTC52iRt4ZSq/jCM3ohl9uRC4V8WTpNF+DLWZrU=";
+    installPath = "https/repo1.maven.org/maven2/org/checkerframework/checker-qual/3.5.0";
   };
 
   "org.fusesource_fusesource-pom-1.12" = fetchMaven {
@@ -2127,6 +2247,16 @@ in
     installPath = "https/repo1.maven.org/maven2/org/yaml/snakeyaml/2.0";
   };
 
+  "ch.epfl.scala_bsp4j-2.2.0-M2" = fetchMaven {
+    name = "ch.epfl.scala_bsp4j-2.2.0-M2";
+    urls = [
+      "https://repo1.maven.org/maven2/ch/epfl/scala/bsp4j/2.2.0-M2/bsp4j-2.2.0-M2.jar"
+      "https://repo1.maven.org/maven2/ch/epfl/scala/bsp4j/2.2.0-M2/bsp4j-2.2.0-M2.pom"
+    ];
+    hash = "sha256-p9YcDs64uhLxgsiPpx7xhTwhifvU5YdsBSs5dq5NWzU=";
+    installPath = "https/repo1.maven.org/maven2/ch/epfl/scala/bsp4j/2.2.0-M2";
+  };
+
   "ch.qos.logback_logback-classic-1.5.18" = fetchMaven {
     name = "ch.qos.logback_logback-classic-1.5.18";
     urls = [
@@ -2302,6 +2432,93 @@ in
     ];
     hash = "sha256-2EcBFO5+wfh8ciQ9vjvr0QK5poRO50kCCG8F4E6EzWk=";
     installPath = "https/repo1.maven.org/maven2/com/github/luben/zstd-jni/1.5.7-4";
+  };
+
+  "com.google.errorprone_error_prone_annotations-2.41.0" = fetchMaven {
+    name = "com.google.errorprone_error_prone_annotations-2.41.0";
+    urls = [
+      "https://repo1.maven.org/maven2/com/google/errorprone/error_prone_annotations/2.41.0/error_prone_annotations-2.41.0.jar"
+      "https://repo1.maven.org/maven2/com/google/errorprone/error_prone_annotations/2.41.0/error_prone_annotations-2.41.0.pom"
+    ];
+    hash = "sha256-Q+YOxLcD0WwrMI3uw1kKqAolxt4KZVdjuT6eGEubaPg=";
+    installPath = "https/repo1.maven.org/maven2/com/google/errorprone/error_prone_annotations/2.41.0";
+  };
+
+  "com.google.errorprone_error_prone_parent-2.41.0" = fetchMaven {
+    name = "com.google.errorprone_error_prone_parent-2.41.0";
+    urls = [
+      "https://repo1.maven.org/maven2/com/google/errorprone/error_prone_parent/2.41.0/error_prone_parent-2.41.0.pom"
+    ];
+    hash = "sha256-wefFIBCjvUfqdaGh1inO6L3MQMqWkSRp2rE8kotNxm4=";
+    installPath = "https/repo1.maven.org/maven2/com/google/errorprone/error_prone_parent/2.41.0";
+  };
+
+  "com.google.guava_failureaccess-1.0.1" = fetchMaven {
+    name = "com.google.guava_failureaccess-1.0.1";
+    urls = [
+      "https://repo1.maven.org/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar"
+      "https://repo1.maven.org/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.pom"
+    ];
+    hash = "sha256-keXAVKG0tjTFYMrmNnwUhTz9Tdvv6YgMTVf3WGPaWmM=";
+    installPath = "https/repo1.maven.org/maven2/com/google/guava/failureaccess/1.0.1";
+  };
+
+  "com.google.guava_guava-30.1-jre" = fetchMaven {
+    name = "com.google.guava_guava-30.1-jre";
+    urls = [
+      "https://repo1.maven.org/maven2/com/google/guava/guava/30.1-jre/guava-30.1-jre.jar"
+      "https://repo1.maven.org/maven2/com/google/guava/guava/30.1-jre/guava-30.1-jre.pom"
+    ];
+    hash = "sha256-SILksEdHjUqzx9HshT4MC4yCKHLZ27GI9kw08BUmtXg=";
+    installPath = "https/repo1.maven.org/maven2/com/google/guava/guava/30.1-jre";
+  };
+
+  "com.google.guava_guava-parent-26.0-android" = fetchMaven {
+    name = "com.google.guava_guava-parent-26.0-android";
+    urls = [
+      "https://repo1.maven.org/maven2/com/google/guava/guava-parent/26.0-android/guava-parent-26.0-android.pom"
+    ];
+    hash = "sha256-E6Ip+1cPpK0zjeeIs6nlA7UKdoaVt4c+rJic/rZqXmU=";
+    installPath = "https/repo1.maven.org/maven2/com/google/guava/guava-parent/26.0-android";
+  };
+
+  "com.google.guava_guava-parent-30.1-jre" = fetchMaven {
+    name = "com.google.guava_guava-parent-30.1-jre";
+    urls = [
+      "https://repo1.maven.org/maven2/com/google/guava/guava-parent/30.1-jre/guava-parent-30.1-jre.pom"
+    ];
+    hash = "sha256-yB95NC1JrIdRkg/+VR6T5N1NbHSIt0v1mLCOqmJ5W3s=";
+    installPath = "https/repo1.maven.org/maven2/com/google/guava/guava-parent/30.1-jre";
+  };
+
+  "com.google.guava_listenablefuture-9999.0-empty-to-avoid-conflict-with-guava" = fetchMaven {
+    name = "com.google.guava_listenablefuture-9999.0-empty-to-avoid-conflict-with-guava";
+    urls = [
+      "https://repo1.maven.org/maven2/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar"
+      "https://repo1.maven.org/maven2/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.pom"
+    ];
+    hash = "sha256-RKtfF6GYbf2zSPY1m+gj8UN8qpI0GcTyMCX6xPLTdq8=";
+    installPath = "https/repo1.maven.org/maven2/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava";
+  };
+
+  "com.google.j2objc_j2objc-annotations-1.3" = fetchMaven {
+    name = "com.google.j2objc_j2objc-annotations-1.3";
+    urls = [
+      "https://repo1.maven.org/maven2/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.jar"
+      "https://repo1.maven.org/maven2/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.pom"
+    ];
+    hash = "sha256-66DvifOQZUx1Dp1O4uKA7mylXcgFQOBqcCIL7qVklbI=";
+    installPath = "https/repo1.maven.org/maven2/com/google/j2objc/j2objc-annotations/1.3";
+  };
+
+  "com.googlecode.javaewah_JavaEWAH-1.2.3" = fetchMaven {
+    name = "com.googlecode.javaewah_JavaEWAH-1.2.3";
+    urls = [
+      "https://repo1.maven.org/maven2/com/googlecode/javaewah/JavaEWAH/1.2.3/JavaEWAH-1.2.3.jar"
+      "https://repo1.maven.org/maven2/com/googlecode/javaewah/JavaEWAH/1.2.3/JavaEWAH-1.2.3.pom"
+    ];
+    hash = "sha256-1DO+Mxt7yFlIdMrR3v7xdPPSQcCEVLA0Lxn4ZwunmJU=";
+    installPath = "https/repo1.maven.org/maven2/com/googlecode/javaewah/JavaEWAH/1.2.3";
   };
 
   "com.vladsch.flexmark_flexmark-0.62.2" = fetchMaven {
@@ -2952,6 +3169,84 @@ in
     installPath = "https/repo1.maven.org/maven2/org/eclipse/jetty/jetty-bom/11.0.25";
   };
 
+  "org.eclipse.jgit_org.eclipse.jgit-6.10.1.202505221210-r" = fetchMaven {
+    name = "org.eclipse.jgit_org.eclipse.jgit-6.10.1.202505221210-r";
+    urls = [
+      "https://repo1.maven.org/maven2/org/eclipse/jgit/org.eclipse.jgit/6.10.1.202505221210-r/org.eclipse.jgit-6.10.1.202505221210-r.jar"
+      "https://repo1.maven.org/maven2/org/eclipse/jgit/org.eclipse.jgit/6.10.1.202505221210-r/org.eclipse.jgit-6.10.1.202505221210-r.pom"
+    ];
+    hash = "sha256-3ijBX3433YFfGKNC9IVIw1lk8kgyHNcIxtYVrqSJxec=";
+    installPath = "https/repo1.maven.org/maven2/org/eclipse/jgit/org.eclipse.jgit/6.10.1.202505221210-r";
+  };
+
+  "org.eclipse.jgit_org.eclipse.jgit-parent-6.10.1.202505221210-r" = fetchMaven {
+    name = "org.eclipse.jgit_org.eclipse.jgit-parent-6.10.1.202505221210-r";
+    urls = [
+      "https://repo1.maven.org/maven2/org/eclipse/jgit/org.eclipse.jgit-parent/6.10.1.202505221210-r/org.eclipse.jgit-parent-6.10.1.202505221210-r.pom"
+    ];
+    hash = "sha256-rOXXAD10TWwE+xnSTNenN1lwS8e14eJzxT+cPa1yq6c=";
+    installPath = "https/repo1.maven.org/maven2/org/eclipse/jgit/org.eclipse.jgit-parent/6.10.1.202505221210-r";
+  };
+
+  "org.eclipse.lsp4j_org.eclipse.lsp4j.generator-0.20.1" = fetchMaven {
+    name = "org.eclipse.lsp4j_org.eclipse.lsp4j.generator-0.20.1";
+    urls = [
+      "https://repo1.maven.org/maven2/org/eclipse/lsp4j/org.eclipse.lsp4j.generator/0.20.1/org.eclipse.lsp4j.generator-0.20.1.jar"
+      "https://repo1.maven.org/maven2/org/eclipse/lsp4j/org.eclipse.lsp4j.generator/0.20.1/org.eclipse.lsp4j.generator-0.20.1.pom"
+    ];
+    hash = "sha256-YihOE4ZIhHUljdpQd9FATS7AzAkRiATjJz4r4IhsBOs=";
+    installPath = "https/repo1.maven.org/maven2/org/eclipse/lsp4j/org.eclipse.lsp4j.generator/0.20.1";
+  };
+
+  "org.eclipse.lsp4j_org.eclipse.lsp4j.jsonrpc-0.20.1" = fetchMaven {
+    name = "org.eclipse.lsp4j_org.eclipse.lsp4j.jsonrpc-0.20.1";
+    urls = [
+      "https://repo1.maven.org/maven2/org/eclipse/lsp4j/org.eclipse.lsp4j.jsonrpc/0.20.1/org.eclipse.lsp4j.jsonrpc-0.20.1.jar"
+      "https://repo1.maven.org/maven2/org/eclipse/lsp4j/org.eclipse.lsp4j.jsonrpc/0.20.1/org.eclipse.lsp4j.jsonrpc-0.20.1.pom"
+    ];
+    hash = "sha256-lLLBglY2iO5Xm7gfaKHb95jm7Yd2tKI+RUlVIqKSx5U=";
+    installPath = "https/repo1.maven.org/maven2/org/eclipse/lsp4j/org.eclipse.lsp4j.jsonrpc/0.20.1";
+  };
+
+  "org.eclipse.xtend_org.eclipse.xtend.lib-2.28.0" = fetchMaven {
+    name = "org.eclipse.xtend_org.eclipse.xtend.lib-2.28.0";
+    urls = [
+      "https://repo1.maven.org/maven2/org/eclipse/xtend/org.eclipse.xtend.lib/2.28.0/org.eclipse.xtend.lib-2.28.0.jar"
+      "https://repo1.maven.org/maven2/org/eclipse/xtend/org.eclipse.xtend.lib/2.28.0/org.eclipse.xtend.lib-2.28.0.pom"
+    ];
+    hash = "sha256-ch5uYaECYGox+AL4EU0OC614gqTK/IkWmlxCW+FYusU=";
+    installPath = "https/repo1.maven.org/maven2/org/eclipse/xtend/org.eclipse.xtend.lib/2.28.0";
+  };
+
+  "org.eclipse.xtend_org.eclipse.xtend.lib.macro-2.28.0" = fetchMaven {
+    name = "org.eclipse.xtend_org.eclipse.xtend.lib.macro-2.28.0";
+    urls = [
+      "https://repo1.maven.org/maven2/org/eclipse/xtend/org.eclipse.xtend.lib.macro/2.28.0/org.eclipse.xtend.lib.macro-2.28.0.jar"
+      "https://repo1.maven.org/maven2/org/eclipse/xtend/org.eclipse.xtend.lib.macro/2.28.0/org.eclipse.xtend.lib.macro-2.28.0.pom"
+    ];
+    hash = "sha256-xu5Ogojl3XzSTfETwsFodjvZydpdi2jZXY9wu5zMyOQ=";
+    installPath = "https/repo1.maven.org/maven2/org/eclipse/xtend/org.eclipse.xtend.lib.macro/2.28.0";
+  };
+
+  "org.eclipse.xtext_org.eclipse.xtext.xbase.lib-2.28.0" = fetchMaven {
+    name = "org.eclipse.xtext_org.eclipse.xtext.xbase.lib-2.28.0";
+    urls = [
+      "https://repo1.maven.org/maven2/org/eclipse/xtext/org.eclipse.xtext.xbase.lib/2.28.0/org.eclipse.xtext.xbase.lib-2.28.0.jar"
+      "https://repo1.maven.org/maven2/org/eclipse/xtext/org.eclipse.xtext.xbase.lib/2.28.0/org.eclipse.xtext.xbase.lib-2.28.0.pom"
+    ];
+    hash = "sha256-J9fEh2WXIT3xrhzNQZBoYphh2DUrkas0wpJPWhWRvbI=";
+    installPath = "https/repo1.maven.org/maven2/org/eclipse/xtext/org.eclipse.xtext.xbase.lib/2.28.0";
+  };
+
+  "org.eclipse.xtext_xtext-dev-bom-2.28.0" = fetchMaven {
+    name = "org.eclipse.xtext_xtext-dev-bom-2.28.0";
+    urls = [
+      "https://repo1.maven.org/maven2/org/eclipse/xtext/xtext-dev-bom/2.28.0/xtext-dev-bom-2.28.0.pom"
+    ];
+    hash = "sha256-g4xSwbZW3JjZV+BF16ohvZ+v3o7JkVkv5CsiKT6ixVY=";
+    installPath = "https/repo1.maven.org/maven2/org/eclipse/xtext/xtext-dev-bom/2.28.0";
+  };
+
   "org.fusesource.jansi_jansi-2.4.1" = fetchMaven {
     name = "org.fusesource.jansi_jansi-2.4.1";
     urls = [
@@ -2982,6 +3277,16 @@ in
     installPath = "https/repo1.maven.org/maven2/org/ow2/asm/asm/9.8";
   };
 
+  "org.ow2.asm_asm-9.9" = fetchMaven {
+    name = "org.ow2.asm_asm-9.9";
+    urls = [
+      "https://repo1.maven.org/maven2/org/ow2/asm/asm/9.9/asm-9.9.jar"
+      "https://repo1.maven.org/maven2/org/ow2/asm/asm/9.9/asm-9.9.pom"
+    ];
+    hash = "sha256-ku4P+IVhyeSWtDWKQPfryHf92uD5lxX+B0l7nikZJDk=";
+    installPath = "https/repo1.maven.org/maven2/org/ow2/asm/asm/9.9";
+  };
+
   "org.ow2.asm_asm-commons-9.8" = fetchMaven {
     name = "org.ow2.asm_asm-commons-9.8";
     urls = [
@@ -3000,6 +3305,16 @@ in
     ];
     hash = "sha256-ZxdFTSgXy5f+gdS/FvxW+0oyf+5+RFUm3hv7G0akkQk=";
     installPath = "https/repo1.maven.org/maven2/org/ow2/asm/asm-tree/9.8";
+  };
+
+  "org.ow2.asm_asm-tree-9.9" = fetchMaven {
+    name = "org.ow2.asm_asm-tree-9.9";
+    urls = [
+      "https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/9.9/asm-tree-9.9.jar"
+      "https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/9.9/asm-tree-9.9.pom"
+    ];
+    hash = "sha256-6JLUHdOhdVzedEy9av5/G90Xjsn8DMsnaRENHCn4vfQ=";
+    installPath = "https/repo1.maven.org/maven2/org/ow2/asm/asm-tree/9.9";
   };
 
   "org.scala-lang.modules_scala-asm-9.7.1-scala-1" = fetchMaven {
@@ -3120,6 +3435,13 @@ in
     ];
     hash = "sha256-1Nq7/UMXSlaZ7iwR1WMryltAmS8/fRCK6u93cm+1uh4=";
     installPath = "https/repo1.maven.org/maven2/org/scala-sbt/jline/jline/2.14.7-sbt-9a88bc413e2b34a4580c001c654d1a7f4f65bf18";
+  };
+
+  "org.sonatype.oss_oss-parent-5" = fetchMaven {
+    name = "org.sonatype.oss_oss-parent-5";
+    urls = [ "https://repo1.maven.org/maven2/org/sonatype/oss/oss-parent/5/oss-parent-5.pom" ];
+    hash = "sha256-nga0RHiAES0cK5iFNr5AStbaorGJjt2cRMQg2j58uUA=";
+    installPath = "https/repo1.maven.org/maven2/org/sonatype/oss/oss-parent/5";
   };
 
   "org.sonatype.oss_oss-parent-7" = fetchMaven {
@@ -3309,6 +3631,25 @@ in
     installPath = "https/repo1.maven.org/maven2/com/google/code/findbugs/jsr305/3.0.2";
   };
 
+  "com.google.code.gson_gson-2.13.2" = fetchMaven {
+    name = "com.google.code.gson_gson-2.13.2";
+    urls = [
+      "https://repo1.maven.org/maven2/com/google/code/gson/gson/2.13.2/gson-2.13.2.jar"
+      "https://repo1.maven.org/maven2/com/google/code/gson/gson/2.13.2/gson-2.13.2.pom"
+    ];
+    hash = "sha256-+Bc1Lhq2uhj/qsS+7zvNH9rQph6F+FpYMci5O551Yqk=";
+    installPath = "https/repo1.maven.org/maven2/com/google/code/gson/gson/2.13.2";
+  };
+
+  "com.google.code.gson_gson-parent-2.13.2" = fetchMaven {
+    name = "com.google.code.gson_gson-parent-2.13.2";
+    urls = [
+      "https://repo1.maven.org/maven2/com/google/code/gson/gson-parent/2.13.2/gson-parent-2.13.2.pom"
+    ];
+    hash = "sha256-prNnb7pxMO5rzfYPJBbCZm0I8nanL4ZhAJita6s0ksM=";
+    installPath = "https/repo1.maven.org/maven2/com/google/code/gson/gson-parent/2.13.2";
+  };
+
   "io.github.alexarchambault.native-terminal_native-terminal-no-ffm-0.0.9.1" = fetchMaven {
     name = "io.github.alexarchambault.native-terminal_native-terminal-no-ffm-0.0.9.1";
     urls = [
@@ -3327,6 +3668,13 @@ in
     ];
     hash = "sha256-TGUrDCPYFiXV5b2If3u4KviH3JxZttMOKL1HUHqIWRo=";
     installPath = "https/repo1.maven.org/maven2/io/github/alexarchambault/windows-ansi/windows-ansi/0.0.6";
+  };
+
+  "net.java.dev.jna_jna-5.15.0" = fetchMaven {
+    name = "net.java.dev.jna_jna-5.15.0";
+    urls = [ "https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.15.0/jna-5.15.0.pom" ];
+    hash = "sha256-DSCkx29i2QxUeyOUpCbdGWiYeB2r7RLsgBNFolj2cUg=";
+    installPath = "https/repo1.maven.org/maven2/net/java/dev/jna/jna/5.15.0";
   };
 
   "net.java.dev.jna_jna-5.17.0" = fetchMaven {
@@ -3410,4 +3758,4 @@ in
   };
 
 }
-# Project Source Hash:sha256-f/T/bqO3QlJXOUb7FfDiMtUSEFsSzQwjjvBgqU+xHpc=
+# Project Source Hash:sha256-gkKSBOGLdjvcVnC7T9f1VjwqC9QL+/Fgq3HHdkdh8wU=
