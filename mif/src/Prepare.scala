@@ -145,6 +145,13 @@ class PrepareRunner(parameter: PrepareParams) {
     ) + processJavaOpts("JAVA_OPTS", cacheDir)
       + processJavaOpts("JAVA_TOOL_OPTIONS", cacheDir)
 
+    // Download dependency for default server mode
+    os.proc(Seq("mill", "--version"))
+      .call(
+        cwd = workDir.sourcePath,
+        env = env
+      )
+
     targets.foreach(t =>
       os.proc(Seq("mill", "--no-server", "--silent", "--disable-prompt", t))
         .call(
