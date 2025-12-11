@@ -8,7 +8,7 @@ into small pieces.
 
 ## Requirements
 
-* mill 0.12.8+
+* mill 1.1.0-RC3
 
 ## Usage
 
@@ -153,8 +153,8 @@ publishMillJar {
 }
 ```
 
-# Bump Nixpkgs lock
+# Bump Dependency for Mif
 
 ```bash
-nix run nixpkgs#nvfetcher -- -o flake-lock
+./bump.sh
 ```
