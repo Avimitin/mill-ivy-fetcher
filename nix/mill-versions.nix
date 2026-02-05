@@ -47,4 +47,6 @@ let
     };
   };
 in
-lib.mapAttrs (_: override: callPackage ./mill-build.nix override) supportedVersions
+lib.mapAttrs (
+  _: override: if override ? versionInfo then callPackage ./mill-build.nix override else override
+) (supportedVersions // { allVersions = lib.attrNames supportedVersions; })

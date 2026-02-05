@@ -19,11 +19,17 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   src =
     let
       suffix = lib.optionalString (versionInfo ? artifact-suffix) versionInfo.artifact-suffix;
+      filename =
+        with lib.versions;
+        if (major finalAttrs.version) == "0" then
+          "mill-dist-${finalAttrs.version}.jar"
+        else
+          "mill-dist${suffix}-${finalAttrs.version}.exe";
       url =
         if versionInfo ? alt-url then
           versionInfo.alt-url
         else
-          "https://repo1.maven.org/maven2/com/lihaoyi/mill-dist${suffix}/${finalAttrs.version}/mill-dist${suffix}-${finalAttrs.version}.exe";
+          "https://repo1.maven.org/maven2/com/lihaoyi/mill-dist${suffix}/${finalAttrs.version}/${filename}";
     in
     fetchurl {
       inherit url;

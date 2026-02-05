@@ -10,14 +10,30 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  gen-build-matrix:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: "Set up Python 3.13.2"
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.13.2"
+    - uses: DeterminateSystems/nix-installer-action@main
+    - run: |
+        nix eval --json ".#millVersions.allVersions" | nix run '.#jq' -- -r '{version: .}' > "$GITHUB_OUTPUT"
+
+  build-mill-versions:
+    needs: [gen-build-matrix]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.gen-build-matrix.outputs) }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: DeterminateSystems/nix-installer-action@main
+    - run: |
+        nix build '.#millVersions.{{ matrix.version }}'
+
+  integration-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
     - uses: DeterminateSystems/nix-installer-action@main
     - name: Integration test
       run: |
