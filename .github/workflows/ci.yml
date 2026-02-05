@@ -17,6 +17,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: DeterminateSystems/nix-installer-action@main
+      with:
+        extra-conf: "extra-experimental-features = pipe-operators"
     - name: "Set Matrix"
       id: set-matrix
       run: |
@@ -31,6 +33,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: DeterminateSystems/nix-installer-action@main
+      with:
+        extra-conf: "extra-experimental-features = pipe-operators"
     - run: |
         nix build '.#millVersions.${{ matrix.version }}'
 
@@ -39,6 +43,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: DeterminateSystems/nix-installer-action@main
+      with:
+        extra-conf: "extra-experimental-features = pipe-operators"
     - name: Integration test
       run: |
         nix build '.#ci-test' --max-jobs auto
