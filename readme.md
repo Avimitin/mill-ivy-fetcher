@@ -8,7 +8,7 @@ into small pieces.
 
 ## Requirements
 
-* mill 1.1.0-RC3
+* mill 1.1.0
 
 ## Usage
 
@@ -70,7 +70,7 @@ maven central download URL. Then convert that URL to a nix `fetchurl` expression
     flake-utils.lib.eachDefaultSystem
       (system:
         let
-          pkgs = import nixpkgs { inherit system; overlays = [ mill-ivy-fetcher.overlays.default ]; };
+          pkgs = import nixpkgs { inherit system; overlays = [ mill-ivy-fetcher.overlays.default mill-ivy-fetcher.overlays.mill-overlay ]; };
         in
         {
           legacyPackages = pkgs;
