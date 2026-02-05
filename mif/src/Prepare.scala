@@ -136,7 +136,7 @@ class PrepareRunner(parameter: PrepareParams) {
 
     val env: Map[String, String] = Map(
       // Maven mirror sometime contains invalid dependency and make us hard to debug the problem, use maven central only.
-      "COURSIER_REPOSITORIES" -> "ivy2local|central",
+      "COURSIER_REPOSITORIES" -> "ivy2local|central"
     ).tap(
       _.foreach(e =>
         if sys.env.get(e._1).isDefined then
@@ -145,15 +145,17 @@ class PrepareRunner(parameter: PrepareParams) {
     ) + processJavaOpts("JAVA_OPTS", cacheDir)
       + processJavaOpts("JAVA_TOOL_OPTIONS", cacheDir)
 
-    // Download dependency for default server mode
-    os.proc(Seq("mill", "--version"))
+    val ver = os
+      .proc(Seq("mill", "--version"))
       .call(
         cwd = workDir.sourcePath,
         env = env
       )
-
+      .out
+      .trim()
+    Logger.info(s"Using ${ver}")
     targets.foreach(t =>
-      os.proc(Seq("mill", "--no-server", "--silent", "--disable-prompt", t))
+      os.proc(Seq("mill", t))
         .call(
           cwd = workDir.sourcePath,
           env = env
