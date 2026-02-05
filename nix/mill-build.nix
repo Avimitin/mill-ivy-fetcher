@@ -9,7 +9,6 @@
   runtimeShell,
   wrapperScript ? ./mill-wrapper.sh,
   versionInfo,
-  fixSystemJre ? false,
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
@@ -55,34 +54,19 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   passthru = { inherit jre; };
 
-  installPhase =
-    let
-      installScript =
-        if fixSystemJre then
-          ''
-            substitute ${wrapperScript} $out/bin/mill \
-              --replace-fail '@shell@' '${runtimeShell}' \
-              --replace-fail '@system_jre@' '${jre}' \
-              --replace-fail '@mill_bin@' '.mill-bin'
-            chmod --reference=$out/bin/.mill-bin $out/bin/mill
-          ''
-        else
-          ''
-            # can't use wrapProgram because it sets --argv0
-            makeWrapper $out/bin/.mill-bin $out/bin/mill \
-              --prefix PATH : "${jre}/bin" \
-              --set-default JAVA_HOME "${jre}"
-          '';
-    in
-    ''
-      runHook preInstall
+  installPhase = ''
+    runHook preInstall
 
-      install -Dm 555 $src $out/bin/.mill-bin
+    install -Dm 555 $src $out/bin/.mill-bin
 
-      ${installScript}
+    substitute ${wrapperScript} $out/bin/mill \
+      --replace-fail '@shell@' '${runtimeShell}' \
+      --replace-fail '@system_jre@' '${jre}' \
+      --replace-fail '@mill_bin@' '.mill-bin'
+    chmod --reference=$out/bin/.mill-bin $out/bin/mill
 
-      runHook postInstall
-    '';
+    runHook postInstall
+  '';
 
   meta = {
     homepage = "https://com-lihaoyi.github.io/mill/";
