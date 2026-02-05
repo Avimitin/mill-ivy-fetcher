@@ -42,6 +42,7 @@ fi
 export PATH="@system_jre@/bin:$PATH"
 export JAVA_HOME="${JAVA_HOME:-@system_jre@}"
 export JAVA_OPTS="${JAVA_OPTS:-}"
+export MILL_EXECUTABLE_PATH="$0"
 
 # head -n 25 to see the pre-built binary self start script
 exec -a "$0" "$JAVA_HOME/bin/java" $JAVA_OPTS -cp "$install_path/@mill_bin@" 'mill.launcher.MillLauncherMain' "$@"
