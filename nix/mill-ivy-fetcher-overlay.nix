@@ -1,7 +1,7 @@
-extraPkgsBuilder:
+final: prev: {
+  # The main program
+  mill-ivy-fetcher = final.callPackage ./mill-ivy-fetcher/package.nix { };
 
-final: prev:
-{
   /**
     Each Ivy dependencies will contains one or more files: the publish JAR file
     and the POM specification file. All those files are download separately to
@@ -142,4 +142,3 @@ final: prev:
 
   add-determinism-hook = final.callPackage ./mill-ivy-fetcher/add-determinism-hook.nix { };
 }
-// (extraPkgsBuilder final.stdenv.hostPlatform.system)

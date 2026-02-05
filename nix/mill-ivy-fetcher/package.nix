@@ -3,12 +3,13 @@
   stdenv,
   makeWrapper,
 
-  mill,
+  millVersions,
   ivy-gather,
   add-determinism-hook,
 }:
 let
   ivyCache = ivy-gather ../../lock.nix;
+  mill = millVersions.mill_1_1_0;
 in
 stdenv.mkDerivation {
   name = "mill-ivy-fetcher";
