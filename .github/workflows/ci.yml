@@ -12,23 +12,27 @@ permissions:
 jobs:
   gen-build-matrix:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
     - uses: actions/checkout@v4
     - uses: DeterminateSystems/nix-installer-action@main
-    - run: |
-        nix eval --json ".#millVersions.allVersions" | nix run '.#jq' -- -r '{version: .}' > "$GITHUB_OUTPUT"
+    - name: "Set Matrix"
+      id: set-matrix
+      run: |
+        nix eval --json ".#millVersions.allVersions" | nix run '.#jq' -- -rc '"matrix=" + ({version: .} | tostring)' > "$GITHUB_OUTPUT"
 
   build-mill-versions:
     needs: [gen-build-matrix]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.gen-build-matrix.outputs) }}
+      matrix: ${{ fromJSON(needs.gen-build-matrix.outputs.matrix) }}
     steps:
     - uses: actions/checkout@v4
     - uses: DeterminateSystems/nix-installer-action@main
     - run: |
-        nix build '.#millVersions.{{ matrix.version }}'
+        nix build '.#millVersions.${{ matrix.version }}'
 
   integration-test:
     runs-on: ubuntu-latest
