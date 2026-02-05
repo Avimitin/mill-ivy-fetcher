@@ -21,10 +21,14 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       suffix = lib.optionalString (versionInfo ? artifact-suffix) versionInfo.artifact-suffix;
       filename =
         with lib.versions;
-        if (major finalAttrs.version) == "0" then
-          "mill-dist-${finalAttrs.version}.jar"
+        with lib.strings;
+        let
+          v = finalAttrs.version;
+        in
+        if (major v) == "1" || ((majorMinor v) == "0.12" && (patch v |> toInt) >= 14) then
+          "mill-dist${suffix}-${finalAttrs.version}.exe"
         else
-          "mill-dist${suffix}-${finalAttrs.version}.exe";
+          "mill-dist-${finalAttrs.version}.jar";
       url =
         if versionInfo ? alt-url then
           versionInfo.alt-url
