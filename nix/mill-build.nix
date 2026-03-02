@@ -24,7 +24,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
         let
           v = finalAttrs.version;
         in
-        if (major v) == "1" || ((majorMinor v) == "0.12" && (patch v |> toInt) >= 14) then
+        if (major v) == "1" || ((majorMinor v) == "0.12" && (toInt (patch v)) >= 14) then
           "mill-dist${suffix}-${finalAttrs.version}.exe"
         else
           "mill-dist-${finalAttrs.version}.jar";
