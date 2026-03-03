@@ -8,6 +8,7 @@ into small pieces.
 
 ## Requirements
 
+* Nix >= 2.28
 * mill 1.1.0
 
 ## Usage
