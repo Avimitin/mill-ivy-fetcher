@@ -12,4 +12,4 @@ cp build.mill "$CLEAN_DIR"
 nix develop -c mill -i mif.run run -p "$CLEAN_DIR" -o lock.nix --force
 
 # Run build for offline dependency check
-nix build '.#mill-ivy-fetcher' -L --no-link
+nix build '.#mill-ivy-fetcher' -L --no-link -j auto

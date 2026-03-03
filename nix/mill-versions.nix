@@ -50,6 +50,15 @@ let
       wrapperScript = ./mill-wrapper.sh;
       jre = zulu;
     };
+
+    "mill_1_1_2" = {
+      versionInfo = {
+        version = "1.1.2";
+        hash = "sha256-HvV+buRqkzvfixn6dijWUxh+8EknPW+Hxh0jnCg/r94=";
+      };
+      wrapperScript = ./mill-wrapper.sh;
+      jre = zulu;
+    };
   };
 in
 lib.mapAttrs (
