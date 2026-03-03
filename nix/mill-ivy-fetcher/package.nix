@@ -9,7 +9,7 @@
 }:
 let
   ivyCache = ivy-gather ../../lock.nix;
-  mill = millVersions.mill_1_1_0;
+  mill = millVersions.mill_1_1_2;
 in
 stdenv.mkDerivation {
   name = "mill-ivy-fetcher";

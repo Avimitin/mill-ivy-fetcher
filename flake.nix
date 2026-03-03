@@ -70,7 +70,7 @@
 
             devShells.default = pkgs.mkShell {
               nativeBuildInputs = with pkgs; [
-                millVersions.mill_1_1_0
+                millVersions.mill_1_1_2
                 metals
               ];
             };

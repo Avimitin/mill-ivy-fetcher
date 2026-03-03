@@ -7,7 +7,7 @@
   millVersions,
 }:
 let
-  publishMillJar' = publishMillJar.override { mill = millVersions.mill_1_1_0; };
+  publishMillJar' = publishMillJar.override { mill = millVersions.mill_1_1_2; };
 in
 publishMillJar' rec {
   name = "chisel";
@@ -40,7 +40,7 @@ publishMillJar' rec {
     name = "bump-chisel";
     runtimeInputs = [
       mill-ivy-fetcher
-      millVersions.mill_1_1_0
+      millVersions.mill_1_1_2
     ];
     text = ''
       mif run -p "${src}" -o .github/integration/chisel-lock.nix "$@"
