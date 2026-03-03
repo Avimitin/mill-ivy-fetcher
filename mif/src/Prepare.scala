@@ -11,27 +11,8 @@ case class PrepareParams(
 )
 
 class WorkdirInfo(projectPath: os.Path, deleteOnExit: Boolean) {
-  def copyFix(
-      from: os.Path,
-      to: os.Path,
-      followLinks: Boolean = false,
-      replaceExisting: Boolean = false,
-      copyAttributes: Boolean = false,
-      createFolders: Boolean = false,
-      mergeFolders: Boolean = false
-  ): Unit = {
-    if (createFolders && to.segmentCount != 0) then os.makeDir.all(to / os.up)
-    val opts1 =
-      if (followLinks) then Array[CopyOption]()
-      else Array[CopyOption](LinkOption.NOFOLLOW_LINKS)
-    val opts2 =
-      if (replaceExisting) then
-        Array[CopyOption](StandardCopyOption.REPLACE_EXISTING)
-      else Array[CopyOption]()
-    val opts3 =
-      if (copyAttributes) then
-        Array[CopyOption](StandardCopyOption.COPY_ATTRIBUTES)
-      else Array[CopyOption]()
+  def copyFix(from: os.Path, to: os.Path): Unit = {
+    os.makeDir.all(to / os.up)
     require(
       !to.startsWith(from),
       s"Can't copy a directory into itself: $to is inside $from"
@@ -39,21 +20,13 @@ class WorkdirInfo(projectPath: os.Path, deleteOnExit: Boolean) {
 
     def copyOne(p: os.Path): Unit = {
       val target = to / p.relativeTo(from)
-      if (
-        mergeFolders
-        && os.isDir(p, followLinks)
-        && os.isDir(target, followLinks)
-      )
-      then {
-        // nothing to do
-      } else {
-        Files.copy(p.wrapped, target.wrapped, (opts1 ++ opts2 ++ opts3)*)
-        os.perms.set(target, "rwxr-xr-x")
-      }
+      Files.copy(p.wrapped, target.wrapped, LinkOption.NOFOLLOW_LINKS)
+      if os.isDir(target, followLinks = false) then
+        os.perms.set(target, "rwx------")
     }
 
     copyOne(from)
-    if (os.stat(from, followLinks = followLinks).isDir) then
+    if (os.stat(from, followLinks = false).isDir) then
       for (p <- os.walk(from)) copyOne(p)
   }
 
@@ -65,8 +38,8 @@ class WorkdirInfo(projectPath: os.Path, deleteOnExit: Boolean) {
   lazy val sourcePath = {
     val p = workDir / "source"
     copyFix(projectPath, p)
-    // Source might be read-only, and we need a writable out directory cuz mill doesn't allow us custom zinc output directory.
-    os.perms.set(p, "rwxr-xr-x")
+    // Source might be read-only, and we need a writable out directory cuz mill doesn't allow us customize zinc output directory.
+    os.perms.set(p, "rwx------")
     p
   }
 
