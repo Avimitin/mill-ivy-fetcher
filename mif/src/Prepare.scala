@@ -14,7 +14,7 @@ class WorkdirInfo(projectPath: os.Path, deleteOnExit: Boolean) {
   def copyFix(
       from: os.Path,
       to: os.Path,
-      followLinks: Boolean = true,
+      followLinks: Boolean = false,
       replaceExisting: Boolean = false,
       copyAttributes: Boolean = false,
       createFolders: Boolean = false,
