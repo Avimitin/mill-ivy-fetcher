@@ -8,8 +8,22 @@ case class CodegenParams(
     codegenPath: os.Path
 )
 
+case class MavenCoord(group: String, artifact: String, version: String)
+
 class Codegen(param: CodegenParams) {
   import param.*
+
+  // Credit: https://github.com/KireinaHoro
+  def mavenCoord(p: os.Path): MavenCoord = {
+    val afterMaven2 = p.segments.toSeq.dropWhile(_ != "maven2").drop(1)
+    afterMaven2 match
+      case init :+ version =>
+        init.reverse match
+          case artifact :: groupParts =>
+            MavenCoord(groupParts.reverse.mkString("."), artifact, version)
+          case _ => throw new Exception(s"Missing artifact/version: $p")
+      case _ => throw new Exception(s"Invalid Maven path: $p")
+  }
 
   def getAllDependencies() = {
     os.walk(cacheDir)
@@ -21,7 +35,7 @@ class Codegen(param: CodegenParams) {
           .foreach(os.remove)
         modulePath
       })
-      .distinct
+      .distinctBy(mavenCoord)
   }
 
   // TODO: upstream sha256 first, then TOFU
