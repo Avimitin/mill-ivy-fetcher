@@ -1,6 +1,8 @@
 {
   description = "Generic devshell setup";
 
+  nixConfig.minimumVersion = "2.28";
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-parts = {
