@@ -1,15 +1,14 @@
 # Mill Ivy Fetcher
 
-Mill always lazily evaluate Ivy dependencies, so it is not possible to get a
-lock file before starting Mill to actually compile a project. However the needs
-for a elaborate information of each dependency is fundamental to make a project
-reproducible. This project are some efforts to split a bunch Ivy dependencies
-into small pieces.
+Mill always lazily evaluates Ivy dependencies, so it is not possible to get a
+lock file before running Mill to compile a project. However, detailed information
+about each dependency is fundamental to making a project reproducible. This project
+provides tooling to split Ivy dependencies into manageable pieces.
 
 ## Requirements
 
 * Nix >= 2.28
-* mill 1.1.0
+* Mill 0.12.7+ or Mill 1.1.0+
 
 ## Usage
 
@@ -41,20 +40,20 @@ mill -i mif.run run -o lock.nix
 
 ## Implementation Details
 
-Mill doesn't provide any straightforward CLI interface to get Ivy dependencies
-tree. The only way to know all the necessary build time dependencies is to run
-`mill __.prepareOffline` once. Given that Mill use Coursier library to download
-JAR package, we can gather dependency information by searching Coursier cache
+Mill doesn't provide a straightforward CLI interface to get the Ivy dependencies
+tree. The only way to know all the necessary build-time dependencies is to run
+`mill __.prepareOffline`. Given that Mill uses the Coursier library to download
+JAR packages, we can gather dependency information by searching the Coursier cache
 directory.
 
-This project provides executable `mif`. It will
-recursively search all `.pom` file in Coursier cache and extract necessary
-information like project name, version...etc and convert those information to
-maven central download URL. Then convert that URL to a nix `fetchurl` expression.
+This project provides the executable `mif`. It will recursively search all `.pom`
+files in the Coursier cache, extract necessary information like project name,
+version, etc., and convert that information to Maven Central download URLs. Then
+it converts those URLs to Nix `fetchurl` expressions.
 
 ## Recommended Workflow
 
-1. Add this project in your overlay
+1. Add this project to your flake inputs and overlays
 
 ```nix
 # flake.nix
@@ -71,7 +70,13 @@ maven central download URL. Then convert that URL to a nix `fetchurl` expression
     flake-utils.lib.eachDefaultSystem
       (system:
         let
-          pkgs = import nixpkgs { inherit system; overlays = [ mill-ivy-fetcher.overlays.default mill-ivy-fetcher.overlays.mill-overlay ]; };
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = [
+              mill-ivy-fetcher.overlays.default
+              mill-ivy-fetcher.overlays.mill-overlay
+            ];
+          };
         in
         {
           legacyPackages = pkgs;
@@ -89,10 +94,9 @@ maven central download URL. Then convert that URL to a nix `fetchurl` expression
       )
     // { inherit inputs; };
 }
-
 ```
 
-2. Use the provided `mif` executable to generate lock file for a project:
+2. Use the provided `mif` executable to generate a lock file for a project:
 
 ```bash
 nix shell '.#mill' '.#mill-ivy-fetcher' -c mif run -p path/to/project -o project-lock.nix
@@ -115,7 +119,7 @@ publishMillJar {
 }
 ```
 
-4. Or if you want to build an application, try
+4. Or if you want to build an application, try:
 
 ```nix
 { stdenv, ivy-gather }:
@@ -129,12 +133,39 @@ stdenv.mkDerivation {
 }
 ```
 
-* See [`./.github/integration/chisel.nix`](./.github/integration/chisel.nix) for a detailed explanation.
-* See [`./nix/mill-ivy-fetcher-overlay.nix`](./nix/mill-ivy-fetcher-overlay.nix) for a function documents.
+* See [`.github/integration/chisel.nix`](.github/integration/chisel.nix) for a detailed example.
+* See [`nix/mill-ivy-fetcher-overlay.nix`](nix/mill-ivy-fetcher-overlay.nix) for function documentation.
 
-# Dev env setup
+## Mill Versions Overlay
 
-1. Install Nix package manager (Nix is not NixOS): <https://nixos.org/download/>
+The `mill-overlay` provides multiple Mill versions through the `millVersions` attribute set. This allows you to select specific Mill versions for your project.
+
+### Available Versions
+
+The overlay provides the following Mill versions:
+
+- `millVersions.mill_0_12_7` through `millVersions.mill_0_12_14` (Mill 0.12.x series)
+- `millVersions.mill_1_1_0` and `millVersions.mill_1_1_2` (Mill 1.1.x series)
+
+Each version includes the appropriate wrapper script and JRE configuration.
+
+### Usage Example
+
+```nix
+{ pkgs }:
+pkgs.mkShell {
+  nativeBuildInputs = with pkgs; [
+    millVersions.mill_1_1_2  # Use Mill 1.1.2
+    metals
+  ];
+}
+```
+
+You can also access all available version names via `millVersions.allVersions`.
+
+## Dev Env Setup
+
+1. Install the Nix package manager (Nix is not NixOS): <https://nixos.org/download/>
 2. Enable experimental features `nix-command` and `flakes`: <https://wiki.nixos.org/wiki/Flakes>
 
 ```bash
@@ -142,9 +173,9 @@ nix develop .
 $EDITOR .
 ```
 
-# Debug installation
+## Debug Installation
 
-You can set `NIX_DEBUG` larger than `4` to have cache installation log:
+You can set `NIX_DEBUG` to a value greater than `4` to see cache installation logs:
 
 ```
 publishMillJar {
@@ -154,7 +185,7 @@ publishMillJar {
 }
 ```
 
-# Bump Dependency for Mif
+## Bump Dependencies for Mif
 
 ```bash
 ./bump.sh
