@@ -44,4 +44,21 @@ jobs:
     - uses: DeterminateSystems/nix-installer-action@main
     - name: Integration test
       run: |
+        # First build
         nix build '.#ci-test' --max-jobs auto
+        FIRST_HASH="$(nix hash path --sri --algo sha256 --mode nar "$(realpath ./result)")"
+
+        # Rebuild and verify reproducibility
+        rm -rf result
+        nix build '.#ci-test' --max-jobs auto --rebuild
+        SECOND_HASH="$(nix hash path --sri --algo sha256 --mode nar "$(realpath ./result)")"
+
+        # Fail if hashes don't match (non-reproducible build)
+        if [ "$FIRST_HASH" != "$SECOND_HASH" ]; then
+          echo "Build is not reproducible!"
+          echo "First build hash:  $FIRST_HASH"
+          echo "Second build hash: $SECOND_HASH"
+          exit 1
+        fi
+
+        echo "Build is reproducible"
