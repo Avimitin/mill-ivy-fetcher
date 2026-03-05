@@ -16,7 +16,7 @@ jobs:
     - uses: actions/checkout@v4
     - uses: DeterminateSystems/nix-installer-action@main
     - name: Check formatting
-      run: nix fmt -- --check
+      run: nix fmt -- --ci
 
   gen-build-matrix:
     if: github.event_name == 'pull_request'
