@@ -7,7 +7,8 @@ case class PrepareParams(
     projectRoot: os.Path,
     fetchTargets: Seq[String],
     uCacheDir: Option[os.Path],
-    keepWorkdir: Boolean
+    keepWorkdir: Boolean,
+    dryRun: Boolean = false
 )
 
 class WorkdirInfo(projectPath: os.Path, deleteOnExit: Boolean) {
@@ -125,19 +126,23 @@ class PrepareRunner(parameter: PrepareParams) {
       + javaOpts("JAVA_OPTS", cacheDir)
       + javaOpts("JAVA_TOOL_OPTIONS", cacheDir)
 
-    val millVersion = os
-      .proc(Seq("mill", "--version"))
-      .call(cwd = workDir.sourcePath, env = env)
+    val millVersion = ProcessRunner
+      .run(Seq("mill", "--version"), cwd = workDir.sourcePath, env = env)
       .out
-      .trim()
       .linesIterator
       .next()
 
     Logger.info(s"Using ${millVersion}")
 
-    prepareTargets.foreach(t =>
-      os.proc(Seq("mill", t)).call(cwd = workDir.sourcePath, env = env)
-    )
+    if dryRun then
+      Logger.info("Dry-run mode: skipping mill target execution")
+      prepareTargets.foreach(t => Logger.info(s"Would run: mill ${t}"))
+    else
+      val total = prepareTargets.size
+      prepareTargets.zipWithIndex.foreach { case (t, idx) =>
+        Logger.info(s"[${idx + 1}/${total}] Running mill ${t}")
+        ProcessRunner.run(Seq("mill", t), cwd = workDir.sourcePath, env = env)
+      }
 
     PrepareResult(workDir, millVersion)
 }

@@ -4,29 +4,30 @@ object NixNarHash {
   def run(
       files: Seq[os.Path]
   ): Map[os.Path, String] = {
-    files
-      .map(p => {
-        Logger.info(s"Hashing ${p}")
+    val total = files.size
+    files.zipWithIndex
+      .map { case (p, idx) =>
+        Logger.info(s"[${idx + 1}/${total}] Hashing ${p}")
 
-        val sha256 = os
-          .proc(
-            "nix",
-            "--extra-experimental-features",
-            "nix-command",
-            "hash",
-            "path",
-            "--sri",
-            "--algo",
-            "sha256",
-            "--mode",
-            "nar",
-            p.toString
+        val sha256 = ProcessRunner
+          .run(
+            Seq(
+              "nix",
+              "--extra-experimental-features",
+              "nix-command",
+              "hash",
+              "path",
+              "--sri",
+              "--algo",
+              "sha256",
+              "--mode",
+              "nar",
+              p.toString
+            )
           )
-          .call()
           .out
-          .trim()
         (p, sha256)
-      })
+      }
       .toMap
   }
 }

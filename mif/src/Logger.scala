@@ -2,6 +2,8 @@ package in.avimit.dev.mif
 
 import scala.io.AnsiColor._
 
+class FatalException(message: String) extends Exception(message)
+
 object Logger {
 
   val level = sys.env.getOrElse("LOG_LEVEL", "INFO") match
@@ -25,5 +27,5 @@ object Logger {
 
   def fatal(message: String) =
     println(s"${BOLD}${RED}[FATAL]${RESET} ${message}")
-    sys.exit(1)
+    throw new FatalException(message)
 }
