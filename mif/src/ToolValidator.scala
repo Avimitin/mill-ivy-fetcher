@@ -17,7 +17,7 @@ object ToolValidator {
 
   private def checkNixVersion(): Unit = {
     try {
-      val output = os.proc(Seq("nix", "--version")).call().out.text()
+      val output = os.proc(Seq("nix", "--version")).call().out.text().trim()
       val versionPattern = """nix \(Nix\) (\d+)\.(\d+)""".r
       output match {
         case versionPattern(major, minor) =>
