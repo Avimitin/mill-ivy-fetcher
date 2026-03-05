@@ -58,10 +58,18 @@ class WorkdirInfo(projectPath: os.Path, deleteOnExit: Boolean) {
   )
 }
 
+case class PrepareResult(
+    workDir: WorkdirInfo,
+    millVersion: String
+) {
+  def toMap(): Map[String, String] =
+    workDir.toMap() + ("millVersion" -> millVersion)
+}
+
 class PrepareRunner(parameter: PrepareParams) {
   import parameter.*
 
-  def processJavaOpts(env: String, cacheDir: os.Path): (String, String) =
+  private def javaOpts(env: String, cacheDir: os.Path): (String, String) =
     val ivyLocalRepo = cacheDir / "ivy2"
     val ivyDLCache = cacheDir / "cache"
     os.makeDir.all(cacheDir)
@@ -69,73 +77,67 @@ class PrepareRunner(parameter: PrepareParams) {
     os.makeDir.all(ivyDLCache)
 
     val baseOpts = Map(
-      // Override ~/.ivy2
       "-Dcoursier.ivy.home" -> ivyLocalRepo.toString,
-      // Mill vendor an old logic
       "-Divy.home" -> ivyLocalRepo.toString,
-      // Override ~/.cache/coursier/v1
       "-Dcoursier.cache" -> ivyDLCache.toString
     )
-    val userOpts = sys.env.get(env) match
-      case Some(raw) if raw.nonEmpty =>
-        raw
-          .strip()
-          .split("\\s+")
-          .map(optDef =>
-            val defs = optDef.split("=")
-            if baseOpts.contains(defs(0)) then
-              Logger.warning(
-                s"Env ${env} contains ${defs(0)} which will override mif's environment"
-              )
-            optDef
+
+    val userOpts = sys.env
+      .get(env)
+      .filter(_.nonEmpty)
+      .map(_.strip().split("\\s+"))
+      .toSeq
+      .flatMap(_.map(optDef =>
+        val defs = optDef.split("=")
+        if baseOpts.contains(defs(0)) then
+          Logger.warning(
+            s"Env ${env} contains ${defs(0)} which will override mif's environment"
           )
-          .toSeq
-      case _ => Seq.empty
+        optDef
+      ))
 
-    val opts = (baseOpts.map { case (k, v) =>
-      s"${k}=${v}"
-    }.toSeq ++ userOpts).mkString(" ")
+    env -> (baseOpts.map { case (k, v) => s"${k}=${v}" }.toSeq ++ userOpts)
+      .mkString(" ")
 
-    (env -> opts)
-
-  def run() = {
+  def run(): PrepareResult =
     val workDir = WorkdirInfo(projectRoot, !keepWorkdir)
-
     val cacheDir = uCacheDir.getOrElse(workDir.ivyCachePath)
 
-    val targets = fetchTargets.map(t => s"${t}.prepareOffline")
-      ++ fetchTargets.map(t => s"${t}.scalaCompilerClasspath")
-      ++ fetchTargets.map(t => s"${t}.scalaDocClasspath")
+    val prepareTargets = fetchTargets.flatMap(t =>
+      Seq(
+        s"${t}.prepareOffline",
+        s"${t}.scalaCompilerClasspath",
+        s"${t}.scalaDocClasspath"
+      )
+    )
 
-    val env: Map[String, String] = Map(
-      // Maven mirror sometime contains invalid dependency and make us hard to debug the problem, use maven central only.
+    val baseEnv = Map(
       "COURSIER_REPOSITORIES" -> "ivy2local|central",
       "XDG_CACHE_HOME" -> cacheDir.toString
-    ).tap(
-      _.foreach(e =>
+    ).tap { envMap =>
+      envMap.foreach(e =>
         if sys.env.get(e._1).isDefined then
           Logger.warning(s"env ${e._1} is set but ignored")
       )
-    ) + processJavaOpts("JAVA_OPTS", cacheDir)
-      + processJavaOpts("JAVA_TOOL_OPTIONS", cacheDir)
+    }
 
-    val ver = os
+    val env: Map[String, String] = baseEnv
+      + javaOpts("JAVA_OPTS", cacheDir)
+      + javaOpts("JAVA_TOOL_OPTIONS", cacheDir)
+
+    val millVersion = os
       .proc(Seq("mill", "--version"))
-      .call(
-        cwd = workDir.sourcePath,
-        env = env
-      )
+      .call(cwd = workDir.sourcePath, env = env)
       .out
       .trim()
-    Logger.info(s"Using ${ver}")
-    targets.foreach(t =>
-      os.proc(Seq("mill", t))
-        .call(
-          cwd = workDir.sourcePath,
-          env = env
-        )
+      .linesIterator
+      .next()
+
+    Logger.info(s"Using ${millVersion}")
+
+    prepareTargets.foreach(t =>
+      os.proc(Seq("mill", t)).call(cwd = workDir.sourcePath, env = env)
     )
 
-    workDir
-  }
+    PrepareResult(workDir, millVersion)
 }
