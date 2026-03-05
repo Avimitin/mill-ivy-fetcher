@@ -163,6 +163,30 @@ pkgs.mkShell {
 
 You can also access all available version names via `millVersions.allVersions`.
 
+### Overriding Mill Version in publishMillJar
+
+To use a specific Mill version with `publishMillJar`, use the `.override` mechanism:
+
+```nix
+{ publishMillJar, millVersions }:
+let
+  publishMillJar' = publishMillJar.override { mill = millVersions.mill_1_1_2; };
+in
+publishMillJar' {
+  name = "my-project";
+
+  src = ./.;
+
+  lockFile = ./project-lock.nix;
+
+  publishTargets = [
+    "my-module"
+  ];
+}
+```
+
+This is useful when your project requires a specific Mill version that differs from the default.
+
 ## Dev Env Setup
 
 1. Install the Nix package manager (Nix is not NixOS): <https://nixos.org/download/>
