@@ -34,7 +34,9 @@ object MillIvyFetcher {
 
     val projPath = os.Path(projectDir, os.pwd)
     if !os.exists(projPath) || !os.isDir(projPath) then
-      Logger.fatal(s"Project directory does not exist or is not a directory: ${projPath}")
+      Logger.fatal(
+        s"Project directory does not exist or is not a directory: ${projPath}"
+      )
 
     Logger.info(s"Running mif fetch for ${projPath}")
     val param = PrepareParams(
@@ -104,7 +106,9 @@ object MillIvyFetcher {
 
     val projectDirPath = projectDir.getOrElse(os.pwd)
     if !os.exists(projectDirPath) || !os.isDir(projectDirPath) then
-      Logger.fatal(s"Project directory does not exist or is not a directory: ${projectDirPath}")
+      Logger.fatal(
+        s"Project directory does not exist or is not a directory: ${projectDirPath}"
+      )
 
     val projectHash = NixNarHash.run(Seq(projectDirPath))(projectDirPath)
     val prefix = "# Cache Identifier:"
@@ -122,7 +126,8 @@ object MillIvyFetcher {
         s"Cache identifier match lock file ${codegenPath}, skip codegen"
       )
     else
-      val prepareResult = fetch(projectDirPath, targets, cacheDir, keepWorkDir, dryRun)
+      val prepareResult =
+        fetch(projectDirPath, targets, cacheDir, keepWorkDir, dryRun)
       val cacheKey = s"${projectHash}@${prepareResult.millVersion}"
 
       if dryRun.value then

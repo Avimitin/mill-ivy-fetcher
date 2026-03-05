@@ -24,7 +24,9 @@ object ToolValidator {
           val majorInt = major.toInt
           val minorInt = minor.toInt
           if majorInt < 2 || (majorInt == 2 && minorInt < 28) then
-            Logger.fatal(s"Nix version ${major}.${minor} is too old. Please upgrade to Nix >= 2.28")
+            Logger.fatal(
+              s"Nix version ${major}.${minor} is too old. Please upgrade to Nix >= 2.28"
+            )
         case _ =>
           Logger.warning(s"Could not parse Nix version from: ${output}")
       }
