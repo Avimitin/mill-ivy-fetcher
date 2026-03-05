@@ -34,6 +34,7 @@ jobs:
     - uses: DeterminateSystems/nix-installer-action@main
     - run: |
         nix build '.#millVersions.${{ matrix.version }}'
+        result/bin/mill --version
 
   integration-test:
     runs-on: ubuntu-latest
