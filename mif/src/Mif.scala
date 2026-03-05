@@ -29,9 +29,9 @@ object MillIvyFetcher {
       keepWorkDir.value
     )
     val fetcher = new PrepareRunner(param)
-    val outPath = fetcher.run()
-    Logger.info(s"Downloaded deps into ${outPath}")
-    outPath
+    val result = fetcher.run()
+    Logger.info(s"Downloaded deps into ${result.workDir}")
+    result
   }
 
   @main()
@@ -84,29 +84,56 @@ object MillIvyFetcher {
   ): Unit = {
     val projectDirPath = projectDir.getOrElse(os.pwd)
     val projectHash = NixNarHash.run(Seq(projectDirPath))(projectDirPath)
-    val prefix = "# Project Source Hash:"
+    val prefix = "# Cache Identifier:"
 
-    if !force.value && os.exists(codegenPath) then
-      val lastLineOfLockFile =
-        os.read(codegenPath).lines().toList().getLast().strip()
+    val shouldSkip =
+      !force.value && os.exists(codegenPath) &&
+        parseLastLine(codegenPath, prefix).filter {
+          case (storedHash, storedMillVer) =>
+            val currentMillVer = getMillVersion(projectDirPath)
+            storedHash == projectHash && storedMillVer == currentMillVer
+        }.isDefined
 
-      if lastLineOfLockFile.startsWith(prefix)
-        && lastLineOfLockFile.contains(projectHash)
-      then
-        Logger.info(
-          s"Source hash of ${projectDirPath} match lock file ${codegenPath}, skip codegen"
+    if shouldSkip then
+      Logger.info(
+        s"Cache identifier match lock file ${codegenPath}, skip codegen"
+      )
+    else
+      val prepareResult = fetch(projectDirPath, targets, cacheDir, keepWorkDir)
+      val cacheKey = s"${projectHash}@${prepareResult.millVersion}"
+
+      codegen(prepareResult.workDir.ivyCachePath, codegenPath)
+      os.write.append(codegenPath, s"${prefix}${cacheKey}\n")
+
+      jsonPath.foreach(path =>
+        os.write(
+          os.Path(path, os.pwd),
+          upickle.default.write(prepareResult.toMap())
         )
-        return ()
-
-    val workDir = fetch(projectDirPath, targets, cacheDir, keepWorkDir)
-    codegen(workDir.ivyCachePath, codegenPath)
-
-    os.write.append(codegenPath, s"${prefix}${projectHash}\n")
-
-    jsonPath.foreach(path => {
-      os.write(os.Path(path, os.pwd), upickle.default.write(workDir.toMap()))
-    })
+      )
   }
+
+  private def parseLastLine(
+      codegenPath: os.Path,
+      prefix: String
+  ): Option[(String, String)] =
+    os.read(codegenPath)
+      .lines()
+      .toList()
+      .getLast()
+      .strip()
+      .stripPrefix(prefix)
+      .split("@", 2) match
+      case Array(hash, millVer) => Some((hash, millVer))
+      case _                    => None
+
+  private def getMillVersion(projectDir: os.Path): String =
+    os.proc(Seq("mill", "--version"))
+      .call(cwd = projectDir)
+      .out
+      .trim()
+      .linesIterator
+      .next()
 
   def main(args: Array[String]): Unit =
     ParserForMethods(this).runOrExit(args.toSeq)
