@@ -39,7 +39,7 @@ let
         version = "0.12.14";
         hash = "sha256-2MyufFcgKH/bxVB83qXNESByAdgbzhyIHqAr36Bb9o0=";
       };
-      wrapperScript = ./mill-wrapper.sh;
+      wrapperScript = ./mill-old-wrapper.sh;
     };
 
     "mill_1_1_0" = {
