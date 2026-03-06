@@ -52,6 +52,16 @@ jobs:
     - uses: DeterminateSystems/nix-installer-action@main
     - name: Integration test
       run: |
+        # Run bump to regenerate lock file
+        nix run '.#ci-test.bump'
+
+        # Check that chisel-lock.nix is not modified (forces dependency review)
+        if ! git diff --exit-code .github/integration/chisel-lock.nix; then
+          echo "Error: chisel-lock.nix has been modified by bump"
+          echo "Please review dependency changes and commit the updated lock file"
+          exit 1
+        fi
+
         # First build
         nix build '.#ci-test' --max-jobs auto
         FIRST_HASH="$(nix hash path --sri --algo sha256 --mode nar "$(realpath ./result)")"
