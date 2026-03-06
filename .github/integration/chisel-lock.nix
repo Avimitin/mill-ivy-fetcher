@@ -6318,6 +6318,16 @@ in
     installPath = "https/repo1.maven.org/maven2/com/google/code/gson/gson-parent/2.13.2";
   };
 
+  "io.get-coursier.jvm.indices_index-linux-amd64-0.0.4-125-77e06d" = fetchMaven {
+    name = "io.get-coursier.jvm.indices_index-linux-amd64-0.0.4-125-77e06d";
+    urls = [
+      "https://repo1.maven.org/maven2/io/get-coursier/jvm/indices/index-linux-amd64/0.0.4-125-77e06d/index-linux-amd64-0.0.4-125-77e06d.jar"
+      "https://repo1.maven.org/maven2/io/get-coursier/jvm/indices/index-linux-amd64/0.0.4-125-77e06d/index-linux-amd64-0.0.4-125-77e06d.pom"
+    ];
+    hash = "sha256-C4EJNuRO4o1LUqOuaXYdvrv4ndGRDmRipabBoqDm7WA=";
+    installPath = "https/repo1.maven.org/maven2/io/get-coursier/jvm/indices/index-linux-amd64/0.0.4-125-77e06d";
+  };
+
   "io.github.alexarchambault.native-terminal_native-terminal-no-ffm-0.0.9.1" = fetchMaven {
     name = "io.github.alexarchambault.native-terminal_native-terminal-no-ffm-0.0.9.1";
     urls = [
@@ -6574,4 +6584,4 @@ in
   };
 
 }
-# Project Source Hash:sha256-TU3AlrbWcps6zYbfLD677jfZ/UcBO1M9FcG1nb98Nhk=
+# Cache Identifier:sha256-TU3AlrbWcps6zYbfLD677jfZ/UcBO1M9FcG1nb98Nhk=@Mill Build Tool version 1.1.2
