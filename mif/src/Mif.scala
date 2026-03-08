@@ -159,12 +159,18 @@ object MillIvyFetcher {
       case Array(hash, millVer) => Some((hash, millVer))
       case _                    => None
 
-  private def getMillVersion(projectDir: os.Path): String =
-    ProcessRunner
-      .run(Seq("mill", "--version"), cwd = projectDir)
-      .out
-      .linesIterator
-      .next()
+  private def getMillVersion(projectDir: os.Path): String = {
+    val tempDir = os.temp.dir(prefix = s"${projectDir.last}_version_check_")
+    try {
+      ProcessRunner
+        .run(Seq("mill", "--version"), cwd = tempDir)
+        .out
+        .linesIterator
+        .next()
+    } finally {
+      os.remove.all(tempDir)
+    }
+  }
 
   def main(args: Array[String]): Unit =
     ParserForMethods(this).runOrExit(args.toSeq)
