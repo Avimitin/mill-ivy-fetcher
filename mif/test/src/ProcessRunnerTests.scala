@@ -11,8 +11,11 @@ object ProcessRunnerTests extends TestSuite {
     }
 
     test("run throws FatalException on command failure") {
-      intercept[FatalException] {
-        ProcessRunner.run(Seq("false"))
+      Logger.withLevel(LogLevel.Quiet) {
+        intercept[FatalException] {
+          ProcessRunner.run(Seq("false"))
+        }
+        ()
       }
     }
   }

@@ -38,18 +38,104 @@ mill -i mif.run codegen --cache "$cacheDir" -o lock.nix
 mill -i mif.run run -o lock.nix
 ```
 
+## Maven Relay Snapshot
+
+`mif relay` starts a local Maven-compatible HTTP relay. Build tools can use it
+as a Maven mirror. The relay serves files from a project-level local Maven
+repository when they already exist, otherwise it fetches them from the upstream
+repository and stores them in standard Maven layout.
+
+The relay does **not** write the Nix-facing JSON lock directly. It only maintains
+an internal SQLite database under the repository root:
+
+```text
+.mif/repository/.mif/repository.sqlite
+```
+
+That database is a relay implementation detail. The lock/export workflow will be
+built as a separate layer on top of this repository state.
+
+This is the first step of the Maven repository based redesign. It is intended
+to replace the old Coursier-cache scanning flow over time, but the old commands
+are still present for now.
+
+Run the relay manually:
+
+```bash
+mill -i mif.run relay \
+  --port 8081 \
+  --repo-dir .mif/repository
+```
+
+By default, the relay listens on `127.0.0.1:8081` and fetches missing files from
+Maven Central:
+
+```text
+https://repo1.maven.org/maven2
+```
+
+Point the build tool's Maven mirror to the relay:
+
+```text
+http://127.0.0.1:8081/
+```
+
+For Mill/Coursier, create a mirror file equivalent to:
+
+```properties
+central.from=https://repo1.maven.org/maven2
+central.to=http://127.0.0.1:8081
+```
+
+The relay stores downloaded files under `.mif/repository` using standard Maven
+repository paths such as:
+
+```text
+.mif/repository/com/example/foo/1.0.0/foo-1.0.0.pom
+.mif/repository/com/example/foo/1.0.0/foo-1.0.0.jar
+```
+
+
+
+The upstream can be replaced with another Maven-compatible endpoint. This is
+useful for testing relay chaining:
+
+```bash
+mill -i mif.run relay \
+  --port 8082 \
+  --repo-dir .mif/repository \
+  --upstream http://127.0.0.1:8081
+```
+
+If upstream requests must go through an HTTP proxy, pass an explicit proxy URL:
+
+```bash
+mill -i mif.run relay \
+  --proxy http://127.0.0.1:8080
+```
+
+Current limitations:
+
+* The lock/export layer is intentionally not implemented in this relay snapshot.
+* Maven Central is the only default upstream.
+* Private repository authentication and proxy authentication are not supported yet.
+* Cached Maven files are treated as archived content. Mutable metadata such as
+  `maven-metadata.xml` and SNAPSHOT metadata has no TTL yet; delete the cached
+  file or use a fresh repository directory if you need to refresh it.
+* The relay only observes files requested by the build tool. Lazy Mill targets
+  that are never evaluated will not be discovered by this layer.
+
 ## Implementation Details
 
-Mill doesn't provide a straightforward CLI interface to get the Ivy dependencies
-tree. The only way to know all the necessary build-time dependencies is to run
-`mill __.prepareOffline`. Given that Mill uses the Coursier library to download
-JAR packages, we can gather dependency information by searching the Coursier cache
-directory.
+Mill doesn't provide a straightforward CLI interface to get the full dependency
+tree. The old implementation works around this by running Mill targets and then
+scanning the Coursier cache directory. This is fragile because the cache layout is
+not the real distribution format and because Mill evaluates dependencies lazily.
 
-This project provides the executable `mif`. It will recursively search all `.pom`
-files in the Coursier cache, extract necessary information like project name,
-version, etc., and convert that information to Maven Central download URLs. Then
-it converts those URLs to Nix `fetchurl` expressions.
+The new relay direction records Maven repository requests directly. Build tools
+already understand Maven repositories and mirrors, so `mif` can archive the files
+that were actually requested and later materialize a project-level Maven
+repository from the JSON lock.
 
 ## Recommended Workflow
 
