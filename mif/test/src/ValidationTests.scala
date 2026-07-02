@@ -5,14 +5,20 @@ import utest._
 object ValidationTests extends TestSuite {
   val tests = Tests {
     test("sanitize rejects newline in arguments") {
-      intercept[FatalException] {
-        ProcessRunner.run(Seq("echo", "hello\nworld"))
+      Logger.withLevel(LogLevel.Quiet) {
+        intercept[FatalException] {
+          ProcessRunner.run(Seq("echo", "hello\nworld"))
+        }
+        ()
       }
     }
 
     test("sanitize rejects null byte in arguments") {
-      intercept[FatalException] {
-        ProcessRunner.run(Seq("echo", "hello\u0000world"))
+      Logger.withLevel(LogLevel.Quiet) {
+        intercept[FatalException] {
+          ProcessRunner.run(Seq("echo", "hello\u0000world"))
+        }
+        ()
       }
     }
 

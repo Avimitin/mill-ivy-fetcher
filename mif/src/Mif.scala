@@ -73,6 +73,52 @@ object MillIvyFetcher {
   }
 
   @main()
+  def relay(
+      @arg(name = "host", doc = "Host interface for the relay server")
+      host: String = "127.0.0.1",
+      @arg(short = 'p', name = "port", doc = "Port for the relay server")
+      port: Int = 8081,
+      @arg(
+        short = 'r',
+        name = "repo-dir",
+        doc = "Local Maven repository directory used to archive files"
+      )
+      repoDir: os.Path = os.pwd / ".mif" / "repository",
+      @arg(
+        short = 'u',
+        name = "upstream",
+        doc = "Maven-compatible upstream base URL"
+      )
+      upstream: String = MavenRelayServer.DefaultUpstream,
+      @arg(
+        name = "proxy",
+        doc =
+          "HTTP proxy URL for upstream requests, for example http://127.0.0.1:8080"
+      )
+      proxy: Option[String] = None,
+      @arg(
+        name = "connect-timeout-seconds",
+        doc = "Timeout for connecting to the upstream repository"
+      )
+      connectTimeoutSeconds: Int = 30,
+      @arg(
+        name = "request-timeout-seconds",
+        doc = "Timeout for each upstream repository request"
+      )
+      requestTimeoutSeconds: Int = 120
+  ): Unit = {
+    val config = MavenRelayConfig(
+      repoDir = repoDir,
+      upstreamBaseUrl = upstream,
+      proxyUrl = proxy,
+      connectTimeoutSeconds = connectTimeoutSeconds,
+      requestTimeoutSeconds = requestTimeoutSeconds
+    )
+
+    MavenRelayServer.run(host, port, config)
+  }
+
+  @main()
   def run(
       @arg(short = 'p', name = "project-dir", doc = "specify project directory")
       projectDir: Option[os.Path],

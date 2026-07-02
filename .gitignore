@@ -5,3 +5,4 @@ result
 .metals/
 .bloop/
 chisel/
+.direnv/
