@@ -1,0 +1,21 @@
+name: MIF
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+    types: [ "opened", "synchronize", "reopened", "ready_for_review" ]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: DeterminateSystems/nix-installer-action@main
+    - name: Run MIF tests
+      run: nix develop --command mill mif.test
