@@ -354,6 +354,38 @@ object RelayTests extends TestSuite:
       }
     }
 
+    test("repeated GET serves the cached artifact without re-downloading") {
+      Logger.withLevel(LogLevel.Quiet) {
+        val content =
+          "<project>upstream</project>".getBytes(StandardCharsets.UTF_8)
+
+        withLocalUpstream(sampleMavenPath, content) { upstreamBaseUrl =>
+          val tempDir = os.temp.dir(prefix = "mif-relay-test_")
+          val repoDir = tempDir / "repository"
+          val service = newService(
+            MavenRelayConfig(
+              repoDir = repoDir,
+              upstreamBaseUrl = upstreamBaseUrl,
+              connectTimeoutSeconds = 1,
+              requestTimeoutSeconds = 1
+            )
+          )
+
+          try
+            val first = service.handle(RelayMethod.Get, sampleSegments)
+            assert(first.statusCode == 200)
+
+            // Second GET is a memoized cache hit: it must still serve the same
+            // bytes and must not create a duplicate repository record.
+            val second = service.handle(RelayMethod.Get, sampleSegments)
+            assert(second.statusCode == 200)
+            assert(relayBodyBytes(second.body).sameElements(content))
+            assert(repositorySnapshot(repoDir).size == 1)
+          finally service.close()
+        }
+      }
+    }
+
     test("GET forwards HTML directory listings without caching them") {
       Logger.withLevel(LogLevel.Quiet) {
         val listing =
