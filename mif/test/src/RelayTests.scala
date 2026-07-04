@@ -21,12 +21,15 @@ object RelayTests extends TestSuite:
 
   private def withLocalUpstream[T](
       mavenPath: String,
-      content: Array[Byte]
+      content: Array[Byte],
+      contentType: String = "application/xml"
   )(runTest: String => T): T =
     val server = ServerSocket(0)
     val running = AtomicBoolean(true)
     val thread =
-      Thread(() => serveRequests(server, running, mavenPath, content))
+      Thread(() =>
+        serveRequests(server, running, mavenPath, content, contentType)
+      )
     thread.setDaemon(true)
     thread.start()
 
@@ -40,16 +43,18 @@ object RelayTests extends TestSuite:
       server: ServerSocket,
       running: AtomicBoolean,
       mavenPath: String,
-      content: Array[Byte]
+      content: Array[Byte],
+      contentType: String
   ): Unit =
     while running.get do
-      try handleRequest(server.accept(), mavenPath, content)
+      try handleRequest(server.accept(), mavenPath, content, contentType)
       catch case _: SocketException if !running.get => ()
 
   private def handleRequest(
       socket: Socket,
       mavenPath: String,
-      content: Array[Byte]
+      content: Array[Byte],
+      contentType: String
   ): Unit =
     try
       val input = BufferedReader(
@@ -70,7 +75,7 @@ object RelayTests extends TestSuite:
       val output = socket.getOutputStream
 
       writeAscii(output, s"HTTP/1.1 ${status}\r\n")
-      writeAscii(output, "Content-Type: application/xml\r\n")
+      writeAscii(output, s"Content-Type: ${contentType}\r\n")
       writeAscii(output, s"Content-Length: ${body.length}\r\n")
       writeAscii(output, "Connection: close\r\n")
       writeAscii(output, "\r\n")
@@ -131,6 +136,15 @@ object RelayTests extends TestSuite:
       assert(MavenPath.fromSegments(Seq("com/example", "foo.pom")).isLeft)
       assert(MavenPath.fromSegments(Seq("com", "", "foo.pom")).isLeft)
       assert(MavenPath.fromSegments(Seq("com", "foo\nbar.pom")).isLeft)
+    }
+
+    test("MavenPath rejects dot-leading segments that name relay internals") {
+      // The relay's own state lives under dot-leading names (.mif metadata
+      // directory and .<name>.*.tmp downloads); serving them as artifacts would
+      // let a request read or delete internals.
+      assert(MavenPath.fromSegments(Seq(".mif", "repository.sqlite")).isLeft)
+      assert(MavenPath.fromSegments(Seq("com", ".hidden", "foo.pom")).isLeft)
+      assert(MavenPath.fromSegments(Seq(".foo-1.0.0.pom.abc.tmp")).isLeft)
     }
 
     test("upstream validation rejects unsafe or ambiguous base URLs") {
@@ -261,7 +275,7 @@ object RelayTests extends TestSuite:
           )
 
           try
-            val response = service.handle("GET", sampleSegments)
+            val response = service.handle(RelayMethod.Get, sampleSegments)
             assert(response.statusCode == 200)
             assert(relayBodyBytes(response.body).sameElements(upstreamContent))
             assert(os.read.bytes(artifact).sameElements(upstreamContent))
@@ -299,7 +313,7 @@ object RelayTests extends TestSuite:
           )
 
           try
-            val upstreamHead = service.handle("HEAD", sampleSegments)
+            val upstreamHead = service.handle(RelayMethod.Head, sampleSegments)
             assert(upstreamHead.statusCode == 200)
             assert(upstreamHead.body == RelayBody.Empty)
             assert(
@@ -308,7 +322,7 @@ object RelayTests extends TestSuite:
               )
             )
 
-            val response = service.handle("GET", sampleSegments)
+            val response = service.handle(RelayMethod.Get, sampleSegments)
             assert(response.statusCode == 200)
             assert(relayBodyBytes(response.body).sameElements(content))
             assert(
@@ -327,7 +341,7 @@ object RelayTests extends TestSuite:
               )
             )
 
-            val cachedHead = service.handle("HEAD", sampleSegments)
+            val cachedHead = service.handle(RelayMethod.Head, sampleSegments)
             assert(cachedHead.statusCode == 200)
             assert(cachedHead.body == RelayBody.Empty)
             assert(
@@ -336,6 +350,37 @@ object RelayTests extends TestSuite:
               )
             )
           finally service.close()
+        }
+      }
+    }
+
+    test("GET forwards HTML directory listings without caching them") {
+      Logger.withLevel(LogLevel.Quiet) {
+        val listing =
+          "<html><body>index of</body></html>".getBytes(StandardCharsets.UTF_8)
+
+        withLocalUpstream(sampleMavenPath, listing, contentType = "text/html") {
+          upstreamBaseUrl =>
+            val tempDir = os.temp.dir(prefix = "mif-relay-test_")
+            val repoDir = tempDir / "repository"
+            val service = newService(
+              MavenRelayConfig(
+                repoDir = repoDir,
+                upstreamBaseUrl = upstreamBaseUrl,
+                connectTimeoutSeconds = 1,
+                requestTimeoutSeconds = 1
+              )
+            )
+
+            try
+              val response = service.handle(RelayMethod.Get, sampleSegments)
+              assert(response.statusCode == 200)
+              assert(relayBodyBytes(response.body).sameElements(listing))
+
+              // Nothing is archived, so the subtree below this path stays usable.
+              assert(!os.exists(repoDir / os.RelPath(sampleMavenPath)))
+              assert(repositorySnapshot(repoDir).isEmpty)
+            finally service.close()
         }
       }
     }
@@ -361,20 +406,21 @@ object RelayTests extends TestSuite:
           )
 
           try
-            val initialResponse = service.handle("GET", sampleSegments)
+            val initialResponse =
+              service.handle(RelayMethod.Get, sampleSegments)
             assert(initialResponse.statusCode == 200)
             assert(relayBodyBytes(initialResponse.body).sameElements(content))
 
             os.write.over(artifact, corruptedContent)
 
-            val repairedGet = service.handle("GET", sampleSegments)
+            val repairedGet = service.handle(RelayMethod.Get, sampleSegments)
             assert(repairedGet.statusCode == 200)
             assert(relayBodyBytes(repairedGet.body).sameElements(content))
             assert(os.read.bytes(artifact).sameElements(content))
 
             os.write.over(artifact, corruptedContent)
 
-            val repairedHead = service.handle("HEAD", sampleSegments)
+            val repairedHead = service.handle(RelayMethod.Head, sampleSegments)
             assert(repairedHead.statusCode == 200)
             assert(repairedHead.body == RelayBody.Empty)
             assert(
