@@ -1,9 +1,11 @@
 package in.avimit.dev.mif
 
+import java.io.OutputStream
 import java.net.URI
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.nio.file.AtomicMoveNotSupportedException
+import java.security.DigestInputStream
 import java.security.MessageDigest
 
 import java.util.Base64
@@ -24,9 +26,24 @@ private def failureMessage(e: Throwable): String =
 private def safeGetFileSize(file: os.Path): Either[String, Long] =
   catchNonFatal(os.size(file))
 
-object MavenPath:
-  private val invalidSegments = Set("", ".", "..")
+private def parseUri(value: String, label: String): Either[String, URI] =
+  val trimmed = value.trim
+  if trimmed.isEmpty then Left(s"${label} is empty")
+  else
+    try Right(URI.create(trimmed))
+    catch
+      case e: IllegalArgumentException =>
+        Left(s"invalid ${label} ${value}: ${e.getMessage}")
 
+private def closeResources(
+    subject: String
+)(resources: (String, Either[String, Unit])*): Either[String, Unit] =
+  val failures = resources.collect:
+    case (label, Left(reason)) => s"${label}: ${reason}"
+  if failures.isEmpty then Right(())
+  else Left(s"Failed to close ${subject}: ${failures.mkString("; ")}")
+
+object MavenPath:
   def fromSegments(segments: Seq[String]): Either[String, String] =
     if segments.isEmpty then Left("missing Maven repository path")
     else
@@ -44,8 +61,13 @@ object MavenPath:
       )
       .mkString("/")
 
+  // Reserve the empty segment and any dot-leading segment. Dot-leading names are
+  // where the relay keeps its own state -- the .mif metadata directory holding the
+  // SQLite database, and the .<name>.*.tmp download files -- so serving them as
+  // artifacts would let a request read or delete relay internals. Legitimate Maven
+  // coordinates never begin a path segment with a dot.
   private def isInvalidSegment(segment: String): Boolean =
-    invalidSegments.contains(segment) || segment.exists(ch =>
+    segment.isEmpty || segment.startsWith(".") || segment.exists(ch =>
       ch == '/' || ch == '\\' || Character.isISOControl(ch)
     )
 
@@ -71,15 +93,6 @@ object MavenUpstream:
         )
       )
 
-  private def parseUri(value: String, label: String): Either[String, URI] =
-    val trimmed = value.trim
-    if trimmed.isEmpty then Left(s"${label} is empty")
-    else
-      try Right(URI.create(trimmed))
-      catch
-        case e: IllegalArgumentException =>
-          Left(s"invalid ${label} ${value}: ${e.getMessage}")
-
 object MavenProxy:
   def validate(proxyUrl: String): Either[String, URI] =
     parseUri(proxyUrl, "proxy URL").flatMap(validateUri(proxyUrl, _))
@@ -88,7 +101,12 @@ object MavenProxy:
     val scheme = Option(uri.getScheme).map(_.toLowerCase(Locale.ROOT))
     val path = Option(uri.getRawPath).getOrElse("")
 
-    if !scheme.contains("http") then
+    // Only plain-HTTP proxies are supported: MavenProxy.tuple feeds requests'
+    // (host, port) proxy parameter, which has no way to express an https:// proxy,
+    // so https is rejected here even though the upstream validator accepts it.
+    // tuple also dereferences getHost, so -- unlike the upstream validator, which
+    // only uses the URI textually -- this one additionally requires a parseable host.
+    if !scheme.exists(_ == "http") then
       Left(s"proxy URL must use http: ${proxyUrl}")
     else if uri.getRawAuthority == null || uri.getHost == null then
       Left(s"proxy URL must include a host: ${proxyUrl}")
@@ -102,45 +120,23 @@ object MavenProxy:
       Left(s"proxy URL must not contain query or fragment: ${proxyUrl}")
     else Right(uri)
 
-  private def parseUri(value: String, label: String): Either[String, URI] =
-    val trimmed = value.trim
-    if trimmed.isEmpty then Left(s"${label} is empty")
-    else
-      try Right(URI.create(trimmed))
-      catch
-        case e: IllegalArgumentException =>
-          Left(s"invalid ${label} ${value}: ${e.getMessage}")
-
   def tuple(uri: URI): (String, Int) = uri.getHost -> uri.getPort
 
 object Sha256:
-  def sri(bytes: Array[Byte]): String =
-    val digest = MessageDigest.getInstance("SHA-256").digest(bytes)
-    s"sha256-${Base64.getEncoder.encodeToString(digest)}"
-
-  def sriFile(file: os.Path): Either[Throwable, String] =
-    try
+  def sriFile(file: os.Path): Either[String, String] =
+    catchNonFatal:
       val digest = MessageDigest.getInstance("SHA-256")
-      Using.resource(os.read.inputStream(file)): input =>
-        val buffer = Array.ofDim[Byte](8192)
-        var count = input.read(buffer)
-        while count != -1 do
-          digest.update(buffer, 0, count)
-          count = input.read(buffer)
-
-      Right(s"sha256-${Base64.getEncoder.encodeToString(digest.digest())}")
-    catch case NonFatal(e) => Left(e)
+      Using.resource(DigestInputStream(os.read.inputStream(file), digest)):
+        input => input.transferTo(OutputStream.nullOutputStream())
+      s"sha256-${Base64.getEncoder.encodeToString(digest.digest())}"
 
 object AtomicFiles:
 
   def moveIntoPlace(
       tmp: os.Path,
       target: os.Path
-  ): Either[Throwable, Unit] =
-    try
-      moveIntoPlaceUnsafe(tmp, target)
-      Right(())
-    catch case NonFatal(e) => Left(e)
+  ): Either[String, Unit] =
+    catchNonFatal(moveIntoPlaceUnsafe(tmp, target))
 
   private def moveIntoPlaceUnsafe(
       tmp: os.Path,
@@ -171,6 +167,17 @@ object RelayBody:
   case object Empty extends RelayBody
   final case class Bytes(bytes: Array[Byte]) extends RelayBody
   final case class File(path: os.Path) extends RelayBody
+
+enum RelayMethod:
+  case Get, Head
+
+object RelayMethod:
+  // Cask only routes GET and HEAD to the relay (see MavenRelayRoutes and
+  // MavenRelayApp.handleMethodNotAllowed rejecting the rest with 405), so any
+  // method that reaches the handler and is not HEAD is a GET.
+  def fromHttp(method: String): RelayMethod =
+    if method.equalsIgnoreCase("HEAD") then RelayMethod.Head
+    else RelayMethod.Get
 
 case class RelayResponse(
     statusCode: Int,
@@ -221,13 +228,22 @@ class MavenRelayService private (
     requestTimeoutMillis: Int,
     repositoryStore: MavenRepositoryStore
 ) extends AutoCloseable:
-  // Each value is a plain JVM object used only as a monitor for one Maven path.
-  // AnyRef is the common supertype of reference values that support synchronized.
-  private val pathLocks = ConcurrentHashMap[String, AnyRef]()
+  // One monitor object per in-flight Maven path, reference-counted so the map does
+  // not grow without bound: withPathLock installs an entry on first use and drops
+  // it once no request holds it. The GET critical section intentionally spans the
+  // whole download so that concurrent requests for the same path fetch it once.
+  private final class PathLock:
+    var holders: Int = 0
+
+  private val pathLocks = ConcurrentHashMap[String, PathLock]()
   private val upstreamSession = requests.Session(
     headers = Map(
       "User-Agent" -> s"mif/${MillIvyFetcher.VERSION}",
-      "Accept" -> "*/*"
+      "Accept" -> "*/*",
+      // Cache raw artifact bytes only: ask upstream not to content-encode the
+      // body, and reject any encoded 200 at cache time (see isCacheableArtifact)
+      // so a cache hit never replays encoded bytes without a Content-Encoding.
+      "Accept-Encoding" -> "identity"
     ),
     proxy = proxy.map(MavenProxy.tuple).orNull,
     readTimeout = requestTimeoutMillis,
@@ -241,106 +257,127 @@ class MavenRelayService private (
   def repositoryDatabasePath: os.Path = repositoryStore.dbPath
 
   def closeEither(): Either[String, Unit] =
-    val failures = Seq(
+    closeResources("Maven relay service")(
       "upstream HTTP session" -> catchNonFatal(upstreamSession.close()),
       "repository database" -> catchNonFatal(repositoryStore.close())
-    ).collect:
-      case (resourceLabel, Left(reason)) => s"${resourceLabel}: ${reason}"
-
-    if failures.isEmpty then Right(())
-    else
-      Left(s"Failed to close Maven relay service: ${failures.mkString("; ")}")
+    )
 
   def close(): Unit =
     closeEither().left.foreach(Logger.warning)
 
-  def handle(method: String, segments: Seq[String]): RelayResponse =
+  def handle(method: RelayMethod, segments: Seq[String]): RelayResponse =
     MavenPath.fromSegments(segments) match
       case Left(reason) => textResponse(400, reason)
       case Right(mavenPath) =>
-        method.toUpperCase(Locale.ROOT) match
-          case "GET"  => handleGetReq(mavenPath)
-          case "HEAD" => handleHeadReq(mavenPath)
-          case method =>
-            throw new AssertionError(
-              s"unreachable: Cask routed unsupported method ${method} to relay handler"
-            )
+        method match
+          case RelayMethod.Get  => handleGetReq(mavenPath)
+          case RelayMethod.Head => handleHeadReq(mavenPath)
 
   private def handleGetReq(mavenPath: String): RelayResponse =
-    pathLock(mavenPath).synchronized:
-      val file = localFile(mavenPath)
-      if os.exists(file) && os.isFile(file) then cachedGet(mavenPath, file)
-      else fetchAndCacheGet(mavenPath, file)
+    val file = localFile(mavenPath)
+    withPathLock(mavenPath):
+      trustedCacheRecord(mavenPath, file) match
+        case Left(response) => response
+        case Right(Some(record)) =>
+          cachedArtifactResponse(RelayBody.File(file), mavenPath, record)
+        case Right(None) => fetchAndCacheGet(mavenPath, file)
 
-  // A local file alone is not a trusted cache hit. The repository database is
-  // the source of truth, so cached responses must have a DB record and the file
-  // on disk must still match the recorded size and SHA-256. Untrusted files are
-  // deleted and treated as cache misses.
-  private def cachedGet(mavenPath: String, file: os.Path): RelayResponse =
-    repositoryStore.find(mavenPath) match
-      case Left(reason) =>
-        repositoryDatabaseFailure(
-          phase = "read repository database",
-          mavenPath = mavenPath,
-          reason = reason
-        )
-      case Right(None) =>
-        deleteLocalArtifact(
-          mavenPath,
-          file,
-          reason = "Local artifact not recorded"
-        ) match
-          case Left(response) => response
-          case Right(_)       => fetchAndCacheGet(mavenPath, file)
-      case Right(Some(recordedFile)) =>
-        cachedArtifactMatches(mavenPath, file, recordedFile) match
-          case Left(response) => response
-          case Right(false) =>
-            deleteLocalArtifact(
-              mavenPath,
-              file,
-              reason = "Cached artifact does not match repository database"
-            ) match
-              case Left(response) => response
-              case Right(_)       => fetchAndCacheGet(mavenPath, file)
-          case Right(true) =>
-            RelayResponse(
-              statusCode = 200,
-              body = RelayBody.File(file),
-              headers = headersFor(
-                mavenPath,
-                size = Some(recordedFile.size),
-                upstreamHeaders =
-                  Seq("Content-Type" -> recordedFile.contentType)
-              )
+  private def handleHeadReq(mavenPath: String): RelayResponse =
+    val file = localFile(mavenPath)
+    // Validate/evict the cache entry under the lock, but issue the upstream HEAD
+    // outside it: a HEAD mutates nothing locally, so holding the per-path monitor
+    // across a network round trip would needlessly block a concurrent download.
+    withPathLock(mavenPath)(trustedCacheRecord(mavenPath, file)) match
+      case Left(response) => response
+      case Right(Some(record)) =>
+        cachedArtifactResponse(RelayBody.Empty, mavenPath, record)
+      case Right(None) => fetchUpstreamHeadResponse(mavenPath)
+
+  // A local file alone is not a trusted cache hit. The repository database is the
+  // source of truth, so a cached response must have a DB record whose recorded size
+  // and SHA-256 still match the bytes on disk; anything else is deleted and treated
+  // as a miss. Cached files are write-once -- once recorded they are never mutated
+  // in place, only deleted-and-refetched when untrusted -- which is why RelayBody.File
+  // may be streamed to the client after the lock is released. Any future in-place
+  // mutation must instead open the file under the lock before returning it.
+  //   Right(Some(record)) = trusted hit
+  //   Right(None)         = treat as a miss (a stale file, if any, has been deleted)
+  //   Left(response)      = an error response to return as-is
+  private def trustedCacheRecord(
+      mavenPath: String,
+      file: os.Path
+  ): Either[RelayResponse, Option[MavenRepositoryFile]] =
+    if !os.isFile(file) then Right(None)
+    else
+      repositoryStore.find(mavenPath) match
+        case Left(reason) =>
+          Left(
+            internalServerError(
+              phase = "read repository database",
+              mavenPath = mavenPath,
+              reason = reason
             )
+          )
+        case Right(None) =>
+          deleteLocalArtifact(mavenPath, file, "Local artifact not recorded")
+            .map(_ => None)
+        case Right(Some(record)) =>
+          cachedArtifactMatches(mavenPath, file, record).flatMap:
+            case true => Right(Some(record))
+            case false =>
+              deleteLocalArtifact(
+                mavenPath,
+                file,
+                "Cached artifact does not match repository database"
+              ).map(_ => None)
+
+  private def cachedArtifactResponse(
+      body: RelayBody,
+      mavenPath: String,
+      record: MavenRepositoryFile
+  ): RelayResponse =
+    RelayResponse(
+      statusCode = 200,
+      body = body,
+      headers = headersFor(
+        mavenPath,
+        size = Some(record.size),
+        upstreamHeaders = Seq("Content-Type" -> record.contentType)
+      )
+    )
 
   private def cachedArtifactMatches(
       mavenPath: String,
       file: os.Path,
       recordedFile: MavenRepositoryFile
   ): Either[RelayResponse, Boolean] =
-    val artifactInfo =
-      for
-        size <- safeGetFileSize(file).left.map: reason =>
-          raiseInternalServerErr(
-            phase = "read cached artifact size",
+    artifactSizeAndSha(mavenPath, file, "cached").map: (size, sha256) =>
+      size == recordedFile.size && sha256 == recordedFile.sha256
+
+  // Measure an artifact's size and SHA-256, mapping any filesystem/hash failure to
+  // a 500. Shared by the cache-hit verification and the post-download record step.
+  private def artifactSizeAndSha(
+      mavenPath: String,
+      file: os.Path,
+      label: String
+  ): Either[RelayResponse, (Long, String)] =
+    for
+      size <- safeGetFileSize(file).left.map: reason =>
+        internalServerError(
+          phase = s"read ${label} artifact size",
+          mavenPath = mavenPath,
+          reason = reason
+        )
+      sha256 <- Sha256
+        .sriFile(file)
+        .left
+        .map: reason =>
+          internalServerError(
+            phase = s"hash ${label} artifact",
             mavenPath = mavenPath,
             reason = reason
           )
-        sha256 <- Sha256
-          .sriFile(file)
-          .left
-          .map: cause =>
-            raiseInternalServerErr(
-              phase = "hash cached artifact",
-              mavenPath = mavenPath,
-              reason = failureMessage(cause)
-            )
-      yield (size, sha256)
-
-    artifactInfo.map: (size, sha256) =>
-      size == recordedFile.size && sha256 == recordedFile.sha256
+    yield (size, sha256)
 
   private def fetchAndCacheGet(
       mavenPath: String,
@@ -349,7 +386,7 @@ class MavenRelayService private (
     val parent = file / os.up
     catchNonFatal(os.makeDir.all(parent)) match
       case Left(reason) =>
-        raiseInternalServerErr(
+        internalServerError(
           phase = "create artifact directory",
           mavenPath = mavenPath,
           reason = reason
@@ -382,8 +419,11 @@ class MavenRelayService private (
   ): RelayResponse =
     val upstreamHeaders = safeUpstreamHeaders(upstreamResponse)
 
-    if upstreamResponse.statusCode == 200 then
-      cacheSuccessfulGet(mavenPath, file, tmp, upstreamHeaders)
+    if upstreamResponse.statusCode == 200 && isCacheableArtifact(
+        mavenPath,
+        upstreamHeaders
+      )
+    then cacheSuccessfulGet(mavenPath, file, tmp, upstreamHeaders)
     else
       forwardUncachedUpstreamGet(
         mavenPath,
@@ -391,6 +431,26 @@ class MavenRelayService private (
         upstreamResponse.statusCode,
         upstreamHeaders
       )
+
+  // Only archive a 200 whose body is a real artifact. A text/html body is almost
+  // always a directory listing (e.g. Maven Central redirects a bare directory path
+  // to an HTML index); caching it as a regular file would shadow the whole subtree,
+  // and every later fetch below that prefix would fail on the non-directory ancestor.
+  // A content-encoded body would be cached as opaque bytes and later replayed without
+  // its Content-Encoding header. Both are forwarded to the client uncached instead.
+  private def isCacheableArtifact(
+      mavenPath: String,
+      upstreamHeaders: Seq[(String, String)]
+  ): Boolean =
+    val contentType =
+      contentTypeFromHeaders(upstreamHeaders, mavenPath).toLowerCase(
+        Locale.ROOT
+      )
+    val contentEncoded = upstreamHeaders.exists:
+      case (name, value) =>
+        name.equalsIgnoreCase("Content-Encoding") &&
+        !value.equalsIgnoreCase("identity")
+    !contentType.startsWith("text/html") && !contentEncoded
 
   private def cacheSuccessfulGet(
       mavenPath: String,
@@ -400,31 +460,17 @@ class MavenRelayService private (
   ): RelayResponse =
     val artifactInfo =
       for
-        size <- safeGetFileSize(tmp).left.map: reason =>
-          raiseInternalServerErr(
-            phase = "read downloaded artifact size",
-            mavenPath = mavenPath,
-            reason = reason
-          )
-        sha256 <- Sha256
-          .sriFile(tmp)
-          .left
-          .map: cause =>
-            raiseInternalServerErr(
-              phase = "hash downloaded artifact",
-              mavenPath = mavenPath,
-              reason = failureMessage(cause)
-            )
+        sizeAndSha <- artifactSizeAndSha(mavenPath, tmp, "downloaded")
         _ <- AtomicFiles
           .moveIntoPlace(tmp, file)
           .left
-          .map: cause =>
-            raiseInternalServerErr(
+          .map: reason =>
+            internalServerError(
               phase = "persist artifact",
               mavenPath = mavenPath,
-              reason = failureMessage(cause)
+              reason = reason
             )
-      yield (size, sha256)
+      yield sizeAndSha
 
     artifactInfo match
       case Left(response) => response
@@ -438,7 +484,7 @@ class MavenRelayService private (
           upstreamUrl = Some(upstreamUrl(mavenPath))
         ) match
           case Left(reason) =>
-            repositoryDatabaseFailure(
+            internalServerError(
               phase = "update repository database",
               mavenPath = mavenPath,
               reason = reason
@@ -466,7 +512,7 @@ class MavenRelayService private (
 
     val bytesResult =
       catchNonFatal(os.read.bytes(tmp)).left.map: reason =>
-        raiseInternalServerErr(
+        internalServerError(
           phase = "read uncached upstream response",
           mavenPath = mavenPath,
           reason = reason
@@ -484,51 +530,6 @@ class MavenRelayService private (
             upstreamHeaders = upstreamHeaders
           )
         )
-
-  private def handleHeadReq(mavenPath: String): RelayResponse =
-    pathLock(mavenPath).synchronized:
-      val file = localFile(mavenPath)
-      if os.exists(file) && os.isFile(file) then cachedHead(mavenPath, file)
-      else fetchUpstreamHeadResponse(mavenPath)
-
-  private def cachedHead(mavenPath: String, file: os.Path): RelayResponse =
-    repositoryStore.find(mavenPath) match
-      case Left(reason) =>
-        repositoryDatabaseFailure(
-          phase = "read repository database",
-          mavenPath = mavenPath,
-          reason = reason
-        )
-      case Right(None) =>
-        deleteLocalArtifact(
-          mavenPath,
-          file,
-          reason = "Local artifact not recorded"
-        ) match
-          case Left(response) => response
-          case Right(_)       => fetchUpstreamHeadResponse(mavenPath)
-      case Right(Some(recordedFile)) =>
-        cachedArtifactMatches(mavenPath, file, recordedFile) match
-          case Left(response) => response
-          case Right(false) =>
-            deleteLocalArtifact(
-              mavenPath,
-              file,
-              reason = "Cached artifact does not match repository database"
-            ) match
-              case Left(response) => response
-              case Right(_)       => fetchUpstreamHeadResponse(mavenPath)
-          case Right(true) =>
-            RelayResponse(
-              statusCode = 200,
-              body = RelayBody.Empty,
-              headers = headersFor(
-                mavenPath,
-                size = Some(recordedFile.size),
-                upstreamHeaders =
-                  Seq("Content-Type" -> recordedFile.contentType)
-              )
-            )
 
   private def fetchUpstreamHeadResponse(mavenPath: String): RelayResponse =
     fetchUpstreamHead(mavenPath) match
@@ -553,32 +554,23 @@ class MavenRelayService private (
     case NonFatal(e) =>
       Left(upstreamFailure(mavenPath, e))
 
-  private def repositoryDatabaseFailure(
-      phase: String,
-      mavenPath: String,
-      reason: String
-  ): RelayResponse =
-    raiseInternalServerErr(
-      phase = phase,
-      mavenPath = mavenPath,
-      reason = reason
-    )
-
   private def deleteLocalArtifact(
       mavenPath: String,
       file: os.Path,
       reason: String
   ): Either[RelayResponse, Unit] =
     Logger.warning(s"${reason}, deleting: ${mavenPath}")
-    for _ <- catchNonFatal(os.remove(file)).left.map: reason =>
-        raiseInternalServerErr(
+    catchNonFatal(os.remove(file))
+      .map(_ => ())
+      .left
+      .map: failure =>
+        internalServerError(
           phase = "delete local artifact",
           mavenPath = mavenPath,
-          reason = reason
+          reason = failure
         )
-    yield ()
 
-  private def raiseInternalServerErr(
+  private def internalServerError(
       phase: String,
       mavenPath: String,
       reason: String
@@ -589,10 +581,7 @@ class MavenRelayService private (
     textResponse(500, "internal server error\n")
 
   private def upstreamFailure(mavenPath: String, e: Throwable): RelayResponse =
-    upstreamFailure(
-      mavenPath,
-      Option(e.getMessage).getOrElse(e.getClass.getSimpleName)
-    )
+    upstreamFailure(mavenPath, failureMessage(e))
 
   private def upstreamFailure(
       mavenPath: String,
@@ -660,10 +649,22 @@ class MavenRelayService private (
   private def localFile(mavenPath: String): os.Path =
     config.repoDir / os.RelPath(mavenPath)
 
-  private def pathLock(mavenPath: String): AnyRef =
-    val newLock = new AnyRef
-    val existing = pathLocks.putIfAbsent(mavenPath, newLock)
-    if existing == null then newLock else existing
+  private def withPathLock[T](mavenPath: String)(body: => T): T =
+    val lock = pathLocks.compute(
+      mavenPath,
+      (_, existing) =>
+        val pathLock = if existing == null then PathLock() else existing
+        pathLock.holders += 1
+        pathLock
+    )
+    try lock.synchronized(body)
+    finally
+      pathLocks.compute(
+        mavenPath,
+        (_, current) =>
+          current.holders -= 1
+          if current.holders == 0 then null else current
+      )
 
   private def record(
       mavenPath: String,
@@ -711,15 +712,15 @@ class MavenRelayService private (
       size: Option[Long],
       upstreamHeaders: Seq[(String, String)] = Nil
   ): Seq[(String, String)] =
-    val withoutContentLength = upstreamHeaders.filterNot:
-      case (name, _) => name.equalsIgnoreCase("Content-Length")
-    val hasContentType = withoutContentLength.exists:
-      case (name, _) => name.equalsIgnoreCase("Content-Type")
-    val withContentType =
-      if hasContentType then withoutContentLength
-      else ("Content-Type" -> contentTypeFor(mavenPath)) +: withoutContentLength
+    val passthrough = upstreamHeaders.filterNot:
+      case (name, _) =>
+        name.equalsIgnoreCase("Content-Length") ||
+        name.equalsIgnoreCase("Content-Type")
+    val contentType =
+      "Content-Type" -> contentTypeFromHeaders(upstreamHeaders, mavenPath)
 
-    withContentType ++ size.map(value => "Content-Length" -> value.toString)
+    (contentType +: passthrough) ++
+      size.map(value => "Content-Length" -> value.toString)
 
   private def contentTypeFromHeaders(
       headers: Seq[(String, String)],
@@ -763,7 +764,8 @@ case class MavenRelayRoutes(service: MavenRelayService)(implicit
       segments: cask.RemainingPathSegments,
       request: cask.Request
   ) =
-    val method = request.exchange.getRequestMethod.toString
+    val method =
+      RelayMethod.fromHttp(request.exchange.getRequestMethod.toString)
     val response =
       if segments.value.isEmpty then rootResponse(method)
       else service.handle(method, segments.value)
@@ -778,43 +780,20 @@ case class MavenRelayRoutes(service: MavenRelayService)(implicit
     body match
       case RelayBody.Empty        => ()
       case RelayBody.Bytes(bytes) => bytes
-      case RelayBody.File(path)   => FileData(path)
+      case RelayBody.File(path)   => os.read.stream(path)
 
-  private final case class FileData(path: os.Path) extends cask.Response.Data:
-    def write(out: java.io.OutputStream): Unit =
-      val input = os.read.inputStream(path)
-      try
-        input.transferTo(out)
-        ()
-      finally input.close()
-
-    def headers: Seq[(String, String)] = Nil
-
-  private def rootResponse(method: String): RelayResponse =
+  private def rootResponse(method: RelayMethod): RelayResponse =
     val messageBytes =
       "mif Maven relay is running\n".getBytes(StandardCharsets.UTF_8)
     val headers = Seq(
       "Content-Type" -> "text/plain; charset=utf-8",
       "Content-Length" -> messageBytes.length.toString
     )
+    val body = method match
+      case RelayMethod.Get  => RelayBody.Bytes(messageBytes)
+      case RelayMethod.Head => RelayBody.Empty
 
-    method.toUpperCase(Locale.ROOT) match
-      case "GET" =>
-        RelayResponse(
-          statusCode = 200,
-          body = RelayBody.Bytes(messageBytes),
-          headers = headers
-        )
-      case "HEAD" =>
-        RelayResponse(
-          statusCode = 200,
-          body = RelayBody.Empty,
-          headers = headers
-        )
-      case method =>
-        throw new AssertionError(
-          s"unreachable: Cask routed unsupported method ${method} to root"
-        )
+    RelayResponse(statusCode = 200, body = body, headers = headers)
 
   initialize()
 
@@ -918,15 +897,11 @@ class MavenRelayHandle(
     shutdownApp: () => Unit
 ) extends AutoCloseable:
   def closeEither(): Either[String, Unit] =
-    val failures = Seq(
+    closeResources("Maven relay handle")(
       "HTTP server" -> RelayHttpServer.stop(server),
       "relay service" -> service.closeEither(),
       "Cask execution context" -> catchNonFatal(shutdownApp())
-    ).collect:
-      case (resourceLabel, Left(reason)) => s"${resourceLabel}: ${reason}"
-
-    if failures.isEmpty then Right(())
-    else Left(s"Failed to close Maven relay handle: ${failures.mkString("; ")}")
+    )
 
   def close(): Unit =
     closeEither().left.foreach(Logger.warning)
