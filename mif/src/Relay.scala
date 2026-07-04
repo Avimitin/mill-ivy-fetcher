@@ -190,6 +190,10 @@ private case class UpstreamResponse(
     headers: Map[String, Seq[String]]
 )
 
+// Cheap fingerprint of a cached file, used to skip re-hashing an artifact whose
+// on-disk (mtime, size) has not changed since it was last verified.
+private case class VerifiedStamp(mtimeMillis: Long, size: Long)
+
 object MavenRelayService:
   def fromConfig(config: MavenRelayConfig): Either[String, MavenRelayService] =
     for
@@ -236,6 +240,11 @@ class MavenRelayService private (
     var holders: Int = 0
 
   private val pathLocks = ConcurrentHashMap[String, PathLock]()
+  // Per-path record of the last (mtime, size) that verified against the database,
+  // so a repeated hit on an unchanged file serves in O(1) instead of re-reading
+  // and re-hashing the whole artifact under the lock. An external change moves the
+  // file's mtime or size and forces a fresh SHA-256 verification.
+  private val verifiedStamps = ConcurrentHashMap[String, VerifiedStamp]()
   private val upstreamSession = requests.Session(
     headers = Map(
       "User-Agent" -> s"mif/${MillIvyFetcher.VERSION}",
@@ -351,8 +360,24 @@ class MavenRelayService private (
       file: os.Path,
       recordedFile: MavenRepositoryFile
   ): Either[RelayResponse, Boolean] =
-    artifactSizeAndSha(mavenPath, file, "cached").map: (size, sha256) =>
-      size == recordedFile.size && sha256 == recordedFile.sha256
+    val stamp = currentStamp(file)
+    val alreadyVerified = stamp.exists: current =>
+      current.size == recordedFile.size &&
+        verifiedStamps.get(mavenPath) == current
+
+    if alreadyVerified then Right(true)
+    else
+      artifactSizeAndSha(mavenPath, file, "cached").map: (size, sha256) =>
+        val matches = size == recordedFile.size && sha256 == recordedFile.sha256
+        stamp.foreach: current =>
+          if matches then verifiedStamps.put(mavenPath, current)
+          else verifiedStamps.remove(mavenPath)
+        matches
+
+  // Best-effort (mtime, size) read; None if the file is gone or unreadable, in
+  // which case verification falls through to the full size+hash path.
+  private def currentStamp(file: os.Path): Option[VerifiedStamp] =
+    catchNonFatal(VerifiedStamp(os.mtime(file), os.size(file))).toOption
 
   // Measure an artifact's size and SHA-256, mapping any filesystem/hash failure to
   // a 500. Shared by the cache-hit verification and the post-download record step.
@@ -491,6 +516,9 @@ class MavenRelayService private (
             )
           case Right(_) =>
             Logger.info(s"Archived ${mavenPath}")
+            // Record the just-written file's stamp so its first cache hit does
+            // not re-hash bytes we just verified.
+            currentStamp(file).foreach(verifiedStamps.put(mavenPath, _))
             RelayResponse(
               statusCode = 200,
               body = RelayBody.File(file),
@@ -560,6 +588,7 @@ class MavenRelayService private (
       reason: String
   ): Either[RelayResponse, Unit] =
     Logger.warning(s"${reason}, deleting: ${mavenPath}")
+    verifiedStamps.remove(mavenPath)
     catchNonFatal(os.remove(file))
       .map(_ => ())
       .left
