@@ -417,6 +417,86 @@ object RelayTests extends TestSuite:
       }
     }
 
+    test("relay started on port 0 reports the actually bound port") {
+      Logger.withLevel(LogLevel.Quiet) {
+        val tempDir = os.temp.dir(prefix = "mif-relay-test_")
+        val config = MavenRelayConfig(
+          repoDir = tempDir / "repository",
+          upstreamBaseUrl = MavenRelayServer.DefaultUpstream,
+          connectTimeoutSeconds = 1,
+          requestTimeoutSeconds = 1
+        )
+        val handle = MavenRelayServer.start("127.0.0.1", 0, config) match
+          case Right(handle) => handle
+          case Left(reason)  => throw new java.lang.AssertionError(reason)
+
+        try
+          assert(handle.boundPort > 0)
+          assert(handle.baseUrl == s"http://127.0.0.1:${handle.boundPort}/")
+          val response = requests.get(handle.baseUrl, check = false)
+          assert(response.statusCode == 200)
+        finally handle.close()
+      }
+    }
+
+    test("service tracks accessed paths for successful GETs only") {
+      Logger.withLevel(LogLevel.Quiet) {
+        val content =
+          "<project>upstream</project>".getBytes(StandardCharsets.UTF_8)
+        withLocalUpstream(sampleMavenPath, content) { upstreamBaseUrl =>
+          val tempDir = os.temp.dir(prefix = "mif-relay-test_")
+          val repoDir = tempDir / "repository"
+          val config = MavenRelayConfig(
+            repoDir = repoDir,
+            upstreamBaseUrl = upstreamBaseUrl,
+            connectTimeoutSeconds = 1,
+            requestTimeoutSeconds = 1
+          )
+          val missingSegments =
+            Seq("com", "example", "missing", "1.0.0", "missing-1.0.0.pom")
+
+          val service = newService(config)
+          try
+            assert(service.accessedPaths.isEmpty)
+
+            assert(
+              service.handle(RelayMethod.Head, sampleSegments).statusCode == 200
+            )
+            assert(service.accessedPaths.isEmpty)
+
+            assert(
+              service.handle(RelayMethod.Get, missingSegments).statusCode == 404
+            )
+            assert(service.accessedPaths.isEmpty)
+
+            assert(
+              service.handle(RelayMethod.Get, sampleSegments).statusCode == 200
+            )
+            assert(service.accessedPaths == Seq(sampleMavenPath))
+
+            assert(
+              service.handle(RelayMethod.Get, sampleSegments).statusCode == 200
+            )
+            assert(service.accessedPaths == Seq(sampleMavenPath))
+          finally service.close()
+
+          // A fresh service over a warm repository must still observe
+          // cache-hit GETs, otherwise re-archiving with a reused repo-dir
+          // would drop files from the lock.
+          val warmService = newService(config)
+          try
+            assert(warmService.accessedPaths.isEmpty)
+            assert(
+              warmService
+                .handle(RelayMethod.Get, sampleSegments)
+                .statusCode == 200
+            )
+            assert(warmService.accessedPaths == Seq(sampleMavenPath))
+          finally warmService.close()
+        }
+      }
+    }
+
     test("GET and HEAD delete cached artifacts that differ from the database") {
       Logger.withLevel(LogLevel.Quiet) {
         val content = "<project>upstream</project>"

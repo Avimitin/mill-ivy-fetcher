@@ -52,12 +52,12 @@ an internal SQLite database under the repository root:
 .mif/repository/.mif/repository.sqlite
 ```
 
-That database is a relay implementation detail. The lock/export workflow will be
-built as a separate layer on top of this repository state.
+That database is a relay implementation detail. The lock/export workflow is
+provided by `mif archive` (see below), which drives the relay for you.
 
-This is the first step of the Maven repository based redesign. It is intended
-to replace the old Coursier-cache scanning flow over time, but the old commands
-are still present for now.
+This is part of the Maven repository based redesign. It is intended to replace
+the old Coursier-cache scanning flow over time, but the old commands are still
+present for now.
 
 Run the relay manually:
 
@@ -116,7 +116,6 @@ mill -i mif.run relay \
 
 Current limitations:
 
-* The lock/export layer is intentionally not implemented in this relay snapshot.
 * Maven Central is the only default upstream.
 * Private repository authentication and proxy authentication are not supported yet.
 * Cached Maven files are treated as archived content. Mutable metadata such as
@@ -124,6 +123,79 @@ Current limitations:
   file or use a fresh repository directory if you need to refresh it.
 * The relay only observes files requested by the build tool. Lazy Mill targets
   that are never evaluated will not be discovered by this layer.
+
+## Archive
+
+`mif archive` records the full Maven file set of a build command into a
+project-level JSON lock. It starts the relay on a free port, runs the build
+command in a clean environment whose Coursier mirror points Maven Central at
+the relay, and then writes every file the relay served into the lock:
+
+```bash
+mif archive -p path/to/project -- mill --no-daemon __.prepareOffline
+```
+
+Everything after `--` is the build command, executed inside the project
+directory. Because the run starts with empty Coursier/Mill caches and a fresh
+`HOME`, the build has to request every dependency through the relay, so the
+lock is a complete record of what the command needs.
+
+By default the lock is written to `<project-dir>/mif.lock.json` (commit this
+file) and the relay repository lives in `<project-dir>/.mif/repository`
+(disposable local state; keep it out of git). The lock records which commands
+produced it and which files each command requested:
+
+```json
+{
+  "version": 1,
+  "kind": "mif-maven-lock",
+  "repositories": [
+    { "id": "central", "type": "maven", "url": "https://repo1.maven.org/maven2" }
+  ],
+  "runs": [
+    { "id": "9f8e7d6c5b4a", "command": ["mill", "--no-daemon", "__.prepareOffline"] }
+  ],
+  "files": [
+    {
+      "repository": "central",
+      "mavenPath": "com/example/foo/1.0.0/foo-1.0.0.jar",
+      "sha256": "sha256-DAOEyJEjhkDsWJUAJ4xVSFcQqai/38MDdTuIovpi6MA=",
+      "size": 49512,
+      "runs": ["9f8e7d6c5b4a"]
+    }
+  ]
+}
+```
+
+Archive runs append: run `mif archive` once per build target and the lock
+unions the results, so one committed lock can cover a whole project. Entries
+are sorted, re-running a recorded command is a no-op, and each file lists the
+ids of all runs that requested it. If an already locked path comes back with
+different content, archive refuses to update the lock and reports every
+mismatched path — either investigate the upstream mutation or rebuild
+deliberately with `--fresh` into a clean `--repo-dir`.
+
+On Linux the build command runs inside a bubblewrap sandbox (`bwrap`): the
+host filesystem is visible read-only, the real home directory, `/tmp`, and the
+environment are masked, and only the project directory and a throwaway
+sandbox home are writable. This is what guarantees warm host caches (like
+`~/.cache/coursier` or `~/.ivy2/local`) cannot silently satisfy dependencies
+outside the relay. If bubblewrap cannot run (for example in a container that
+blocks user namespaces), archive fails with instructions; `--sandbox none`
+opts into a clean-environment run without filesystem isolation. On macOS,
+where bubblewrap does not exist, archive automatically uses the
+clean-environment mode and warns.
+
+Archive limitations:
+
+* Only traffic to the mirrored upstream is captured. Mill distribution
+  bootstrapping, `.mill-jvm-version` JVM downloads, and repositories other
+  than the configured upstream bypass the relay and will be missing from the
+  lock. Use a Nix-provided Mill and `mill-jvm-version: system` (as this
+  repository does) so the build only needs Maven Central.
+* A Mill daemon started outside the sandbox can serve requests with the wrong
+  environment. Archive warns when it finds daemon state; pass `--no-daemon`
+  (or `-i`) in the build command and run `mill shutdown` first.
 
 ## Implementation Details
 
