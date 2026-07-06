@@ -69,10 +69,15 @@
             };
 
             devShells.default = pkgs.mkShell {
-              nativeBuildInputs = with pkgs; [
-                millVersions.mill_1_1_2
-                metals
-              ];
+              nativeBuildInputs =
+                with pkgs;
+                [
+                  millVersions.mill_1_1_2
+                  metals
+                ]
+                # `mif archive` sandboxes build commands with bubblewrap;
+                # bubblewrap is Linux-only.
+                ++ lib.optionals stdenv.hostPlatform.isLinux [ bubblewrap ];
             };
 
             treefmt = {

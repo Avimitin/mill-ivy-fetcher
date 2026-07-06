@@ -123,6 +123,11 @@ object MavenProxy:
   def tuple(uri: URI): (String, Int) = uri.getHost -> uri.getPort
 
 object Sha256:
+  def sri(bytes: Array[Byte]): String =
+    val digest = MessageDigest.getInstance("SHA-256")
+    digest.update(bytes)
+    s"sha256-${Base64.getEncoder.encodeToString(digest.digest())}"
+
   def sriFile(file: os.Path): Either[String, String] =
     catchNonFatal:
       val digest = MessageDigest.getInstance("SHA-256")
@@ -245,6 +250,10 @@ class MavenRelayService private (
   // and re-hashing the whole artifact under the lock. An external change moves the
   // file's mtime or size and forces a fresh SHA-256 verification.
   private val verifiedStamps = ConcurrentHashMap[String, VerifiedStamp]()
+  // Maven paths served with a 200 GET during this service's lifetime, whether
+  // from the local repository or freshly fetched. HEAD probes and upstream
+  // failures are not dependencies, so they are never tracked here.
+  private val accessedGetPaths = ConcurrentHashMap.newKeySet[String]()
   private val upstreamSession = requests.Session(
     headers = Map(
       "User-Agent" -> s"mif/${MillIvyFetcher.VERSION}",
@@ -264,6 +273,10 @@ class MavenRelayService private (
   def upstreamBaseUrl: String = upstreamBase.toString
   def proxyUrl: Option[String] = proxy.map(_.toString)
   def repositoryDatabasePath: os.Path = repositoryStore.dbPath
+
+  def accessedPaths: Seq[String] =
+    import scala.jdk.CollectionConverters.*
+    accessedGetPaths.asScala.toSeq.sorted
 
   def closeEither(): Either[String, Unit] =
     closeResources("Maven relay service")(
@@ -288,6 +301,7 @@ class MavenRelayService private (
       trustedCacheRecord(mavenPath, file) match
         case Left(response) => response
         case Right(Some(record)) =>
+          accessedGetPaths.add(mavenPath)
           cachedArtifactResponse(RelayBody.File(file), mavenPath, record)
         case Right(None) => fetchAndCacheGet(mavenPath, file)
 
@@ -519,6 +533,7 @@ class MavenRelayService private (
             // Record the just-written file's stamp so its first cache hit does
             // not re-hash bytes we just verified.
             currentStamp(file).foreach(verifiedStamps.put(mavenPath, _))
+            accessedGetPaths.add(mavenPath)
             RelayResponse(
               statusCode = 200,
               body = RelayBody.File(file),
@@ -881,6 +896,18 @@ object RelayHttpServer:
       case NonFatal(e) =>
         Left(s"Failed to stop Maven relay HTTP server: ${failureMessage(e)}")
 
+  // Undertow only knows the real port after binding, which matters when the
+  // relay is started on port 0 to pick a free ephemeral port.
+  def boundPort(server: Undertow): Either[String, Int] =
+    import scala.jdk.CollectionConverters.*
+    catchNonFatal(
+      server.getListenerInfo.asScala.headOption
+        .map(_.getAddress)
+        .collect { case address: java.net.InetSocketAddress =>
+          address.getPort
+        }
+    ).flatMap(_.toRight("Maven relay did not report a bound TCP port"))
+
 object RuntimeHooks:
   def addShutdownHook(close: () => Unit): Either[String, Unit] =
     try
@@ -911,20 +938,34 @@ class MavenRelayApp(
   def start(): Either[String, MavenRelayHandle] =
     RelayHttpServer
       .start(host, port, defaultHandler)
-      .map: server =>
-        MavenRelayHandle(
-          baseUrl = s"http://${host}:${port}/",
-          server = server,
-          service = service,
-          shutdownApp = () => executionContext.shutdown()
-        )
+      .flatMap: server =>
+        RelayHttpServer.boundPort(server) match
+          case Left(reason) =>
+            RelayHttpServer.stop(server).left.foreach(Logger.warning)
+            catchNonFatal(executionContext.shutdown()).left
+              .foreach(Logger.warning)
+            Left(reason)
+          case Right(actualPort) =>
+            Right(
+              MavenRelayHandle(
+                baseUrl = s"http://${host}:${actualPort}/",
+                boundPort = actualPort,
+                server = server,
+                service = service,
+                shutdownApp = () => executionContext.shutdown()
+              )
+            )
 
 class MavenRelayHandle(
     val baseUrl: String,
+    val boundPort: Int,
     server: Undertow,
     service: MavenRelayService,
     shutdownApp: () => Unit
 ) extends AutoCloseable:
+  // Maven paths served with a 200 GET so far. Read this before close().
+  def accessedPaths: Seq[String] = service.accessedPaths
+
   def closeEither(): Either[String, Unit] =
     closeResources("Maven relay handle")(
       "HTTP server" -> RelayHttpServer.stop(server),

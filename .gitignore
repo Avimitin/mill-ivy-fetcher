@@ -6,3 +6,4 @@ result
 .bloop/
 chisel/
 .direnv/
+.mif/
