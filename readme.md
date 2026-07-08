@@ -5,6 +5,10 @@ and turns them into a Nix-consumable lock file. The lock can then be converted
 into a local Maven repository derivation, allowing Mill/Coursier builds to run in
 a Nix sandbox without network access.
 
+This repository includes a Chisel integration test (`.#ci-test`) that publishes
+Chisel locally from a locked Maven repository, proving that `mif` can capture a
+large real-world Mill build and replay it offline through Nix.
+
 The workflow is:
 
 1. Run `mif archive` around one or more Mill targets.
