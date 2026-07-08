@@ -20,16 +20,12 @@
     flake-parts.lib.mkFlake { inherit inputs; } (
       { getSystem, ... }:
       let
-        mill-ivy-fetcher-overlay = import ./nix/mill-ivy-fetcher-overlay.nix;
-
         millOverlay = import ./nix/mill-overlay.nix;
       in
       {
         flake = {
           overlays = {
-            default = mill-ivy-fetcher-overlay;
-            inherit mill-ivy-fetcher-overlay;
-
+            default = millOverlay;
             mill-overlay = millOverlay;
           };
         };
@@ -50,34 +46,35 @@
             pkgs = import inputs.nixpkgs {
               inherit system;
               overlays = [
-                mill-ivy-fetcher-overlay
                 millOverlay
               ];
             };
+            mifPackage = pkgs.callPackage ./package.nix { };
           in
           {
             _module.args.pkgs = pkgs;
 
             legacyPackages = pkgs;
 
-            packages = {
-              # mif has a lock file in this repo that cannot depend on the downstream mill to build
-              default = pkgs.mill-ivy-fetcher;
-              inherit (pkgs) mill-ivy-fetcher;
+            packages.default = mifPackage;
 
-              ci-test = pkgs.callPackage ./.github/integration/chisel.nix { };
+            packages.mif = mifPackage;
+
+            packages.mif-maven-repository = pkgs.mkMavenRepository {
+              lockFile = ./mif.lock.json;
             };
 
+            packages.mif-jar = mifPackage;
+
             devShells.default = pkgs.mkShell {
-              nativeBuildInputs =
-                with pkgs;
-                [
-                  millVersions.mill_1_1_2
-                  metals
-                ]
-                # `mif archive` sandboxes build commands with bubblewrap;
-                # bubblewrap is Linux-only.
-                ++ lib.optionals stdenv.hostPlatform.isLinux [ bubblewrap ];
+              nativeBuildInputs = [
+                mifPackage
+                pkgs.millVersions.mill_1_1_2
+                pkgs.metals
+              ]
+              # `mif archive` sandboxes build commands with bubblewrap;
+              # bubblewrap is Linux-only.
+              ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [ pkgs.bubblewrap ];
             };
 
             treefmt = {
