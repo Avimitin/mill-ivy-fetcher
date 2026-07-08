@@ -4,10 +4,12 @@ import utest._
 
 object ArchiveTests extends TestSuite:
   private val upstream = MavenRelayServer.DefaultUpstream
+  private val prepareCommand = Seq("mill", "-i", "__.prepareOffline")
+  private val assemblyCommand = Seq("mill", "-i", "foo.assembly")
   private val prepareRun =
-    LockRun.fromCommand(Seq("mill", "-i", "__.prepareOffline"))
+    LockRun.fromCommand(prepareCommand, "central")
   private val assemblyRun =
-    LockRun.fromCommand(Seq("mill", "-i", "foo.assembly"))
+    LockRun.fromCommand(assemblyCommand, "central")
 
   private def repoFile(path: String, size: Long = 42): MavenRepositoryFile =
     MavenRepositoryFile(
@@ -37,7 +39,7 @@ object ArchiveTests extends TestSuite:
           lockPath = lockPath,
           runFiles = files,
           upstream = upstream,
-          run = prepareRun,
+          command = prepareCommand,
           fresh = false
         )
       )
@@ -59,7 +61,7 @@ object ArchiveTests extends TestSuite:
           lockPath,
           Seq(repoFile("com/example/a/1.0.0/a-1.0.0.pom"), shared),
           upstream,
-          prepareRun,
+          prepareCommand,
           fresh = false
         )
       )
@@ -70,7 +72,7 @@ object ArchiveTests extends TestSuite:
           lockPath,
           Seq(repoFile("com/example/b/1.0.0/b-1.0.0.pom"), shared),
           upstream,
-          assemblyRun,
+          assemblyCommand,
           fresh = false
         )
       )
@@ -90,10 +92,22 @@ object ArchiveTests extends TestSuite:
       val files = Seq(repoFile("com/example/a/1.0.0/a-1.0.0.pom"))
 
       unwrap(
-        ArchiveRunner.updateLock(lockPath, files, upstream, prepareRun, false)
+        ArchiveRunner.updateLock(
+          lockPath,
+          files,
+          upstream,
+          prepareCommand,
+          false
+        )
       )
       val summary = unwrap(
-        ArchiveRunner.updateLock(lockPath, files, upstream, assemblyRun, false)
+        ArchiveRunner.updateLock(
+          lockPath,
+          files,
+          upstream,
+          assemblyCommand,
+          false
+        )
       )
       assert(summary == LockUpdateSummary(1, 0, 2))
 
@@ -118,7 +132,7 @@ object ArchiveTests extends TestSuite:
           lockPath,
           Seq(file),
           upstream,
-          prepareRun,
+          prepareCommand,
           false
         )
       )
@@ -129,7 +143,7 @@ object ArchiveTests extends TestSuite:
         lockPath,
         Seq(mutated),
         upstream,
-        assemblyRun,
+        assemblyCommand,
         fresh = false
       )
       assert(result.left.exists(_.contains("artifact content changed")))
@@ -145,7 +159,7 @@ object ArchiveTests extends TestSuite:
           lockPath,
           Seq(repoFile("com/example/a/1.0.0/a-1.0.0.pom")),
           upstream,
-          prepareRun,
+          prepareCommand,
           fresh = false
         )
       )
@@ -154,7 +168,7 @@ object ArchiveTests extends TestSuite:
           lockPath,
           Seq(repoFile("com/example/b/1.0.0/b-1.0.0.pom")),
           upstream,
-          assemblyRun,
+          assemblyCommand,
           fresh = true
         )
       )

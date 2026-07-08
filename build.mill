@@ -3,12 +3,12 @@ package build
 
 import mill._
 import mill.scalalib._
-import mill.Command
+
 import mill.scalalib.scalafmt._
 import mill.scalalib.TestModule.Utest
-import mill.util.Jvm
+
 import mill.scalalib.publish._
-import coursier.maven.MavenRepository
+
 
 trait MIFModule extends ScalaModule with ScalafmtModule with PublishModule {
   val mainargs = mvn"com.lihaoyi::mainargs:0.5.0"
@@ -19,7 +19,6 @@ trait MIFModule extends ScalaModule with ScalafmtModule with PublishModule {
   val scalasql = mvn"com.lihaoyi::scalasql:0.3.1"
   val sqlite   = mvn"org.xerial:sqlite-jdbc:3.46.1.0"
   val slf4jNop = mvn"org.slf4j:slf4j-nop:2.0.13"
-  val coursier = mvn"io.get-coursier:coursier_2.13:2.1.25-M3"
 
   def scalaVersion     = "3.6.4"
   def scalacOptions    = Seq("-new-syntax", "-deprecation")
@@ -31,8 +30,7 @@ trait MIFModule extends ScalaModule with ScalafmtModule with PublishModule {
     requests,
     scalasql,
     sqlite,
-    slf4jNop,
-    coursier
+    slf4jNop
   )
 
   def pomSettings = PomSettings(
