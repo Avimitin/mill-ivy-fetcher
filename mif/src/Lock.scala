@@ -3,44 +3,51 @@ package in.avimit.dev.mif
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.util.Locale
+import scala.collection.immutable.VectorMap
 import scala.util.control.NonFatal
 
 import upickle.default.ReadWriter
 
 case class LockRepository(
     id: String,
-    @upickle.implicits.key("type") repoType: String,
+    repoType: String,
     url: String
-) derives ReadWriter
+)
 
 case class LockRun(
     id: String,
+    repository: String,
     command: Vector[String]
-) derives ReadWriter
+)
 
 object LockRun:
-  /** Stable identifier for a build command: the same argv always maps to the
-    * same id, so locks written on different machines merge cleanly and
-    * re-archiving an already recorded command is a no-op. Archive commands are
-    * normalized before a run is constructed so newline-containing arguments do
-    * not reach this newline-joined encoding.
+  /** Stable identifier for a build command and repository: the same argv
+    * against the same repository always maps to the same id, while custom
+    * repositories remain visible as distinct run ids in artifact groups.
+    * Archive commands are normalized before a run is constructed so
+    * newline-containing arguments do not reach this newline-joined encoding.
     */
-  def idFor(command: Seq[String]): String =
+  def idFor(command: Seq[String], repository: String): String =
     val digest = MessageDigest
       .getInstance("SHA-256")
-      .digest(command.mkString("\n").getBytes(StandardCharsets.UTF_8))
+      .digest(
+        (repository +: command).mkString("\n").getBytes(StandardCharsets.UTF_8)
+      )
     digest.take(6).map(byte => f"${byte & 0xff}%02x").mkString
 
-  def fromCommand(command: Seq[String]): LockRun =
-    LockRun(id = idFor(command), command = command.toVector)
+  def fromCommand(command: Seq[String], repository: String): LockRun =
+    LockRun(
+      id = idFor(command, repository),
+      repository = repository,
+      command = command.toVector
+    )
 
 case class LockedFile(
     repository: String,
     mavenPath: String,
     sha256: String,
-    size: Long,
     runs: Vector[String]
-) derives ReadWriter
+)
 
 case class MifLock(
     version: Int,
@@ -48,15 +55,33 @@ case class MifLock(
     repositories: Vector[LockRepository],
     runs: Vector[LockRun],
     files: Vector[LockedFile]
-) derives ReadWriter
+)
 
 object Lock:
-  val Version = 1
+  val Version = 2
   val Kind = "mif-maven-lock"
   val DefaultFileName = "mif.lock.json"
 
   private val sriPattern = "^sha256-[A-Za-z0-9+/]{43}=$".r
   private val runIdPattern = "^[0-9a-f]{12}$".r
+
+  private case class LockJson(
+      version: Int,
+      kind: String,
+      repositories: Map[String, String],
+      runs: Map[String, LockJsonRun],
+      artifacts: Map[String, LockJsonArtifact]
+  ) derives ReadWriter
+
+  private case class LockJsonRun(
+      repository: String,
+      command: Vector[String]
+  ) derives ReadWriter
+
+  private case class LockJsonArtifact(
+      runs: Vector[String],
+      files: Map[String, String]
+  ) derives ReadWriter
 
   def empty: MifLock =
     MifLock(
@@ -99,8 +124,40 @@ object Lock:
     decode(text).flatMap(validate)
 
   private def decode(text: String): Either[String, MifLock] =
-    try Right(upickle.default.read[MifLock](text))
+    try Right(fromJson(upickle.default.read[LockJson](text)))
     catch case NonFatal(e) => Left(s"invalid lock JSON: ${errorMessage(e)}")
+
+  private def fromJson(document: LockJson): MifLock =
+    MifLock(
+      version = document.version,
+      kind = document.kind,
+      repositories = document.repositories.toVector.map { case (id, url) =>
+        LockRepository(id = id, repoType = "maven", url = url)
+      },
+      runs = document.runs.toVector.map { case (id, run) =>
+        LockRun(id, run.repository, run.command)
+      },
+      files = document.artifacts.toVector.flatMap { case (dir, artifact) =>
+        val repository = repositoryForRuns(document.runs, artifact.runs)
+        artifact.files.toVector.map { case (name, sha256) =>
+          LockedFile(
+            repository = repository,
+            mavenPath = s"${dir}/${name}",
+            sha256 = sha256,
+            runs = artifact.runs
+          )
+        }
+      }
+    )
+
+  private def repositoryForRuns(
+      runs: Map[String, LockJsonRun],
+      artifactRuns: Vector[String]
+  ): String =
+    artifactRuns
+      .flatMap(runId => runs.get(runId).map(_.repository))
+      .headOption
+      .getOrElse("")
 
   private def validate(lock: MifLock): Either[String, MifLock] =
     for
@@ -146,6 +203,8 @@ object Lock:
     val invalid = runs.collectFirst {
       case run if runIdPattern.findFirstIn(run.id).isEmpty =>
         s"run id '${run.id}' is not a 12 character hex identifier"
+      case run if run.repository.isEmpty =>
+        s"run ${run.id} has an empty repository"
       case run if run.command.isEmpty =>
         s"run ${run.id} has an empty command"
     }
@@ -166,18 +225,20 @@ object Lock:
         s"file entry has invalid maven path '${file.mavenPath}'"
       case file if sriPattern.findFirstIn(file.sha256).isEmpty =>
         s"file ${file.mavenPath} has invalid sha256 '${file.sha256}'; expected SRI sha256-<base64>"
-      case file if file.size < 0 =>
-        s"file ${file.mavenPath} has negative size ${file.size}"
-      case file if !repositoryIds.contains(file.repository) =>
-        s"file ${file.mavenPath} references unknown repository '${file.repository}'"
       case file if file.runs.isEmpty =>
         s"file ${file.mavenPath} is not referenced by any run"
       case file if !file.runs.forall(runIds.contains) =>
         s"file ${file.mavenPath} references unknown run ids ${file.runs.filterNot(runIds.contains).mkString(", ")}"
+      case file if !repositoryIds.contains(file.repository) =>
+        s"file ${file.mavenPath} references unknown repository '${file.repository}'"
+    }
+    val invalidRunRepository = lock.runs.collectFirst {
+      case run if !repositoryIds.contains(run.repository) =>
+        s"run ${run.id} references unknown repository '${run.repository}'"
     }
     duplicate match
       case Some(path) => Left(s"duplicate lock entry for maven path '${path}'")
-      case None       => invalid.toLeft(())
+      case None       => invalid.orElse(invalidRunRepository).toLeft(())
 
   /** Deterministic form: entry order never depends on sqlite collation or
     * insertion order, so appends produce minimal diffs.
@@ -192,7 +253,60 @@ object Lock:
     )
 
   def render(lock: MifLock): String =
-    upickle.default.write(canonicalize(lock), indent = 2) + "\n"
+    upickle.default.write(toJson(canonicalize(lock)), indent = 2) + "\n"
+
+  private def toJson(lock: MifLock): LockJson =
+    LockJson(
+      version = lock.version,
+      kind = lock.kind,
+      repositories = VectorMap.from(
+        lock.repositories
+          .sortBy(_.id)
+          .map(repo => repo.id -> repo.url)
+      ),
+      runs = VectorMap.from(
+        lock.runs
+          .sortBy(_.command.mkString("\n"))
+          .map(run =>
+            run.id -> LockJsonRun(
+              repository = run.repository,
+              command = run.command
+            )
+          )
+      ),
+      artifacts = artifacts(lock.files)
+    )
+
+  private def splitMavenPath(path: String): (String, String) =
+    val index = path.lastIndexOf('/')
+    if index < 0 then ("", path)
+    else (path.take(index), path.drop(index + 1))
+
+  private def artifacts(
+      files: Vector[LockedFile]
+  ): Map[String, LockJsonArtifact] =
+    VectorMap.from(
+      files
+        .sortBy(_.mavenPath)
+        .groupBy(file => splitMavenPath(file.mavenPath)._1)
+        .toVector
+        .sortBy(_._1)
+        .map { case (dir, dirFiles) =>
+          val artifactRuns = runsForArtifact(dirFiles)
+          val entries = VectorMap.from(
+            dirFiles
+              .sortBy(file => splitMavenPath(file.mavenPath)._2)
+              .map { file =>
+                val (_, name) = splitMavenPath(file.mavenPath)
+                name -> file.sha256
+              }
+          )
+          dir -> LockJsonArtifact(runs = artifactRuns, files = entries)
+        }
+    )
+
+  private def runsForArtifact(files: Vector[LockedFile]): Vector[String] =
+    files.flatMap(_.runs).distinct.sorted
 
   def read(file: os.Path): Either[String, Option[MifLock]] =
     if !os.exists(file) then Right(None)
@@ -260,18 +374,17 @@ object Lock:
       existing: MifLock,
       upstream: LockRepository,
       runFiles: Seq[MavenRepositoryFile],
-      run: LockRun
+      command: Seq[String]
   ): Either[String, MifLock] =
     val (repositories, repositoryId) =
       assignRepository(existing.repositories, upstream)
+    val run = LockRun.fromCommand(command, repositoryId)
     val byPath = existing.files.map(file => file.mavenPath -> file).toMap
 
     val conflicts = runFiles.filter: observed =>
       byPath
         .get(observed.mavenPath)
-        .exists(locked =>
-          locked.sha256 != observed.sha256 || locked.size != observed.size
-        )
+        .exists(locked => locked.sha256 != observed.sha256)
 
     if conflicts.nonEmpty then Left(conflictMessage(conflicts, byPath))
     else
@@ -289,7 +402,6 @@ object Lock:
                 repository = repositoryId,
                 mavenPath = observed.mavenPath,
                 sha256 = observed.sha256,
-                size = observed.size,
                 runs = Vector(run.id)
               )
             )
@@ -338,8 +450,8 @@ object Lock:
       .map { observed =>
         val locked = byPath(observed.mavenPath)
         s"  ${observed.mavenPath}\n" +
-          s"    locked:   ${locked.sha256} (${locked.size} bytes)\n" +
-          s"    observed: ${observed.sha256} (${observed.size} bytes)"
+          s"    locked:   ${locked.sha256}\n" +
+          s"    observed: ${observed.sha256}"
       }
       .mkString("\n")
     s"artifact content changed upstream for ${conflicts.size} path(s):\n" +
