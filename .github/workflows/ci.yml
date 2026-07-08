@@ -46,3 +46,38 @@ jobs:
             - run: |
                   nix build '.#millVersions.${{ matrix.version }}'
                   result/bin/mill --version
+
+    integration-test:
+        if: github.event_name == 'pull_request' && github.event.pull_request.draft == false
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: DeterminateSystems/nix-installer-action@main
+            - name: Integration test
+              run: |
+                  # Regenerate the lock file; dependency changes must be reviewed.
+                  nix run '.#ci-test.bump'
+
+                  if ! git diff --exit-code .github/integration/chisel-lock.json; then
+                    echo "Error: chisel-lock.json has been modified by bump"
+                    echo "Please review dependency changes and commit the updated lock file"
+                    exit 1
+                  fi
+
+                  # First build
+                  nix build '.#ci-test' --max-jobs auto
+                  FIRST_HASH="$(nix hash path --sri --algo sha256 --mode nar "$(realpath ./result)")"
+
+                  # Rebuild and verify reproducibility
+                  rm -rf result
+                  nix build '.#ci-test' --max-jobs auto --rebuild
+                  SECOND_HASH="$(nix hash path --sri --algo sha256 --mode nar "$(realpath ./result)")"
+
+                  if [ "$FIRST_HASH" != "$SECOND_HASH" ]; then
+                    echo "Build is not reproducible!"
+                    echo "First build hash:  $FIRST_HASH"
+                    echo "Second build hash: $SECOND_HASH"
+                    exit 1
+                  fi
+
+                  echo "Build is reproducible"

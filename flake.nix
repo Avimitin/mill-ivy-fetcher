@@ -50,6 +50,7 @@
               ];
             };
             mifPackage = pkgs.callPackage ./package.nix { };
+            ciTest = pkgs.callPackage ./.github/integration/chisel.nix { mif = mifPackage; };
           in
           {
             _module.args.pkgs = pkgs;
@@ -65,6 +66,8 @@
             };
 
             packages.mif-jar = mifPackage;
+
+            packages.ci-test = ciTest;
 
             devShells.default = pkgs.mkShell {
               nativeBuildInputs = [
