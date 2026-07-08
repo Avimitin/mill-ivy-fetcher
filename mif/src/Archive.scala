@@ -48,7 +48,7 @@ object ArchiveRunner:
         lockPath = params.lockPath,
         runFiles = accessed,
         upstream = params.upstream,
-        run = LockRun.fromCommand(params.command),
+        command = params.command,
         fresh = params.fresh
       )
     yield summary
@@ -222,14 +222,14 @@ object ArchiveRunner:
       lockPath: os.Path,
       runFiles: Seq[MavenRepositoryFile],
       upstream: String,
-      run: LockRun,
+      command: Seq[String],
       fresh: Boolean
   ): Either[String, LockUpdateSummary] =
     for
       repository <- Lock.repositoryFor(upstream)
       existing <- if fresh then Right(None) else Lock.read(lockPath)
       base = existing.getOrElse(Lock.empty)
-      merged <- Lock.merge(base, repository, runFiles, run)
+      merged <- Lock.merge(base, repository, runFiles, command)
       _ <- Lock.write(lockPath, merged)
     yield LockUpdateSummary(
       totalFiles = merged.files.size,

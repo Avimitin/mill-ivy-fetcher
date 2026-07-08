@@ -8,10 +8,12 @@ object LockTests extends TestSuite:
       case Right(repository) => repository
       case Left(reason)      => throw new java.lang.AssertionError(reason)
 
+  private val prepareCommand = Seq("mill", "-i", "__.prepareOffline")
+  private val assemblyCommand = Seq("mill", "-i", "foo.assembly")
   private val prepareRun =
-    LockRun.fromCommand(Seq("mill", "-i", "__.prepareOffline"))
+    LockRun.fromCommand(prepareCommand, "central")
   private val assemblyRun =
-    LockRun.fromCommand(Seq("mill", "-i", "foo.assembly"))
+    LockRun.fromCommand(assemblyCommand, "central")
 
   private def repoFile(path: String, size: Long = 42): MavenRepositoryFile =
     MavenRepositoryFile(
@@ -29,12 +31,16 @@ object LockTests extends TestSuite:
 
   val tests = Tests {
     test("run ids are stable across machines and dedupe identical commands") {
-      assert(prepareRun.id == "8f34a28c1e61")
-      assert(assemblyRun.id == "ef8e57c5498e")
+      assert(prepareRun.id == LockRun.idFor(prepareCommand, "central"))
+      assert(assemblyRun.id == LockRun.idFor(assemblyCommand, "central"))
       assert(
-        LockRun.idFor(Seq("mill", "-i", "__.prepareOffline")) == prepareRun.id
+        LockRun.idFor(prepareCommand, "central") !=
+          LockRun.idFor(prepareCommand, "mirror")
       )
-      assert(LockRun.idFor(Seq("mill -i __.prepareOffline")) != prepareRun.id)
+      assert(
+        LockRun.idFor(Seq("mill -i __.prepareOffline"), "central") !=
+          prepareRun.id
+      )
     }
 
     test("repositoryFor maps central aliases to the well-known id") {
@@ -65,52 +71,39 @@ object LockTests extends TestSuite:
     }
 
     test("render produces the golden document") {
-      val jar = repoFile("com/example/foo/1.0.0/foo-1.0.0.jar", size = 49512)
-      val pom = repoFile("com/example/foo/1.0.0/foo-1.0.0.pom", size = 1207)
+      val jar = repoFile("com/example/foo/1.0.0/foo-1.0.0.jar")
+      val pom = repoFile("com/example/foo/1.0.0/foo-1.0.0.pom")
       val lock =
-        unwrap(Lock.merge(Lock.empty, central, Seq(jar, pom), prepareRun))
+        unwrap(Lock.merge(Lock.empty, central, Seq(jar, pom), prepareCommand))
 
       val golden =
         s"""{
-           |  "version": 1,
+           |  "version": 2,
            |  "kind": "mif-maven-lock",
-           |  "repositories": [
-           |    {
-           |      "id": "central",
-           |      "type": "maven",
-           |      "url": "https://repo1.maven.org/maven2"
-           |    }
-           |  ],
-           |  "runs": [
-           |    {
-           |      "id": "8f34a28c1e61",
+           |  "repositories": {
+           |    "central": "https://repo1.maven.org/maven2"
+           |  },
+           |  "runs": {
+           |    "${prepareRun.id}": {
+           |      "repository": "central",
            |      "command": [
            |        "mill",
            |        "-i",
            |        "__.prepareOffline"
            |      ]
            |    }
-           |  ],
-           |  "files": [
-           |    {
-           |      "repository": "central",
-           |      "mavenPath": "com/example/foo/1.0.0/foo-1.0.0.jar",
-           |      "sha256": "${jar.sha256}",
-           |      "size": 49512,
+           |  },
+           |  "artifacts": {
+           |    "com/example/foo/1.0.0": {
            |      "runs": [
-           |        "8f34a28c1e61"
-           |      ]
-           |    },
-           |    {
-           |      "repository": "central",
-           |      "mavenPath": "com/example/foo/1.0.0/foo-1.0.0.pom",
-           |      "sha256": "${pom.sha256}",
-           |      "size": 1207,
-           |      "runs": [
-           |        "8f34a28c1e61"
-           |      ]
+           |        "${prepareRun.id}"
+           |      ],
+           |      "files": {
+           |        "foo-1.0.0.jar": "${jar.sha256}",
+           |        "foo-1.0.0.pom": "${pom.sha256}"
+           |      }
            |    }
-           |  ]
+           |  }
            |}
            |""".stripMargin
 
@@ -122,10 +115,26 @@ object LockTests extends TestSuite:
       val fileA = repoFile("com/example/a/1.0.0/a-1.0.0.pom")
       val fileB = repoFile("com/example/b/1.0.0/b-1.0.0.pom")
       val forward =
-        unwrap(Lock.merge(Lock.empty, central, Seq(fileA, fileB), prepareRun))
+        unwrap(
+          Lock.merge(Lock.empty, central, Seq(fileA, fileB), prepareCommand)
+        )
       val backward =
-        unwrap(Lock.merge(Lock.empty, central, Seq(fileB, fileA), prepareRun))
+        unwrap(
+          Lock.merge(Lock.empty, central, Seq(fileB, fileA), prepareCommand)
+        )
       assert(Lock.render(forward) == Lock.render(backward))
+    }
+
+    test("render keeps every run when files in an artifact differ") {
+      val pom = repoFile("com/example/foo/1.0.0/foo-1.0.0.pom")
+      val jar = repoFile("com/example/foo/1.0.0/foo-1.0.0.jar")
+      val first =
+        unwrap(Lock.merge(Lock.empty, central, Seq(pom), prepareCommand))
+      val second = unwrap(Lock.merge(first, central, Seq(jar), assemblyCommand))
+      val parsed = unwrap(Lock.parse(Lock.render(second)))
+      val expectedRuns = Vector(prepareRun.id, assemblyRun.id).sorted
+
+      assert(parsed.files.map(_.runs).distinct == Vector(expectedRuns))
     }
 
     test("parse render round-trip preserves hostile command strings") {
@@ -138,18 +147,56 @@ object LockTests extends TestSuite:
         "unicode-テスト",
         ""
       )
-      val run = LockRun.fromCommand(command)
+      val run = LockRun.fromCommand(command, "central")
       val lock = unwrap(
         Lock.merge(
           Lock.empty,
           central,
           Seq(repoFile("com/example/a/1.0.0/a-1.0.0.pom")),
-          run
+          command
         )
       )
       val reparsed = unwrap(Lock.parse(Lock.render(lock)))
       assert(reparsed == lock)
       assert(reparsed.runs.head.command == command.toVector)
+    }
+
+    test("parse derives artifact repository from run metadata") {
+      val sha = repoFile("com/example/a/1.0.0/a-1.0.0.pom").sha256
+      val mirrorRun = LockRun.fromCommand(prepareCommand, "mirror")
+      val json =
+        s"""{
+           |  "version": 2,
+           |  "kind": "mif-maven-lock",
+           |  "repositories": {
+           |    "central": "https://repo1.maven.org/maven2",
+           |    "mirror": "https://mirror.example.com/maven2"
+           |  },
+           |  "runs": {
+           |    "${prepareRun.id}": {
+           |      "repository": "central",
+           |      "command": ["mill", "-i", "__.prepareOffline"]
+           |    },
+           |    "${mirrorRun.id}": {
+           |      "repository": "mirror",
+           |      "command": ["mill", "-i", "__.prepareOffline"]
+           |    }
+           |  },
+           |  "artifacts": {
+           |    "com/example/a/1.0.0": {
+           |      "runs": ["${mirrorRun.id}"],
+           |      "files": {
+           |        "a-1.0.0.pom": "${sha}"
+           |      }
+           |    }
+           |  }
+           |}
+           |""".stripMargin
+
+      val parsed = unwrap(Lock.parse(json))
+      assert(parsed.files.size == 1)
+      assert(parsed.files.head.repository == "mirror")
+      assert(parsed.files.head.runs == Vector(mirrorRun.id))
     }
 
     test("parse rejects malformed JSON and schema violations") {
@@ -158,7 +205,7 @@ object LockTests extends TestSuite:
           Lock.empty,
           central,
           Seq(repoFile("com/example/a/1.0.0/a-1.0.0.pom")),
-          prepareRun
+          prepareCommand
         )
       )
 
@@ -168,7 +215,7 @@ object LockTests extends TestSuite:
       def renderWith(change: MifLock => MifLock): String =
         Lock.render(change(base))
 
-      val badVersion = Lock.parse(renderWith(_.copy(version = 2)))
+      val badVersion = Lock.parse(renderWith(_.copy(version = 1)))
       assert(badVersion.left.exists(_.contains("unsupported lock version")))
 
       val badKind = Lock.parse(renderWith(_.copy(kind = "other-lock")))
@@ -190,7 +237,7 @@ object LockTests extends TestSuite:
 
       val badRepository = Lock.parse(
         renderWith(lock =>
-          lock.copy(files = lock.files.map(_.copy(repository = "missing")))
+          lock.copy(runs = lock.runs.map(_.copy(repository = "missing")))
         )
       )
       assert(badRepository.left.exists(_.contains("unknown repository")))
@@ -204,15 +251,12 @@ object LockTests extends TestSuite:
       )
       assert(badRunRef.left.exists(_.contains("unknown run ids")))
 
-      val duplicatePath = Lock.parse(
-        renderWith(lock => lock.copy(files = lock.files ++ lock.files))
+      val badRun = Lock.parse(
+        renderWith(lock =>
+          lock.copy(runs = lock.runs.map(_.copy(id = "not-a-run")))
+        )
       )
-      assert(duplicatePath.left.exists(_.contains("duplicate lock entry")))
-
-      val duplicateRun = Lock.parse(
-        renderWith(lock => lock.copy(runs = lock.runs ++ lock.runs))
-      )
-      assert(duplicateRun.left.exists(_.contains("duplicate run id")))
+      assert(badRun.left.exists(_.contains("12 character hex identifier")))
     }
 
     test("read returns None for a missing lock file") {
@@ -228,7 +272,7 @@ object LockTests extends TestSuite:
           Lock.empty,
           central,
           Seq(repoFile("com/example/a/1.0.0/a-1.0.0.pom")),
-          prepareRun
+          prepareCommand
         )
       )
 
@@ -240,7 +284,7 @@ object LockTests extends TestSuite:
           lock,
           central,
           Seq(repoFile("com/example/b/1.0.0/b-1.0.0.pom")),
-          assemblyRun
+          assemblyCommand
         )
       )
       assert(Lock.write(lockPath, updated) == Right(()))
@@ -258,9 +302,11 @@ object LockTests extends TestSuite:
       val fileC = repoFile("com/example/c/1.0.0/c-1.0.0.pom")
 
       val first =
-        unwrap(Lock.merge(Lock.empty, central, Seq(fileA, fileB), prepareRun))
+        unwrap(
+          Lock.merge(Lock.empty, central, Seq(fileA, fileB), prepareCommand)
+        )
       val second =
-        unwrap(Lock.merge(first, central, Seq(fileB, fileC), assemblyRun))
+        unwrap(Lock.merge(first, central, Seq(fileB, fileC), assemblyCommand))
 
       assert(
         second.files.map(_.mavenPath) == Vector(
@@ -282,8 +328,8 @@ object LockTests extends TestSuite:
 
     test("merge of the same run twice is a no-op") {
       val files = Seq(repoFile("com/example/a/1.0.0/a-1.0.0.pom"))
-      val once = unwrap(Lock.merge(Lock.empty, central, files, prepareRun))
-      val twice = unwrap(Lock.merge(once, central, files, prepareRun))
+      val once = unwrap(Lock.merge(Lock.empty, central, files, prepareCommand))
+      val twice = unwrap(Lock.merge(once, central, files, prepareCommand))
       assert(Lock.render(once) == Lock.render(twice))
     }
 
@@ -291,13 +337,16 @@ object LockTests extends TestSuite:
       val fileA = repoFile("com/example/a/1.0.0/a-1.0.0.pom")
       val fileB = repoFile("com/example/b/1.0.0/b-1.0.0.pom")
       val existing =
-        unwrap(Lock.merge(Lock.empty, central, Seq(fileA, fileB), prepareRun))
+        unwrap(
+          Lock.merge(Lock.empty, central, Seq(fileA, fileB), prepareCommand)
+        )
 
       val mutatedA = fileA.copy(sha256 = Sha256.sri("other".getBytes("UTF-8")))
-      val mutatedB = fileB.copy(size = fileB.size + 1)
+      val mutatedB =
+        fileB.copy(sha256 = Sha256.sri("other-b".getBytes("UTF-8")))
 
       val result =
-        Lock.merge(existing, central, Seq(mutatedA, mutatedB), assemblyRun)
+        Lock.merge(existing, central, Seq(mutatedA, mutatedB), assemblyCommand)
       result match
         case Right(_) => assert(false)
         case Left(reason) =>
@@ -314,14 +363,15 @@ object LockTests extends TestSuite:
       val fileB = repoFile("com/example/b/1.0.0/b-1.0.0.pom")
 
       val first =
-        unwrap(Lock.merge(Lock.empty, central, Seq(fileA), prepareRun))
+        unwrap(Lock.merge(Lock.empty, central, Seq(fileA), prepareCommand))
       // Same url: entry reused, no duplicate repository.
       val reused =
-        unwrap(Lock.merge(first, central, Seq(fileB), assemblyRun))
+        unwrap(Lock.merge(first, central, Seq(fileB), assemblyCommand))
       assert(reused.repositories == first.repositories)
 
       // Different url wanting the same id: suffixed instead of clobbered.
-      val suffixed = unwrap(Lock.merge(first, mirror, Seq(fileB), assemblyRun))
+      val suffixed =
+        unwrap(Lock.merge(first, mirror, Seq(fileB), assemblyCommand))
       assert(
         suffixed.repositories.map(_.id) == Vector("central", "central-2")
       )
