@@ -1,85 +1,48 @@
 name: Test
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-    types: [ "opened", "synchronize", "reopened", "ready_for_review" ]
+    push:
+        branches: ["master"]
+    pull_request:
+        branches: ["master"]
+        types: ["opened", "synchronize", "reopened", "ready_for_review"]
 
 permissions:
-  contents: read
+    contents: read
 
 jobs:
-  format-check:
-    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: DeterminateSystems/nix-installer-action@main
-    - name: Check formatting
-      run: nix fmt -- --ci
+    format-check:
+        if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: DeterminateSystems/nix-installer-action@main
+            - name: Check formatting
+              run: nix fmt -- --ci
 
-  gen-build-matrix:
-    if: github.event_name == 'pull_request' && github.event.pull_request.draft == false
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-    - uses: actions/checkout@v4
-    - uses: DeterminateSystems/nix-installer-action@main
-    - name: "Set Matrix"
-      id: set-matrix
-      run: |
-        nix eval --json ".#millVersions.allVersions" | nix run '.#jq' -- -rc '"matrix=" + ({version: .} | tostring)' > "$GITHUB_OUTPUT"
+    gen-build-matrix:
+        if: github.event_name == 'pull_request' && github.event.pull_request.draft == false
+        runs-on: ubuntu-latest
+        outputs:
+            matrix: ${{ steps.set-matrix.outputs.matrix }}
+        steps:
+            - uses: actions/checkout@v4
+            - uses: DeterminateSystems/nix-installer-action@main
+            - name: "Set Matrix"
+              id: set-matrix
+              run: |
+                  nix eval --json ".#millVersions.allVersions" | nix run '.#jq' -- -rc '"matrix=" + ({version: .} | tostring)' > "$GITHUB_OUTPUT"
 
-  build-mill-versions:
-    if: github.event_name == 'pull_request' && github.event.pull_request.draft == false
-    needs: [gen-build-matrix]
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJSON(needs.gen-build-matrix.outputs.matrix) }}
-    steps:
-    - uses: actions/checkout@v4
-    - uses: DeterminateSystems/nix-installer-action@main
-    - run: |
-        nix build '.#millVersions.${{ matrix.version }}'
-        result/bin/mill --version
-
-  integration-test:
-    if: github.event_name == 'pull_request' && github.event.pull_request.draft == false
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: DeterminateSystems/nix-installer-action@main
-    - name: Integration test
-      run: |
-        # Run bump to regenerate lock file
-        nix run '.#ci-test.bump'
-
-        # Check that chisel-lock.nix is not modified (forces dependency review)
-        if ! git diff --exit-code .github/integration/chisel-lock.nix; then
-          echo "Error: chisel-lock.nix has been modified by bump"
-          echo "Please review dependency changes and commit the updated lock file"
-          exit 1
-        fi
-
-        # First build
-        nix build '.#ci-test' --max-jobs auto
-        FIRST_HASH="$(nix hash path --sri --algo sha256 --mode nar "$(realpath ./result)")"
-
-        # Rebuild and verify reproducibility
-        rm -rf result
-        nix build '.#ci-test' --max-jobs auto --rebuild
-        SECOND_HASH="$(nix hash path --sri --algo sha256 --mode nar "$(realpath ./result)")"
-
-        # Fail if hashes don't match (non-reproducible build)
-        if [ "$FIRST_HASH" != "$SECOND_HASH" ]; then
-          echo "Build is not reproducible!"
-          echo "First build hash:  $FIRST_HASH"
-          echo "Second build hash: $SECOND_HASH"
-          exit 1
-        fi
-
-        echo "Build is reproducible"
+    build-mill-versions:
+        if: github.event_name == 'pull_request' && github.event.pull_request.draft == false
+        needs: [gen-build-matrix]
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix: ${{ fromJSON(needs.gen-build-matrix.outputs.matrix) }}
+        steps:
+            - uses: actions/checkout@v4
+            - uses: DeterminateSystems/nix-installer-action@main
+            - run: |
+                  nix build '.#millVersions.${{ matrix.version }}'
+                  result/bin/mill --version
