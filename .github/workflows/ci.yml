@@ -53,9 +53,11 @@ jobs:
         steps:
             - uses: actions/checkout@v4
             - uses: DeterminateSystems/nix-installer-action@main
-            - name: Integration test
+            - name: Allow unprivileged user namespaces
+              run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+            - name: Check Lock is latest
               run: |
-                  set -euo pipefail
+                  set -exuo pipefail
                   # Regenerate the lock file; dependency changes must be reviewed.
                   nix run '.#ci-test.bump' 2>&1 | tail -n30
 
@@ -65,6 +67,9 @@ jobs:
                     exit 1
                   fi
 
+            - name: Integration test
+              run: |
+                  set -exuo pipefail
                   # First build
                   nix build '.#ci-test' --max-jobs auto 2>&1 | tail -n30
                   FIRST_HASH="$(nix hash path --sri --algo sha256 --mode nar "$(realpath ./result)")"
