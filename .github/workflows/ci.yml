@@ -59,7 +59,7 @@ jobs:
               run: |
                   set -exuo pipefail
                   # Regenerate the lock file; dependency changes must be reviewed.
-                  nix run '.#ci-test.bump' 2>&1 | tail -n30
+                  nix run '.#ci-test.bump' --max-jobs auto 2>&1 | tail -n30
 
                   if ! git diff --exit-code .github/integration/chisel-lock.json; then
                     echo "Error: chisel-lock.json has been modified by bump"
