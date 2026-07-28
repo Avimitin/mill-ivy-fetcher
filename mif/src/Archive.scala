@@ -47,6 +47,7 @@ object ArchiveRunner:
           )
       summary <- updateLock(
         lockPath = params.lockPath,
+        repoDir = params.repoDir,
         runFiles = accessed,
         upstream = params.upstream,
         command = params.command,
@@ -225,16 +226,21 @@ object ArchiveRunner:
       runFiles: Seq[MavenRepositoryFile],
       upstream: String,
       command: Seq[String],
-      fresh: Boolean
+      fresh: Boolean,
+      repoDir: os.Path,
+      hashArtifacts: (os.Path, MifLock) => Either[String, Map[String, String]] =
+        ArtifactNarHash.hashMissing
   ): Either[String, LockUpdateSummary] =
     for
       repository <- Lock.repositoryFor(upstream)
       existing <- if fresh then Right(None) else Lock.read(lockPath)
       base = existing.getOrElse(Lock.empty)
       merged <- Lock.merge(base, repository, runFiles, command)
-      _ <- Lock.write(lockPath, merged)
+      narHashes <- hashArtifacts(repoDir, merged)
+      finalized <- Lock.withArtifactNarHashes(merged, narHashes)
+      _ <- Lock.write(lockPath, finalized)
     yield LockUpdateSummary(
-      totalFiles = merged.files.size,
-      newFiles = merged.files.size - base.files.size,
-      runs = merged.runs.size
+      totalFiles = finalized.files.size,
+      newFiles = finalized.files.size - base.files.size,
+      runs = finalized.runs.size
     )

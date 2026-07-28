@@ -5,6 +5,7 @@
   makeWrapper,
   mkMavenRepository,
   millVersions,
+  nix,
   stdenvNoCC,
   zulu,
 }:
@@ -15,11 +16,12 @@ let
   # dependency from here, fully offline.
   m2 = mkMavenRepository { lockFile = ./mif.lock.json; };
 
-  wrapperPathArgs = lib.optionals stdenvNoCC.hostPlatform.isLinux [
+  runtimePath = [ nix ] ++ lib.optionals stdenvNoCC.hostPlatform.isLinux [ bubblewrap ];
+  wrapperPathArgs = [
     "--prefix"
     "PATH"
     ":"
-    (lib.makeBinPath [ bubblewrap ])
+    (lib.makeBinPath runtimePath)
   ];
 in
 stdenvNoCC.mkDerivation (finalAttrs: {

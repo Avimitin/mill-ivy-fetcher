@@ -121,9 +121,11 @@ and keep dependency repositories within the configured MIF upstream.
 
 ## Using a lock from Nix
 
-The overlay exposes `mkMavenRepository`, which reads `mif.lock.json`, fetches all
-locked files with fixed-output `fetchurl` derivations, and joins them into a
-standard Maven repository layout.
+The overlay exposes `mkMavenRepository`, which reads `mif.lock.json`, fetches each
+locked Maven artifact as one recursive fixed-output derivation, and joins them
+into a standard Maven repository layout. This keeps the cache reusable at Maven
+dependency granularity without creating a separate Nix derivation for every
+JAR, POM, and checksum file.
 
 ```nix
 { pkgs, ... }:
@@ -231,7 +233,7 @@ A lock has this shape:
 
 ```json
 {
-  "version": 2,
+  "version": 3,
   "kind": "mif-maven-lock",
   "repositories": {
     "central": "https://repo1.maven.org/maven2"
@@ -244,6 +246,7 @@ A lock has this shape:
   },
   "artifacts": {
     "com/example/foo/1.0.0": {
+      "narHash": "sha256-9kgpv3fh7yGNCmQlq8WZ7noBDsiUt2TuwTQa8i3pYpA=",
       "runs": ["ee52a000ca94"],
       "files": {
         "foo-1.0.0.jar": "sha256-DAOEyJEjhkDsWJUAJ4xVSFcQqai/38MDdTuIovpi6MA="
@@ -254,11 +257,15 @@ A lock has this shape:
 ```
 
 Archive runs append: run `mif archive` once per target and the lock unions the
-results. Entries are sorted, re-running a command against the same repository is
-a no-op, and each artifact records the run ids that requested it. If an already
-locked path comes back with different content, archive refuses to update the lock
-and reports the mismatched paths; investigate the upstream mutation or rebuild
-deliberately with `--fresh` into a clean `--repo-dir`.
+results. MIF uses `nix hash path` to record the recursive NAR hash of every
+artifact directory. Entries are sorted, re-running a command against the same
+repository is a no-op, and each artifact records the run ids that requested it.
+If an already locked path comes back with different content, archive refuses to
+update the lock and reports the mismatched paths; investigate the upstream
+mutation or rebuild deliberately with `--fresh` into a clean `--repo-dir`.
+
+Schema version 3 introduced artifact NAR hashes. Regenerate older locks with
+`mif archive --fresh` before using them with the current `mkMavenRepository`.
 
 ### `mif relay`
 
