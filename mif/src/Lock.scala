@@ -81,6 +81,8 @@ object Lock:
       artifacts: Map[String, LockJsonArtifact]
   ) derives ReadWriter
 
+  private case class LockJsonVersion(version: Int) derives ReadWriter
+
   private case class LockJsonRun(
       repository: String,
       command: Vector[String]
@@ -131,7 +133,16 @@ object Lock:
     if slug.isEmpty then "repository" else slug
 
   def parse(text: String): Either[String, MifLock] =
-    decode(text).flatMap(validate)
+    for
+      version <- decodeVersion(text)
+      _ <- validateVersion(version)
+      lock <- decode(text)
+      validated <- validate(lock)
+    yield validated
+
+  private def decodeVersion(text: String): Either[String, Int] =
+    try Right(upickle.default.read[LockJsonVersion](text).version)
+    catch case NonFatal(e) => Left(s"invalid lock JSON: ${errorMessage(e)}")
 
   private def decode(text: String): Either[String, MifLock] =
     try Right(fromJson(upickle.default.read[LockJson](text)))
@@ -182,12 +193,20 @@ object Lock:
     yield lock
 
   private def validateHeader(lock: MifLock): Either[String, Unit] =
-    if lock.version != Version then
+    validateVersion(lock.version).flatMap: _ =>
+      if lock.kind != Kind then
+        Left(s"unsupported lock kind '${lock.kind}'; expected '${Kind}'")
+      else Right(())
+
+  private def validateVersion(version: Int): Either[String, Unit] =
+    if version < Version then
       Left(
-        s"unsupported lock version ${lock.version}; this mif understands version ${Version}, upgrade mif or regenerate the lock"
+        s"unsupported lock version ${version}; this mif understands version ${Version}. Regenerate the lock by rerunning the complete archive command sequence, using --fresh on the first command only"
       )
-    else if lock.kind != Kind then
-      Left(s"unsupported lock kind '${lock.kind}'; expected '${Kind}'")
+    else if version > Version then
+      Left(
+        s"unsupported lock version ${version}; this mif understands version ${Version}, upgrade mif to read this lock"
+      )
     else Right(())
 
   private def validateRepositories(

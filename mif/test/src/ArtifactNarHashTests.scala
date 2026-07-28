@@ -8,11 +8,11 @@ object ArtifactNarHashTests extends TestSuite:
     "central"
   )
 
-  private def lockedFile(path: String): LockedFile =
+  private def lockedFile(path: String, content: String): LockedFile =
     LockedFile(
       repository = "central",
       mavenPath = path,
-      sha256 = Sha256.sri(path.getBytes("UTF-8")),
+      sha256 = Sha256.sri(content.getBytes("UTF-8")),
       runs = Vector(run.id)
     )
 
@@ -77,9 +77,9 @@ object ArtifactNarHashTests extends TestSuite:
           repoDir,
           lock(
             Vector(
-              lockedFile(jarPath),
-              lockedFile(pomPath),
-              lockedFile(otherPath)
+              lockedFile(jarPath, "jar"),
+              lockedFile(pomPath, "pom"),
+              lockedFile(otherPath, "other")
             )
           )
         )
@@ -103,7 +103,7 @@ object ArtifactNarHashTests extends TestSuite:
       val tempDir = os.temp.dir(prefix = "mif-nar-hash-test_")
       val repoDir = tempDir / "repository"
       val path = "com/example/a/1.0.0/a-1.0.0.pom"
-      val pending = lock(Vector(lockedFile(path)))
+      val pending = lock(Vector(lockedFile(path, "pom")))
       val finalized = unwrap(
         Lock.withArtifactNarHashes(
           pending,
@@ -123,9 +123,24 @@ object ArtifactNarHashTests extends TestSuite:
 
       val result = ArtifactNarHash.hashMissing(
         repoDir,
-        lock(Vector(lockedFile(path)))
+        lock(Vector(lockedFile(path, "missing")))
       )
       assert(result.left.exists(_.contains(path)))
       assert(result.left.exists(_.contains("missing")))
+    }
+
+    test("hashMissing rejects cache content that differs from the lock") {
+      val tempDir = os.temp.dir(prefix = "mif-nar-hash-test_")
+      val repoDir = tempDir / "repository"
+      val path = "com/example/a/1.0.0/a-1.0.0.pom"
+      writeRepositoryFile(repoDir, path, "mutated")
+
+      val result = ArtifactNarHash.hashMissing(
+        repoDir,
+        lock(Vector(lockedFile(path, "expected")))
+      )
+
+      assert(result.left.exists(_.contains(path)))
+      assert(result.left.exists(_.contains("lock expects")))
     }
   }

@@ -222,6 +222,42 @@ object LockTests extends TestSuite:
       assert(parsed.files.head.runs == Vector(mirrorRun.id))
     }
 
+    test("parse reports how to migrate a version 2 lock") {
+      val sha = repoFile("com/example/a/1.0.0/a-1.0.0.pom").sha256
+      val json =
+        s"""{
+           |  "version": 2,
+           |  "kind": "mif-maven-lock",
+           |  "repositories": {
+           |    "central": "https://repo1.maven.org/maven2"
+           |  },
+           |  "runs": {
+           |    "${prepareRun.id}": {
+           |      "repository": "central",
+           |      "command": ["mill", "-i", "__.prepareOffline"]
+           |    }
+           |  },
+           |  "artifacts": {
+           |    "com/example/a/1.0.0": {
+           |      "runs": ["${prepareRun.id}"],
+           |      "files": {
+           |        "a-1.0.0.pom": "${sha}"
+           |      }
+           |    }
+           |  }
+           |}
+           |""".stripMargin
+
+      val result = Lock.parse(json)
+      assert(result.left.exists(_.contains("unsupported lock version 2")))
+      assert(
+        result.left.exists(_.contains("complete archive command sequence"))
+      )
+      assert(
+        result.left.exists(_.contains("--fresh on the first command only"))
+      )
+    }
+
     test("parse rejects malformed JSON and schema violations") {
       val base = unwrap(
         merge(

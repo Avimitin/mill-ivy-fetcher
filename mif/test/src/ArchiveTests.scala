@@ -211,6 +211,28 @@ object ArchiveTests extends TestSuite:
       assert(lock.runs == Vector(assemblyRun))
     }
 
+    test("archive rejects an old lock before building unless fresh") {
+      val tempDir = os.temp.dir(prefix = "mif-archive-test_")
+      val lockPath = tempDir / "mif.lock.json"
+      os.write(
+        lockPath,
+        """{
+          |  "version": 2,
+          |  "kind": "mif-maven-lock",
+          |  "repositories": {},
+          |  "runs": {},
+          |  "artifacts": {}
+          |}
+          |""".stripMargin
+      )
+
+      val rejected = ArchiveRunner.validateExistingLock(lockPath, fresh = false)
+      assert(rejected.left.exists(_.contains("unsupported lock version 2")))
+      assert(
+        ArchiveRunner.validateExistingLock(lockPath, fresh = true) == Right(())
+      )
+    }
+
     test("lookupFiles resolves accessed paths through the repository store") {
       val tempDir = os.temp.dir(prefix = "mif-archive-test_")
       val repoDir = tempDir / "repository"
