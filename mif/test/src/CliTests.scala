@@ -1,12 +1,22 @@
 package in.avimit.dev.mif
 
-import mainargs.{Leftover, ParserForMethods, main}
+import mainargs.{arg, Leftover, ParserForMethods, main}
 import utest._
 
 object CliTests extends TestSuite {
   object ParserFixture:
     @main
     def archive(command: Leftover[String]): Seq[String] = command.value
+
+    @main
+    def version(): String = "test"
+
+  object ExportEnvParserFixture:
+    @main
+    def archive(
+        @arg(name = "export-env") exportEnv: Seq[String],
+        command: Leftover[String]
+    ): (Seq[String], Seq[String]) = (exportEnv, command.value)
 
     @main
     def version(): String = "test"
@@ -42,6 +52,27 @@ object CliTests extends TestSuite {
       assert(
         ParserForMethods(ParserFixture).runEither(Seq("archive")) == Right(
           Seq()
+        )
+      )
+    }
+
+    test("archive command accepts repeated environment exports") {
+      val result = ParserForMethods(ExportEnvParserFixture).runEither(
+        Seq(
+          "archive",
+          "--export-env",
+          "MILL_OPTS",
+          "--export-env",
+          "BUILD_PROFILE",
+          "--",
+          "mill",
+          "__.compile"
+        )
+      )
+
+      assert(
+        result == Right(
+          (Seq("MILL_OPTS", "BUILD_PROFILE"), Seq("--", "mill", "__.compile"))
         )
       )
     }

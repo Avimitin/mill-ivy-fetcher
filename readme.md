@@ -146,6 +146,14 @@ command after `--`, and writes every file served by the relay into a JSON lock.
 mif archive [options] -- mill --no-daemon __.prepareOffline
 ```
 
+If a build needs selected variables from the invoking environment, export them
+explicitly. The option is repeatable:
+
+```bash
+mif archive --export-env BUILD_PROFILE --export-env MILL_OPTS -- \
+  mill --no-daemon __.prepareOffline
+```
+
 Important options:
 
 - `-p, --project-dir <path>`: project directory. Defaults to the current working
@@ -157,6 +165,9 @@ Important options:
 - `-u, --upstream <url>`: Maven-compatible upstream. Defaults to Maven Central.
 - `--fresh`: rebuild the lock from this run only instead of appending.
 - `--sandbox <bwrap|none>`: choose the archive sandbox mode.
+- `--export-env <name>`: re-export the current value of a host environment
+  variable to the build command. Repeat for multiple variables; unset variables
+  produce a warning.
 - `--keep-workdir`: keep the temporary sandbox home for debugging.
 - `--proxy <url>`: HTTP proxy for upstream relay requests.
 

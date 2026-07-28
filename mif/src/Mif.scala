@@ -131,6 +131,12 @@ object MillIvyFetcher {
       )
       keepWorkdir: Flag = Flag(false),
       @arg(
+        name = "export-env",
+        doc =
+          "re-export a host environment variable to the build command; repeatable"
+      )
+      exportEnv: Seq[String],
+      @arg(
         name = "connect-timeout-seconds",
         doc = "Timeout for connecting to the upstream repository"
       )
@@ -161,6 +167,7 @@ object MillIvyFetcher {
       port = port,
       sandboxMode = sandbox,
       keepWorkdir = keepWorkdir.value,
+      exportEnv = exportEnv,
       fresh = fresh.value,
       connectTimeoutSeconds = connectTimeoutSeconds,
       requestTimeoutSeconds = requestTimeoutSeconds,

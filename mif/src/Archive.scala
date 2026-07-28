@@ -14,6 +14,7 @@ case class ArchiveParams(
     port: Int,
     sandboxMode: SandboxMode,
     keepWorkdir: Boolean,
+    exportEnv: Seq[String],
     fresh: Boolean,
     connectTimeoutSeconds: Int,
     requestTimeoutSeconds: Int,
@@ -78,7 +79,8 @@ object ArchiveRunner:
         handle.baseUrl
       )
       _ <- writeMirrorFile(SandboxEnv.mirrorFile(sandboxHome), mirror)
-      (env, envWarnings) = SandboxEnv.build(strategy, sys.env, sandboxHome)
+      (env, envWarnings) =
+        SandboxEnv.build(strategy, sys.env, sandboxHome, params.exportEnv)
       _ = envWarnings.foreach(Logger.warning)
       exitCode <- executeBuild(params, strategy, sandboxHome, env)
       _ <-
