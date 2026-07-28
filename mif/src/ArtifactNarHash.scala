@@ -7,7 +7,8 @@ import scala.util.control.NonFatal
 /** Computes the recursive NAR hashes used by artifact-level fixed-output
   * derivations. Each staging root has exactly the Maven subtree that the Nix
   * builder will produce, so `nix hash path` remains the source of truth for NAR
-  * serialization.
+  * serialization. This runs after the build and relay have stopped: until then,
+  * another file for the same Maven coordinate may still be requested.
   */
 object ArtifactNarHash:
   def hashMissing(
