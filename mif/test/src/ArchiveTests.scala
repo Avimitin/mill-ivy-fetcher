@@ -25,6 +25,36 @@ object ArchiveTests extends TestSuite:
       case Right(value) => value
       case Left(reason) => throw new java.lang.AssertionError(reason)
 
+  private def hashArtifacts(
+      repoDir: os.Path,
+      lock: MifLock
+  ): Either[String, Map[String, String]] =
+    val _ = repoDir
+    Right(
+      Lock
+        .missingArtifactNarHashes(lock)
+        .map: dir =>
+          dir -> Sha256.sri(dir.getBytes("UTF-8"))
+        .toMap
+    )
+
+  private def updateLock(
+      lockPath: os.Path,
+      runFiles: Seq[MavenRepositoryFile],
+      upstream: String,
+      command: Seq[String],
+      fresh: Boolean
+  ): Either[String, LockUpdateSummary] =
+    ArchiveRunner.updateLock(
+      lockPath = lockPath,
+      runFiles = runFiles,
+      upstream = upstream,
+      command = command,
+      fresh = fresh,
+      repoDir = lockPath / os.up / "repository",
+      hashArtifacts = hashArtifacts
+    )
+
   val tests = Tests {
     test("updateLock creates a lock from one run") {
       val tempDir = os.temp.dir(prefix = "mif-archive-test_")
@@ -35,7 +65,7 @@ object ArchiveTests extends TestSuite:
       )
 
       val summary = unwrap(
-        ArchiveRunner.updateLock(
+        updateLock(
           lockPath = lockPath,
           runFiles = files,
           upstream = upstream,
@@ -57,7 +87,7 @@ object ArchiveTests extends TestSuite:
       val shared = repoFile("com/example/shared/1.0.0/shared-1.0.0.jar")
 
       val first = unwrap(
-        ArchiveRunner.updateLock(
+        updateLock(
           lockPath,
           Seq(repoFile("com/example/a/1.0.0/a-1.0.0.pom"), shared),
           upstream,
@@ -68,7 +98,7 @@ object ArchiveTests extends TestSuite:
       assert(first == LockUpdateSummary(2, 2, 1))
 
       val second = unwrap(
-        ArchiveRunner.updateLock(
+        updateLock(
           lockPath,
           Seq(repoFile("com/example/b/1.0.0/b-1.0.0.pom"), shared),
           upstream,
@@ -92,7 +122,7 @@ object ArchiveTests extends TestSuite:
       val files = Seq(repoFile("com/example/a/1.0.0/a-1.0.0.pom"))
 
       unwrap(
-        ArchiveRunner.updateLock(
+        updateLock(
           lockPath,
           files,
           upstream,
@@ -101,7 +131,7 @@ object ArchiveTests extends TestSuite:
         )
       )
       val summary = unwrap(
-        ArchiveRunner.updateLock(
+        updateLock(
           lockPath,
           files,
           upstream,
@@ -128,7 +158,7 @@ object ArchiveTests extends TestSuite:
       val file = repoFile("com/example/a/1.0.0/a-1.0.0.pom")
 
       unwrap(
-        ArchiveRunner.updateLock(
+        updateLock(
           lockPath,
           Seq(file),
           upstream,
@@ -139,7 +169,7 @@ object ArchiveTests extends TestSuite:
       val before = os.read(lockPath)
 
       val mutated = file.copy(sha256 = Sha256.sri("other".getBytes("UTF-8")))
-      val result = ArchiveRunner.updateLock(
+      val result = updateLock(
         lockPath,
         Seq(mutated),
         upstream,
@@ -155,7 +185,7 @@ object ArchiveTests extends TestSuite:
       val lockPath = tempDir / "mif.lock.json"
 
       unwrap(
-        ArchiveRunner.updateLock(
+        updateLock(
           lockPath,
           Seq(repoFile("com/example/a/1.0.0/a-1.0.0.pom")),
           upstream,
@@ -164,7 +194,7 @@ object ArchiveTests extends TestSuite:
         )
       )
       val summary = unwrap(
-        ArchiveRunner.updateLock(
+        updateLock(
           lockPath,
           Seq(repoFile("com/example/b/1.0.0/b-1.0.0.pom")),
           upstream,

@@ -29,6 +29,27 @@ object LockTests extends TestSuite:
       case Right(value) => value
       case Left(reason) => throw new java.lang.AssertionError(reason)
 
+  private def artifactHash(dir: String): String =
+    Sha256.sri(dir.getBytes("UTF-8"))
+
+  private def merge(
+      existing: MifLock,
+      upstream: LockRepository,
+      runFiles: Seq[MavenRepositoryFile],
+      command: Seq[String]
+  ): Either[String, MifLock] =
+    Lock
+      .merge(existing, upstream, runFiles, command)
+      .flatMap: lock =>
+        Lock.withArtifactNarHashes(
+          lock,
+          Lock
+            .missingArtifactNarHashes(lock)
+            .map: dir =>
+              dir -> artifactHash(dir)
+            .toMap
+        )
+
   val tests = Tests {
     test("run ids are stable across machines and dedupe identical commands") {
       assert(prepareRun.id == LockRun.idFor(prepareCommand, "central"))
@@ -74,11 +95,11 @@ object LockTests extends TestSuite:
       val jar = repoFile("com/example/foo/1.0.0/foo-1.0.0.jar")
       val pom = repoFile("com/example/foo/1.0.0/foo-1.0.0.pom")
       val lock =
-        unwrap(Lock.merge(Lock.empty, central, Seq(jar, pom), prepareCommand))
+        unwrap(merge(Lock.empty, central, Seq(jar, pom), prepareCommand))
 
       val golden =
         s"""{
-           |  "version": 2,
+           |  "version": 3,
            |  "kind": "mif-maven-lock",
            |  "repositories": {
            |    "central": "https://repo1.maven.org/maven2"
@@ -95,6 +116,7 @@ object LockTests extends TestSuite:
            |  },
            |  "artifacts": {
            |    "com/example/foo/1.0.0": {
+           |      "narHash": "${artifactHash("com/example/foo/1.0.0")}",
            |      "runs": [
            |        "${prepareRun.id}"
            |      ],
@@ -116,11 +138,11 @@ object LockTests extends TestSuite:
       val fileB = repoFile("com/example/b/1.0.0/b-1.0.0.pom")
       val forward =
         unwrap(
-          Lock.merge(Lock.empty, central, Seq(fileA, fileB), prepareCommand)
+          merge(Lock.empty, central, Seq(fileA, fileB), prepareCommand)
         )
       val backward =
         unwrap(
-          Lock.merge(Lock.empty, central, Seq(fileB, fileA), prepareCommand)
+          merge(Lock.empty, central, Seq(fileB, fileA), prepareCommand)
         )
       assert(Lock.render(forward) == Lock.render(backward))
     }
@@ -129,8 +151,8 @@ object LockTests extends TestSuite:
       val pom = repoFile("com/example/foo/1.0.0/foo-1.0.0.pom")
       val jar = repoFile("com/example/foo/1.0.0/foo-1.0.0.jar")
       val first =
-        unwrap(Lock.merge(Lock.empty, central, Seq(pom), prepareCommand))
-      val second = unwrap(Lock.merge(first, central, Seq(jar), assemblyCommand))
+        unwrap(merge(Lock.empty, central, Seq(pom), prepareCommand))
+      val second = unwrap(merge(first, central, Seq(jar), assemblyCommand))
       val parsed = unwrap(Lock.parse(Lock.render(second)))
       val expectedRuns = Vector(prepareRun.id, assemblyRun.id).sorted
 
@@ -149,7 +171,7 @@ object LockTests extends TestSuite:
       )
       val run = LockRun.fromCommand(command, "central")
       val lock = unwrap(
-        Lock.merge(
+        merge(
           Lock.empty,
           central,
           Seq(repoFile("com/example/a/1.0.0/a-1.0.0.pom")),
@@ -166,7 +188,7 @@ object LockTests extends TestSuite:
       val mirrorRun = LockRun.fromCommand(prepareCommand, "mirror")
       val json =
         s"""{
-           |  "version": 2,
+           |  "version": 3,
            |  "kind": "mif-maven-lock",
            |  "repositories": {
            |    "central": "https://repo1.maven.org/maven2",
@@ -184,6 +206,7 @@ object LockTests extends TestSuite:
            |  },
            |  "artifacts": {
            |    "com/example/a/1.0.0": {
+           |      "narHash": "${artifactHash("com/example/a/1.0.0")}",
            |      "runs": ["${mirrorRun.id}"],
            |      "files": {
            |        "a-1.0.0.pom": "${sha}"
@@ -201,7 +224,7 @@ object LockTests extends TestSuite:
 
     test("parse rejects malformed JSON and schema violations") {
       val base = unwrap(
-        Lock.merge(
+        merge(
           Lock.empty,
           central,
           Seq(repoFile("com/example/a/1.0.0/a-1.0.0.pom")),
@@ -228,9 +251,21 @@ object LockTests extends TestSuite:
       )
       assert(badSha.left.exists(_.contains("invalid sha256")))
 
+      val badNarHash = Lock.parse(
+        renderWith(lock =>
+          lock.copy(artifactNarHashes =
+            lock.artifactNarHashes.view.mapValues(_ => "abc123").toMap
+          )
+        )
+      )
+      assert(badNarHash.left.exists(_.contains("invalid narHash")))
+
       val badPath = Lock.parse(
         renderWith(lock =>
-          lock.copy(files = lock.files.map(_.copy(mavenPath = "com/../a.pom")))
+          lock.copy(
+            files = lock.files.map(_.copy(mavenPath = "com/../a.pom")),
+            artifactNarHashes = Map("com/.." -> artifactHash("com/.."))
+          )
         )
       )
       assert(badPath.left.exists(_.contains("invalid maven path")))
@@ -268,7 +303,7 @@ object LockTests extends TestSuite:
       val tempDir = os.temp.dir(prefix = "mif-lock-test_")
       val lockPath = tempDir / "nested" / "mif.lock.json"
       val lock = unwrap(
-        Lock.merge(
+        merge(
           Lock.empty,
           central,
           Seq(repoFile("com/example/a/1.0.0/a-1.0.0.pom")),
@@ -280,7 +315,7 @@ object LockTests extends TestSuite:
       assert(Lock.read(lockPath) == Right(Some(lock)))
 
       val updated = unwrap(
-        Lock.merge(
+        merge(
           lock,
           central,
           Seq(repoFile("com/example/b/1.0.0/b-1.0.0.pom")),
@@ -303,10 +338,10 @@ object LockTests extends TestSuite:
 
       val first =
         unwrap(
-          Lock.merge(Lock.empty, central, Seq(fileA, fileB), prepareCommand)
+          merge(Lock.empty, central, Seq(fileA, fileB), prepareCommand)
         )
       val second =
-        unwrap(Lock.merge(first, central, Seq(fileB, fileC), assemblyCommand))
+        unwrap(merge(first, central, Seq(fileB, fileC), assemblyCommand))
 
       assert(
         second.files.map(_.mavenPath) == Vector(
@@ -328,9 +363,28 @@ object LockTests extends TestSuite:
 
     test("merge of the same run twice is a no-op") {
       val files = Seq(repoFile("com/example/a/1.0.0/a-1.0.0.pom"))
-      val once = unwrap(Lock.merge(Lock.empty, central, files, prepareCommand))
-      val twice = unwrap(Lock.merge(once, central, files, prepareCommand))
+      val once = unwrap(merge(Lock.empty, central, files, prepareCommand))
+      val twice = unwrap(merge(once, central, files, prepareCommand))
       assert(Lock.render(once) == Lock.render(twice))
+    }
+
+    test("merge reuses narHash until an artifact's contents change") {
+      val pom = repoFile("com/example/a/1.0.0/a-1.0.0.pom")
+      val jar = repoFile("com/example/a/1.0.0/a-1.0.0.jar")
+      val artifactDir = "com/example/a/1.0.0"
+      val first = unwrap(merge(Lock.empty, central, Seq(pom), prepareCommand))
+
+      val metadataOnly = unwrap(
+        Lock.merge(first, central, Seq(pom), assemblyCommand)
+      )
+      assert(metadataOnly.artifactNarHashes == first.artifactNarHashes)
+      assert(Lock.missingArtifactNarHashes(metadataOnly).isEmpty)
+
+      val expanded = unwrap(
+        Lock.merge(first, central, Seq(pom, jar), assemblyCommand)
+      )
+      assert(!expanded.artifactNarHashes.contains(artifactDir))
+      assert(Lock.missingArtifactNarHashes(expanded) == Vector(artifactDir))
     }
 
     test("merge reports every content conflict and keeps the lock untouched") {
@@ -338,7 +392,7 @@ object LockTests extends TestSuite:
       val fileB = repoFile("com/example/b/1.0.0/b-1.0.0.pom")
       val existing =
         unwrap(
-          Lock.merge(Lock.empty, central, Seq(fileA, fileB), prepareCommand)
+          merge(Lock.empty, central, Seq(fileA, fileB), prepareCommand)
         )
 
       val mutatedA = fileA.copy(sha256 = Sha256.sri("other".getBytes("UTF-8")))
@@ -346,7 +400,7 @@ object LockTests extends TestSuite:
         fileB.copy(sha256 = Sha256.sri("other-b".getBytes("UTF-8")))
 
       val result =
-        Lock.merge(existing, central, Seq(mutatedA, mutatedB), assemblyCommand)
+        merge(existing, central, Seq(mutatedA, mutatedB), assemblyCommand)
       result match
         case Right(_) => assert(false)
         case Left(reason) =>
@@ -363,15 +417,15 @@ object LockTests extends TestSuite:
       val fileB = repoFile("com/example/b/1.0.0/b-1.0.0.pom")
 
       val first =
-        unwrap(Lock.merge(Lock.empty, central, Seq(fileA), prepareCommand))
+        unwrap(merge(Lock.empty, central, Seq(fileA), prepareCommand))
       // Same url: entry reused, no duplicate repository.
       val reused =
-        unwrap(Lock.merge(first, central, Seq(fileB), assemblyCommand))
+        unwrap(merge(first, central, Seq(fileB), assemblyCommand))
       assert(reused.repositories == first.repositories)
 
       // Different url wanting the same id: suffixed instead of clobbered.
       val suffixed =
-        unwrap(Lock.merge(first, mirror, Seq(fileB), assemblyCommand))
+        unwrap(merge(first, mirror, Seq(fileB), assemblyCommand))
       assert(
         suffixed.repositories.map(_.id) == Vector("central", "central-2")
       )

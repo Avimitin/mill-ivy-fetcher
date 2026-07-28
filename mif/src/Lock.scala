@@ -54,11 +54,12 @@ case class MifLock(
     kind: String,
     repositories: Vector[LockRepository],
     runs: Vector[LockRun],
-    files: Vector[LockedFile]
+    files: Vector[LockedFile],
+    artifactNarHashes: Map[String, String] = Map.empty
 )
 
 object Lock:
-  val Version = 2
+  val Version = 3
   val Kind = "mif-maven-lock"
   val DefaultFileName = "mif.lock.json"
 
@@ -79,6 +80,7 @@ object Lock:
   ) derives ReadWriter
 
   private case class LockJsonArtifact(
+      narHash: String,
       runs: Vector[String],
       files: Map[String, String]
   ) derives ReadWriter
@@ -89,7 +91,8 @@ object Lock:
       kind = Kind,
       repositories = Vector.empty,
       runs = Vector.empty,
-      files = Vector.empty
+      files = Vector.empty,
+      artifactNarHashes = Map.empty
     )
 
   private def errorMessage(e: Throwable): String =
@@ -147,7 +150,10 @@ object Lock:
             runs = artifact.runs
           )
         }
-      }
+      },
+      artifactNarHashes = document.artifacts.view
+        .mapValues(_.narHash)
+        .toMap
     )
 
   private def repositoryForRuns(
@@ -165,6 +171,7 @@ object Lock:
       _ <- validateRepositories(lock.repositories)
       _ <- validateRuns(lock.runs)
       _ <- validateFiles(lock)
+      _ <- validateArtifactNarHashes(lock)
     yield lock
 
   private def validateHeader(lock: MifLock): Either[String, Unit] =
@@ -240,6 +247,24 @@ object Lock:
       case Some(path) => Left(s"duplicate lock entry for maven path '${path}'")
       case None       => invalid.orElse(invalidRunRepository).toLeft(())
 
+  private def validateArtifactNarHashes(lock: MifLock): Either[String, Unit] =
+    val expected = artifactDirectories(lock.files).toSet
+    val actual = lock.artifactNarHashes.keySet
+    val missing = (expected -- actual).toVector.sorted
+    val unexpected = (actual -- expected).toVector.sorted
+    val invalid = lock.artifactNarHashes.toVector.sortBy(_._1).collectFirst {
+      case (dir, hash) if sriPattern.findFirstIn(hash).isEmpty =>
+        s"artifact ${dir} has invalid narHash '${hash}'; expected SRI sha256-<base64>"
+    }
+
+    if missing.nonEmpty then
+      Left(s"artifacts missing narHash: ${missing.mkString(", ")}")
+    else if unexpected.nonEmpty then
+      Left(
+        s"narHash entries reference unknown artifacts: ${unexpected.mkString(", ")}"
+      )
+    else invalid.toLeft(())
+
   /** Deterministic form: entry order never depends on sqlite collation or
     * insertion order, so appends produce minimal diffs.
     */
@@ -249,7 +274,9 @@ object Lock:
       runs = lock.runs.sortBy(_.command.mkString("\n")),
       files = lock.files
         .map(file => file.copy(runs = file.runs.distinct.sorted))
-        .sortBy(_.mavenPath)
+        .sortBy(_.mavenPath),
+      artifactNarHashes =
+        VectorMap.from(lock.artifactNarHashes.toVector.sortBy(_._1))
     )
 
   def render(lock: MifLock): String =
@@ -274,16 +301,17 @@ object Lock:
             )
           )
       ),
-      artifacts = artifacts(lock.files)
+      artifacts = artifacts(lock.files, lock.artifactNarHashes)
     )
 
-  private def splitMavenPath(path: String): (String, String) =
+  private[mif] def splitMavenPath(path: String): (String, String) =
     val index = path.lastIndexOf('/')
     if index < 0 then ("", path)
     else (path.take(index), path.drop(index + 1))
 
   private def artifacts(
-      files: Vector[LockedFile]
+      files: Vector[LockedFile],
+      artifactNarHashes: Map[String, String]
   ): Map[String, LockJsonArtifact] =
     VectorMap.from(
       files
@@ -301,9 +329,40 @@ object Lock:
                 name -> file.sha256
               }
           )
-          dir -> LockJsonArtifact(runs = artifactRuns, files = entries)
+          val narHash = artifactNarHashes.getOrElse(
+            dir,
+            throw new IllegalArgumentException(
+              s"artifact ${dir} is missing its narHash"
+            )
+          )
+          dir -> LockJsonArtifact(
+            narHash = narHash,
+            runs = artifactRuns,
+            files = entries
+          )
         }
     )
+
+  private[mif] def artifactDirectories(
+      files: Seq[LockedFile]
+  ): Vector[String] =
+    files.iterator
+      .map(file => splitMavenPath(file.mavenPath)._1)
+      .toVector
+      .distinct
+      .sorted
+
+  private[mif] def missingArtifactNarHashes(lock: MifLock): Vector[String] =
+    artifactDirectories(lock.files).filterNot(lock.artifactNarHashes.contains)
+
+  private[mif] def withArtifactNarHashes(
+      lock: MifLock,
+      hashes: Map[String, String]
+  ): Either[String, MifLock] =
+    val updated = canonicalize(
+      lock.copy(artifactNarHashes = lock.artifactNarHashes ++ hashes)
+    )
+    validateArtifactNarHashes(updated).map(_ => updated)
 
   private def runsForArtifact(files: Vector[LockedFile]): Vector[String] =
     files.flatMap(_.runs).distinct.sorted
@@ -323,11 +382,12 @@ object Lock:
         .map(reason => s"${file}: ${reason}")
 
   def write(file: os.Path, lock: MifLock): Either[String, Unit] =
-    val rendered = render(lock)
-    createTempFile(file).flatMap { tmp =>
-      try writeAndMove(tmp, file, rendered)
-      finally bestEffortDelete(tmp)
-    }
+    validate(lock).flatMap: validated =>
+      val rendered = render(validated)
+      createTempFile(file).flatMap { tmp =>
+        try writeAndMove(tmp, file, rendered)
+        finally bestEffortDelete(tmp)
+      }
 
   private def createTempFile(file: os.Path): Either[String, os.Path] =
     try
@@ -410,6 +470,14 @@ object Lock:
         if existing.runs.exists(_.id == run.id) then existing.runs
         else existing.runs :+ run
 
+      val mergedFileVector = mergedFiles.values.toVector
+      val previousContents = artifactContents(existing.files)
+      val mergedContents = artifactContents(mergedFileVector)
+      val reusableNarHashes = existing.artifactNarHashes.filter {
+        case (dir, _) =>
+          previousContents.get(dir) == mergedContents.get(dir)
+      }
+
       Right(
         canonicalize(
           MifLock(
@@ -417,10 +485,25 @@ object Lock:
             kind = Kind,
             repositories = repositories,
             runs = runs,
-            files = mergedFiles.values.toVector
+            files = mergedFileVector,
+            artifactNarHashes = reusableNarHashes
           )
         )
       )
+
+  private def artifactContents(
+      files: Vector[LockedFile]
+  ): Map[String, Map[String, String]] =
+    files
+      .groupBy(file => splitMavenPath(file.mavenPath)._1)
+      .view
+      .mapValues: dirFiles =>
+        dirFiles
+          .map: file =>
+            val (_, name) = splitMavenPath(file.mavenPath)
+            name -> file.sha256
+          .toMap
+      .toMap
 
   private def assignRepository(
       existing: Vector[LockRepository],

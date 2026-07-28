@@ -1,5 +1,6 @@
 {
-  fetchurl,
+  cacert,
+  curl,
   lib,
   runCommand,
   symlinkJoin,
@@ -19,7 +20,7 @@ let
         "name"
       ];
 
-      hasSchema = (lock.version or null) == 2 && (lock.kind or null) == "mif-maven-lock";
+      hasSchema = (lock.version or null) == 3 && (lock.kind or null) == "mif-maven-lock";
 
       trimTrailingSlash = url: lib.removeSuffix "/" url;
 
@@ -44,43 +45,56 @@ let
         in
         lock.repositories.${repository} or (throw "unknown MIF repository id '${repository}'");
 
-      fetchArtifact =
-        dir: repositoryUrl: fileName: sha256:
-        let
-          mavenPath = "${dir}/${fileName}";
-        in
-        runCommand "mif-artifact-${lib.strings.sanitizeDerivationName mavenPath}"
-          {
-            artifact = fetchurl {
-              name = baseNameOf mavenPath;
-              url = "${trimTrailingSlash repositoryUrl}/${mavenPath}";
-              hash = sha256;
-            };
-            inherit mavenPath;
-            preferLocalBuild = true;
-          }
-          ''
-            install -Dm444 "$artifact" "$out/$mavenPath"
-          '';
-
-      mkMavenArtifact =
+      fetchMavenArtifact =
         dir: artifact:
         let
           repositoryUrl = artifactRepositoryUrl artifact;
           files = artifact.files or (throw "MIF artifact '${dir}' does not define files");
+          narHash = artifact.narHash or (throw "MIF artifact '${dir}' does not define narHash");
+          downloadFiles = lib.concatMapStringsSep "\n" (
+            fileName:
+            let
+              mavenPath = "${dir}/${fileName}";
+              url = "${trimTrailingSlash repositoryUrl}/${mavenPath}";
+            in
+            ''
+              fileName=${lib.escapeShellArg fileName}
+              curl \
+                --fail \
+                --location \
+                --retry 3 \
+                --retry-all-errors \
+                --silent \
+                --show-error \
+                --output "$out/$mavenDir/$fileName" \
+                ${lib.escapeShellArg url}
+              chmod 0444 "$out/$mavenDir/$fileName"
+            ''
+          ) (builtins.attrNames files);
         in
-        symlinkJoin {
-          name = "mif-maven-artifact-${lib.strings.sanitizeDerivationName dir}";
-          paths = lib.mapAttrsToList (fetchArtifact dir repositoryUrl) files;
-          passthru = {
-            mavenPath = dir;
-          };
-        };
+        # Download the whole Maven coordinate in one fixed-output derivation.
+        # Nix verifies the recursive NAR hash; the per-file hashes remain in the
+        # lock for review and diagnostics.
+        runCommand "mif-maven-artifact-${lib.strings.sanitizeDerivationName dir}"
+          {
+            nativeBuildInputs = [ curl ];
+            SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
+            outputHash = narHash;
+            outputHashAlgo = "sha256";
+            outputHashMode = "recursive";
+            preferLocalBuild = false;
+            passthru.mavenPath = dir;
+          }
+          ''
+            mavenDir=${lib.escapeShellArg dir}
+            install -d -m755 "$out/$mavenDir"
+            ${downloadFiles}
+          '';
 
-      defaultArtifacts = lib.mapAttrs mkMavenArtifact lock.artifacts;
+      defaultArtifacts = lib.mapAttrs fetchMavenArtifact lock.artifacts;
       artifacts = defaultArtifacts // artifactOverrides;
     in
-    assert lib.assertMsg hasSchema "${toString lockFile} is not a version 2 mif-maven-lock file";
+    assert lib.assertMsg hasSchema "${toString lockFile} is not a version 3 mif-maven-lock file";
     symlinkJoin {
       inherit name;
       paths = builtins.attrValues artifacts;
