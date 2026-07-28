@@ -80,6 +80,13 @@
               ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [ pkgs.bubblewrap ];
             };
 
+            # CI unit tests only need Mill and its bundled JRE. Keep the full
+            # mif package, offline Maven repository, Metals, and bubblewrap out
+            # of this shell so test startup does not materialize them.
+            devShells.ci = pkgs.mkShell {
+              nativeBuildInputs = [ pkgs.millVersions.mill_1_1_2 ];
+            };
+
             treefmt = {
               projectRootFile = "flake.nix";
               settings.verbose = 1;
