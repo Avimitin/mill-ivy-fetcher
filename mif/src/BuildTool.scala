@@ -41,8 +41,43 @@ object MillSupport extends BuildToolSupport:
 
     Seq(flagWarning, daemonWarning).flatten
 
+object ScalaCliSupport extends BuildToolSupport:
+  def name = "scala-cli"
+
+  private def serverDisabled(command: Seq[String]): Boolean =
+    command.contains("--server=false") ||
+      command.sliding(2).exists(_.toSeq == Seq("--server", "false"))
+
+  def preflightWarnings(
+      projectDir: os.Path,
+      command: Seq[String]
+  ): Seq[String] =
+    val serverWarning =
+      if serverDisabled(command) then None
+      else
+        Some(
+          "scala-cli resolves the large Bloop build-server dependency graph " +
+            "by default; pass `--server=false` for a smaller daemon-free " +
+            "archive, and use the same flag when replaying the build"
+        )
+
+    val buildState = projectDir / ".scala-build"
+    val buildStateWarning =
+      if os.exists(buildState) then
+        Some(
+          s"Scala CLI generated state exists under ${buildState}; run " +
+            "`scala-cli clean .` before archiving so stale compilation " +
+            "outputs cannot hide dependency resolution"
+        )
+      else None
+
+    Seq(serverWarning, buildStateWarning).flatten
+
 object BuildTools:
-  val supported: Map[String, BuildToolSupport] = Map("mill" -> MillSupport)
+  val supported: Map[String, BuildToolSupport] = Map(
+    "mill" -> MillSupport,
+    "scala-cli" -> ScalaCliSupport
+  )
 
   /** Detects the build tool from the executable name, tolerating relative and
     * absolute invocations like `./mill` or `/nix/store/.../bin/mill`.
@@ -51,7 +86,7 @@ object BuildTools:
     command.headOption match
       case None =>
         Left(
-          "missing build command; usage: mif archive [flags] -- mill -i __.prepareOffline"
+          "missing build command; usage: mif archive [flags] -- <build-tool> <arguments>"
         )
       case Some(executable) =>
         val name = executable.split('/').last

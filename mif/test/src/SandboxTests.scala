@@ -15,18 +15,28 @@ object SandboxTests extends TestSuite:
       )
     }
 
-    test("BuildTools detects mill from any invocation shape") {
+    test("BuildTools detects supported tools from any invocation shape") {
       assert(BuildTools.detect(Seq("mill", "__.compile")) == Right(MillSupport))
       assert(BuildTools.detect(Seq("./mill")) == Right(MillSupport))
       assert(
         BuildTools.detect(Seq("/nix/store/abc/bin/mill")) == Right(MillSupport)
       )
       assert(
+        BuildTools.detect(Seq("scala-cli", "compile", ".")) ==
+          Right(ScalaCliSupport)
+      )
+      assert(BuildTools.detect(Seq("./scala-cli")) == Right(ScalaCliSupport))
+      assert(
+        BuildTools.detect(Seq("/nix/store/abc/bin/scala-cli")) ==
+          Right(ScalaCliSupport)
+      )
+      assert(
         BuildTools
           .detect(Seq("gradle", "build"))
           .left
           .exists(reason =>
-            reason.contains("gradle") && reason.contains("mill")
+            reason.contains("gradle") && reason.contains("mill") &&
+              reason.contains("scala-cli")
           )
       )
       assert(
@@ -56,6 +66,29 @@ object SandboxTests extends TestSuite:
       val stale =
         MillSupport.preflightWarnings(tempDir, Seq("mill", "-i", "__.compile"))
       assert(stale.exists(_.contains("mill shutdown")))
+    }
+
+    test("ScalaCliSupport warns about generated build state") {
+      val tempDir = os.temp.dir(prefix = "mif-scala-cli-test_")
+      val command = Seq("scala-cli", "compile", "--test", ".")
+
+      val defaultServer = ScalaCliSupport.preflightWarnings(tempDir, command)
+      assert(defaultServer.exists(_.contains("--server=false")))
+
+      val daemonless =
+        ScalaCliSupport.preflightWarnings(
+          tempDir,
+          Seq("scala-cli", "compile", "--test", "--server=false", ".")
+        )
+      assert(daemonless.isEmpty)
+
+      os.makeDir.all(tempDir / ".scala-build")
+      val stale = ScalaCliSupport.preflightWarnings(
+        tempDir,
+        Seq("scala-cli", "compile", "--server", "false", ".")
+      )
+      assert(stale.exists(_.contains("scala-cli clean .")))
+      assert(stale.exists(_.contains((tempDir / ".scala-build").toString)))
     }
 
     test("CoursierMirror mirrors both central aliases to the relay") {
@@ -117,12 +150,14 @@ object SandboxTests extends TestSuite:
       assert(env("JAVA_HOME") == "/nix/store/jdk")
       assert(!env.contains("TERM"))
       assert(!env.contains("LANG"))
-      assert(!env.contains("XDG_CACHE_HOME"))
-      assert(!env.contains("XDG_CONFIG_HOME"))
-      assert(!env.contains("XDG_DATA_HOME"))
-      assert(!env.contains("COURSIER_CACHE"))
+      assert(env("XDG_CACHE_HOME") == "/mif/.cache")
+      assert(env("XDG_CONFIG_HOME") == "/mif/.config")
+      assert(env("XDG_DATA_HOME") == "/mif/.local/share")
+      assert(env("COURSIER_CACHE") == "/mif/.cache/coursier")
       assert(!env.contains("COURSIER_CONFIG_DIR"))
-      assert(!env.contains("COURSIER_MIRRORS"))
+      assert(
+        env("COURSIER_MIRRORS") == "/mif/.config/coursier/mirror.properties"
+      )
       assert(!env.contains("SECRET_TOKEN"))
 
       val toolOptions = env("JAVA_TOOL_OPTIONS")

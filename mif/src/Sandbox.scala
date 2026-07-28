@@ -117,9 +117,9 @@ object SandboxEnv:
       case SandboxStrategy.CleanEnvOnly(_) =>
         buildCleanEnv(parentEnv, sandboxHome, exportEnv)
 
-  /** Minimal environment for the bwrap child. Coursier uses its default config
-    * and cache locations under `user.home`, which JAVA_TOOL_OPTIONS points at
-    * the clean sandbox home.
+  /** Minimal environment for the bwrap child. Paths are explicit because native
+    * launchers such as Scala CLI do not necessarily derive Coursier or XDG
+    * locations from the JVM's `user.home` property.
     */
   private[mif] def buildBwrap(
       parentEnv: Map[String, String],
@@ -129,10 +129,7 @@ object SandboxEnv:
     val (inherited, exported, warnings) =
       parentEntries(parentEnv, bwrapPassthroughKeys, exportEnv)
 
-    val env = inherited ++ Map(
-      "HOME" -> bwrapHome.toString,
-      "JAVA_TOOL_OPTIONS" -> javaToolOptions(bwrapHome)
-    ) ++ exported
+    val env = inherited ++ sandboxPaths(bwrapHome) ++ exported
 
     (env, warnings)
 
@@ -147,15 +144,7 @@ object SandboxEnv:
     val (inherited, exported, warnings) =
       parentEntries(parentEnv, cleanEnvPassthroughKeys, exportEnv)
 
-    val env = inherited ++ Map(
-      "HOME" -> sandboxHome.toString,
-      "XDG_CACHE_HOME" -> (sandboxHome / ".cache").toString,
-      "XDG_CONFIG_HOME" -> (sandboxHome / ".config").toString,
-      "XDG_DATA_HOME" -> (sandboxHome / ".local" / "share").toString,
-      "COURSIER_CACHE" -> coursierCache(sandboxHome).toString,
-      "COURSIER_MIRRORS" -> mirrorFile(sandboxHome).toString,
-      "JAVA_TOOL_OPTIONS" -> javaToolOptions(sandboxHome)
-    ) ++ exported
+    val env = inherited ++ sandboxPaths(sandboxHome) ++ exported
 
     (env, warnings)
 
@@ -187,6 +176,17 @@ object SandboxEnv:
       .toMap
 
     (passthrough ++ pathEntry, exported, ignoredWarnings ++ missingWarnings)
+
+  private def sandboxPaths(home: os.Path): Map[String, String] =
+    Map(
+      "HOME" -> home.toString,
+      "XDG_CACHE_HOME" -> (home / ".cache").toString,
+      "XDG_CONFIG_HOME" -> (home / ".config").toString,
+      "XDG_DATA_HOME" -> (home / ".local" / "share").toString,
+      "COURSIER_CACHE" -> coursierCache(home).toString,
+      "COURSIER_MIRRORS" -> mirrorFile(home).toString,
+      "JAVA_TOOL_OPTIONS" -> javaToolOptions(home)
+    )
 
   /** JVM options every spawned JVM picks up. `-Duser.home` matters because the
     * JVM derives user.home from /etc/passwd, not $HOME.

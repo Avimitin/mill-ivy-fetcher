@@ -1,9 +1,9 @@
 # Mill Ivy Fetcher
 
-Mill Ivy Fetcher (`mif`) records the Maven artifacts requested by a Mill build
+Mill Ivy Fetcher (`mif`) records the Maven artifacts requested by a Scala build
 and turns them into a Nix-consumable lock file. The lock can then be converted
-into a local Maven repository derivation, allowing Mill/Coursier builds to run in
-a Nix sandbox without network access.
+into a local Maven repository derivation, allowing Mill or Scala CLI builds that
+use Coursier to run in a Nix sandbox without network access.
 
 This repository includes a Chisel integration test (`.#ci-test`) that publishes
 Chisel locally from a locked Maven repository, proving that `mif` can capture a
@@ -11,7 +11,7 @@ large real-world Mill build and replay it offline through Nix.
 
 The workflow is:
 
-1. Run `mif archive` around one or more Mill targets.
+1. Run `mif archive` around one or more build commands.
 2. Commit the generated `mif.lock.json`.
 3. Use `mkMavenRepository` in Nix to materialize the locked Maven repository.
 4. Put that repository in a derivation's inputs so Coursier resolves from the
@@ -21,7 +21,8 @@ The workflow is:
 
 - Nix >= 2.28
 - Flakes with `nix-command` enabled
-- Mill 0.12.7+ or Mill 1.1.0+
+- Mill 0.12.7+ or Mill 1.1.0+ for Mill projects
+- Scala CLI for Scala CLI projects
 - Linux: `bubblewrap` is required for the default archive sandbox
 
 This repository's default dev shell includes `mif`, Mill, and Metals. On Linux,
@@ -66,6 +67,26 @@ the equivalent commands are:
 java -jar ./out/mif/assembly.dest/out.jar archive -- mill --no-daemon __.prepareOffline
 java -jar ./out/mif/assembly.dest/out.jar archive -- mill --no-daemon __.scalaCompilerClasspath
 ```
+
+## Quick start for Scala CLI projects
+
+Remove generated compilation state, then compile both the main and test scopes
+through the archive:
+
+```bash
+scala-cli clean path/to/project
+mif archive -p path/to/project -- scala-cli compile --test --server=false .
+```
+
+Scala CLI does not provide a dedicated dependency-fetch command, so compiling
+both scopes is the closest equivalent. `--server=false` avoids resolving the
+large Bloop build-server dependency graph and makes this a daemon-free one-shot
+capture. Use the same flag when replaying the build because it changes the
+required artifacts. MIF warns when it is omitted but does not block the command.
+
+Like Mill, Scala CLI can use additional repositories or download a selected JVM
+outside Maven Central. Those downloads are not captured; use a Nix-provided JDK
+and keep dependency repositories within the configured MIF upstream.
 
 ## Using a lock from Nix
 
@@ -143,7 +164,7 @@ environment whose Coursier mirror points Maven Central at that relay, runs the
 command after `--`, and writes every file served by the relay into a JSON lock.
 
 ```bash
-mif archive [options] -- mill --no-daemon __.prepareOffline
+mif archive [options] -- <mill|scala-cli> <arguments>
 ```
 
 If a build needs selected variables from the invoking environment, export them
@@ -171,9 +192,9 @@ Important options:
 - `--keep-workdir`: keep the temporary sandbox home for debugging.
 - `--proxy <url>`: HTTP proxy for upstream relay requests.
 
-Everything after `--` is executed inside the project directory. Currently `mif
-archive` supports Mill commands and warns when the command may reuse a Mill daemon
-from outside the archive environment.
+Everything after `--` is executed inside the project directory. `mif archive`
+supports Mill and Scala CLI commands. It warns about daemon or build-server use
+and persisted compilation state that should be cleaned before capture.
 
 A lock has this shape:
 
@@ -339,6 +360,9 @@ to `mill-ivy-fetcher.packages.${system}.mif` directly.
   refresh it.
 - The relay observes only files requested by the build command. Lazy Mill targets
   that are never evaluated will not be discovered.
+- Scala CLI JVM downloads selected by `--jvm` or `using jvm` do not use Maven
+  repositories and are not captured. Prefer a Nix-provided system JDK for offline
+  builds.
 - A Mill daemon started outside the sandbox can serve requests with the wrong
   environment. Run `mill shutdown` first and pass `--no-daemon` or `-i` in the
   archived Mill command.

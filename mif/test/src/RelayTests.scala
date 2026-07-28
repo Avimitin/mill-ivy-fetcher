@@ -128,6 +128,15 @@ object RelayTests extends TestSuite:
   val tests = Tests {
     test("MavenPath accepts repository-relative Maven paths") {
       assert(MavenPath.fromSegments(sampleSegments) == Right(sampleMavenPath))
+      assert(
+        MavenPath.fromRawPath("/com/example/a/1.0.0+39/a-1.0.0+39.pom") ==
+          Right("com/example/a/1.0.0+39/a-1.0.0+39.pom")
+      )
+      assert(
+        MavenPath.fromRawPath("/com/example/a/1.0.0%2B39/a.pom") ==
+          Right("com/example/a/1.0.0+39/a.pom")
+      )
+      assert(MavenPath.fromRawPath("/com/example/%XX/a.pom").isLeft)
     }
 
     test("MavenPath rejects unsafe path segments") {
@@ -436,6 +445,39 @@ object RelayTests extends TestSuite:
           val response = requests.get(handle.baseUrl, check = false)
           assert(response.statusCode == 200)
         finally handle.close()
+      }
+    }
+
+    test("relay preserves plus signs in Maven coordinates") {
+      Logger.withLevel(LogLevel.Quiet) {
+        val mavenPath =
+          "ch/epfl/scala/example/0.34.0+39/example-0.34.0+39.pom"
+        val content = "<project>plus-version</project>"
+          .getBytes(StandardCharsets.UTF_8)
+
+        withLocalUpstream(MavenPath.encodeForUri(mavenPath), content) {
+          upstreamBaseUrl =>
+            val tempDir = os.temp.dir(prefix = "mif-relay-test_")
+            val config = MavenRelayConfig(
+              repoDir = tempDir / "repository",
+              upstreamBaseUrl = upstreamBaseUrl,
+              connectTimeoutSeconds = 1,
+              requestTimeoutSeconds = 1
+            )
+            val handle = MavenRelayServer.start("127.0.0.1", 0, config) match
+              case Right(handle) => handle
+              case Left(reason)  => throw new java.lang.AssertionError(reason)
+
+            try
+              val response = requests.get(
+                s"${handle.baseUrl}${mavenPath}",
+                check = false
+              )
+              assert(response.statusCode == 200)
+              assert(response.bytes.sameElements(content))
+              assert(handle.accessedPaths == Seq(mavenPath))
+            finally handle.close()
+        }
       }
     }
 
