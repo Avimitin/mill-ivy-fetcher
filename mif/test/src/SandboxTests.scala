@@ -187,9 +187,11 @@ object SandboxTests extends TestSuite:
         assert(env("BUILD_PROFILE") == "release candidate")
         assert(env("JAVA_OPTS") == "-Xmx2g")
         assert(!env.contains("MISSING"))
-        assert(!warnings.exists(message =>
-          message.contains("JAVA_OPTS") && message.contains("ignored")
-        ))
+        assert(
+          !warnings.exists(message =>
+            message.contains("JAVA_OPTS") && message.contains("ignored")
+          )
+        )
         assert(warnings.count(_.contains("MISSING")) == 1)
     }
 
