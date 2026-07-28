@@ -165,6 +165,34 @@ object SandboxTests extends TestSuite:
       assert(warnings.isEmpty)
     }
 
+    test("SandboxEnv re-exports requested host variables") {
+      val parent = Map(
+        "PATH" -> "/bin",
+        "BUILD_PROFILE" -> "release candidate",
+        "JAVA_OPTS" -> "-Xmx2g"
+      )
+
+      for strategy <- Seq(
+          SandboxStrategy.Bwrap,
+          SandboxStrategy.CleanEnvOnly(Seq.empty)
+        )
+      do
+        val (env, warnings) = SandboxEnv.build(
+          strategy,
+          parent,
+          home,
+          Seq("BUILD_PROFILE", "JAVA_OPTS", "MISSING", "BUILD_PROFILE")
+        )
+
+        assert(env("BUILD_PROFILE") == "release candidate")
+        assert(env("JAVA_OPTS") == "-Xmx2g")
+        assert(!env.contains("MISSING"))
+        assert(!warnings.exists(message =>
+          message.contains("JAVA_OPTS") && message.contains("ignored")
+        ))
+        assert(warnings.count(_.contains("MISSING")) == 1)
+    }
+
     test("SandboxEnv inherits PATH only when the host provides it") {
       val (env, warnings) = SandboxEnv.buildBwrap(Map.empty, home)
       assert(!env.contains("PATH"))

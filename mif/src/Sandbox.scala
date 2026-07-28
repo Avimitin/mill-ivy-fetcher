@@ -108,12 +108,14 @@ object SandboxEnv:
   def build(
       strategy: SandboxStrategy,
       parentEnv: Map[String, String],
-      sandboxHome: os.Path
+      sandboxHome: os.Path,
+      exportEnv: Seq[String] = Seq.empty
   ): (Map[String, String], Seq[String]) =
     strategy match
-      case SandboxStrategy.Bwrap => buildBwrap(parentEnv, sandboxHome)
+      case SandboxStrategy.Bwrap =>
+        buildBwrap(parentEnv, sandboxHome, exportEnv)
       case SandboxStrategy.CleanEnvOnly(_) =>
-        buildCleanEnv(parentEnv, sandboxHome)
+        buildCleanEnv(parentEnv, sandboxHome, exportEnv)
 
   /** Minimal environment for the bwrap child. Coursier uses its default config
     * and cache locations under `user.home`, which JAVA_TOOL_OPTIONS points at
@@ -121,22 +123,16 @@ object SandboxEnv:
     */
   private[mif] def buildBwrap(
       parentEnv: Map[String, String],
-      sandboxHome: os.Path
+      sandboxHome: os.Path,
+      exportEnv: Seq[String] = Seq.empty
   ): (Map[String, String], Seq[String]) =
-    val ignored = ignoredKeys.filter(parentEnv.contains)
-    val warnings = ignored.map(key =>
-      s"environment variable ${key} is set but ignored inside the archive sandbox"
-    )
+    val (inherited, exported, warnings) =
+      parentEntries(parentEnv, bwrapPassthroughKeys, exportEnv)
 
-    val pathEntry = parentEnv.get("PATH").map("PATH" -> _).toMap
-    val passthrough = bwrapPassthroughKeys
-      .flatMap(key => parentEnv.get(key).map(key -> _))
-      .toMap
-
-    val env = passthrough ++ pathEntry ++ Map(
+    val env = inherited ++ Map(
       "HOME" -> bwrapHome.toString,
       "JAVA_TOOL_OPTIONS" -> javaToolOptions(bwrapHome)
-    )
+    ) ++ exported
 
     (env, warnings)
 
@@ -145,19 +141,13 @@ object SandboxEnv:
     */
   private[mif] def buildCleanEnv(
       parentEnv: Map[String, String],
-      sandboxHome: os.Path
+      sandboxHome: os.Path,
+      exportEnv: Seq[String] = Seq.empty
   ): (Map[String, String], Seq[String]) =
-    val ignored = ignoredKeys.filter(parentEnv.contains)
-    val warnings = ignored.map(key =>
-      s"environment variable ${key} is set but ignored inside the archive sandbox"
-    )
+    val (inherited, exported, warnings) =
+      parentEntries(parentEnv, cleanEnvPassthroughKeys, exportEnv)
 
-    val pathEntry = parentEnv.get("PATH").map("PATH" -> _).toMap
-    val passthrough = cleanEnvPassthroughKeys
-      .flatMap(key => parentEnv.get(key).map(key -> _))
-      .toMap
-
-    val env = passthrough ++ pathEntry ++ Map(
+    val env = inherited ++ Map(
       "HOME" -> sandboxHome.toString,
       "XDG_CACHE_HOME" -> (sandboxHome / ".cache").toString,
       "XDG_CONFIG_HOME" -> (sandboxHome / ".config").toString,
@@ -165,9 +155,38 @@ object SandboxEnv:
       "COURSIER_CACHE" -> coursierCache(sandboxHome).toString,
       "COURSIER_MIRRORS" -> mirrorFile(sandboxHome).toString,
       "JAVA_TOOL_OPTIONS" -> javaToolOptions(sandboxHome)
-    )
+    ) ++ exported
 
     (env, warnings)
+
+  private def parentEntries(
+      parentEnv: Map[String, String],
+      passthroughKeys: Seq[String],
+      exportEnv: Seq[String]
+  ): (Map[String, String], Map[String, String], Seq[String]) =
+    val requested = exportEnv.distinct
+    val requestedSet = requested.toSet
+    val ignoredWarnings = ignoredKeys
+      .filter(parentEnv.contains)
+      .filterNot(requestedSet)
+      .map(key =>
+        s"environment variable ${key} is set but ignored inside the archive sandbox"
+      )
+    val missingWarnings = requested
+      .filterNot(parentEnv.contains)
+      .map(key =>
+        s"environment variable ${key} was requested with --export-env but is not set"
+      )
+
+    val pathEntry = parentEnv.get("PATH").map("PATH" -> _).toMap
+    val passthrough = passthroughKeys
+      .flatMap(key => parentEnv.get(key).map(key -> _))
+      .toMap
+    val exported = requested
+      .flatMap(key => parentEnv.get(key).map(key -> _))
+      .toMap
+
+    (passthrough ++ pathEntry, exported, ignoredWarnings ++ missingWarnings)
 
   /** JVM options every spawned JVM picks up. `-Duser.home` matters because the
     * JVM derives user.home from /etc/passwd, not $HOME.
