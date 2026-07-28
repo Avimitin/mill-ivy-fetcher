@@ -1,5 +1,36 @@
 # Mill Ivy Fetcher
 
+> **Record once. Review what was fetched. Rebuild Scala projects offline with
+> Nix.**
+
+`mif` observes the Maven downloads made by a real build and writes their exact
+repository paths and SHA-256 hashes to `mif.lock.json`. This **local lock** is a
+small, reviewable record of the build's remote inputs: commit it instead of
+vendoring JARs or maintaining a shared dependency cache. Nix can then fetch the
+locked files, materialize a standard `file://` Maven repository in the Nix store,
+and replay the build without network access.
+
+Supported build systems:
+
+- [Mill](https://mill-build.org/mill/index.html) — multi-module Scala builds,
+  including build-definition and compiler classpaths.
+- [Scala CLI](https://scala-cli.virtuslab.org/) — main and test dependency
+  capture through a daemon-free compilation.
+
+Projects using or continuously tested with MIF:
+
+- [Mill Ivy Fetcher](https://github.com/Avimitin/mill-ivy-fetcher) — builds its
+  own package from the committed `mif.lock.json`, making the project a
+  self-hosting Mill example.
+- [Zaozi](https://github.com/xinpian-tech/zaozi) — imports MIF in its Nix flake,
+  maintains a generated Mill dependency lock, and builds its Scala 3 hardware
+  design framework offline.
+- [Chisel](https://github.com/chipsalliance/chisel) — the weekly integration
+  test captures a large real-world Mill dependency graph and publishes Chisel
+  from the resulting offline repository.
+
+---
+
 Mill Ivy Fetcher (`mif`) records the Maven artifacts requested by a Scala build
 and turns them into a Nix-consumable lock file. The lock can then be converted
 into a local Maven repository derivation, allowing Mill or Scala CLI builds that
