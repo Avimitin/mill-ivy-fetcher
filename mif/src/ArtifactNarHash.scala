@@ -1,7 +1,5 @@
 package in.avimit.dev.mif
 
-import java.nio.file.Files
-
 import scala.util.control.NonFatal
 
 /** Computes the recursive NAR hashes used by artifact-level fixed-output
@@ -95,8 +93,19 @@ object ArtifactNarHash:
     else {
       try {
         os.makeDir.all(destination / os.up)
-        linkOrCopy(source, destination)
-        Right(())
+        os.copy(source, destination)
+        Sha256
+          .sriFile(destination)
+          .left
+          .map(reason =>
+            s"failed to hash staged file ${file.mavenPath}: ${reason}"
+          )
+          .flatMap: actual =>
+            if actual == file.sha256 then Right(())
+            else
+              Left(
+                s"cannot compute artifact narHash: cached file ${file.mavenPath} has sha256 ${actual}, but the lock expects ${file.sha256}"
+              )
       } catch {
         case NonFatal(e) =>
           Left(
@@ -104,10 +113,6 @@ object ArtifactNarHash:
           )
       }
     }
-
-  private def linkOrCopy(source: os.Path, destination: os.Path): Unit =
-    try Files.createLink(destination.toNIO, source.toNIO)
-    catch case NonFatal(_) => os.copy(source, destination)
 
   private def nixHashPaths(
       paths: Vector[os.Path]

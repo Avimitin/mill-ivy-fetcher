@@ -33,6 +33,7 @@ object ArchiveRunner:
 
   def run(params: ArchiveParams): Either[String, LockUpdateSummary] =
     for
+      _ <- validateExistingLock(params.lockPath, params.fresh)
       tool <- BuildTools.detect(params.command)
       _ = tool
         .preflightWarnings(params.projectDir, params.command)
@@ -54,6 +55,16 @@ object ArchiveRunner:
         fresh = params.fresh
       )
     yield summary
+
+  /** Rejects an unreadable or obsolete lock before starting the potentially
+    * expensive sandboxed build. A fresh run deliberately replaces that lock.
+    */
+  private[mif] def validateExistingLock(
+      lockPath: os.Path,
+      fresh: Boolean
+  ): Either[String, Unit] =
+    if fresh then Right(())
+    else Lock.read(lockPath).map(_ => ())
 
   private def runBuildThroughRelay(
       params: ArchiveParams,

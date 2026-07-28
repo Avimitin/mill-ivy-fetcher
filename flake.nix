@@ -51,6 +51,10 @@
             };
             mifPackage = pkgs.callPackage ./package.nix { };
             ciTest = pkgs.callPackage ./.github/integration/chisel.nix { mif = mifPackage; };
+            mavenRepository = pkgs.mkMavenRepository {
+              lockFile = ./mif.lock.json;
+            };
+            representativeArtifact = builtins.head (builtins.attrValues mavenRepository.artifacts);
           in
           {
             _module.args.pkgs = pkgs;
@@ -61,13 +65,23 @@
 
             packages.mif = mifPackage;
 
-            packages.mif-maven-repository = pkgs.mkMavenRepository {
-              lockFile = ./mif.lock.json;
-            };
+            packages.mif-maven-repository = mavenRepository;
 
             packages.mif-jar = mifPackage;
 
             packages.ci-test = ciTest;
+
+            checks.maven-fetch-environment =
+              assert pkgs.lib.assertMsg (
+                representativeArtifact.impureEnvVars == pkgs.lib.fetchers.proxyImpureEnvVars
+              ) "Maven artifact fetches must inherit Nix's proxy and custom CA environment";
+              assert pkgs.lib.assertMsg (
+                pkgs.lib.hasInfix "NIX_SSL_CERT_FILE:-" representativeArtifact.buildCommand
+                && pkgs.lib.hasInfix "/etc/ssl/certs/ca-bundle.crt" representativeArtifact.buildCommand
+              ) "Maven artifact fetches must prefer NIX_SSL_CERT_FILE and fall back to cacert";
+              pkgs.runCommand "maven-fetch-environment-check" { } ''
+                touch "$out"
+              '';
 
             devShells.default = pkgs.mkShell {
               nativeBuildInputs = [

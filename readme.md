@@ -264,8 +264,10 @@ If an already locked path comes back with different content, archive refuses to
 update the lock and reports the mismatched paths; investigate the upstream
 mutation or rebuild deliberately with `--fresh` into a clean `--repo-dir`.
 
-Schema version 3 introduced artifact NAR hashes. Regenerate older locks with
-`mif archive --fresh` before using them with the current `mkMavenRepository`.
+Schema version 3 introduced artifact NAR hashes. Regenerate older locks by
+rerunning the complete archive command sequence. Use `--fresh` on the first
+invocation only, then append every subsequent target without it before using
+the lock with the current `mkMavenRepository`.
 
 The relay still captures files individually. Maven clients request a JAR, POM,
 checksum, parent POM, or BOM as independent HTTP paths, and while the build is
