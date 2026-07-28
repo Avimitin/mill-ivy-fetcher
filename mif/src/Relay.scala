@@ -2,6 +2,7 @@ package in.avimit.dev.mif
 
 import java.io.OutputStream
 import java.net.URI
+import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.nio.file.AtomicMoveNotSupportedException
@@ -60,6 +61,29 @@ object MavenPath:
           .replace("+", "%20")
       )
       .mkString("/")
+
+  /** Decodes a raw HTTP path without treating `+` as a form-encoded space.
+    * Maven versions may legitimately contain `+`, while URLDecoder's default
+    * form semantics would corrupt such coordinates.
+    */
+  def fromRawPath(rawPath: String): Either[String, String] =
+    try
+      val segments = rawPath
+        .stripPrefix("/")
+        .split("/", -1)
+        .toSeq
+        .map(segment =>
+          URLDecoder.decode(
+            segment.replace("+", "%2B"),
+            StandardCharsets.UTF_8
+          )
+        )
+      fromSegments(segments)
+    catch
+      case e: IllegalArgumentException =>
+        Left(
+          s"invalid percent-encoding in Maven repository path: ${e.getMessage}"
+        )
 
   // Reserve the empty segment and any dot-leading segment. Dot-leading names are
   // where the relay keeps its own state -- the .mif metadata directory holding the
@@ -288,7 +312,16 @@ class MavenRelayService private (
     closeEither().left.foreach(Logger.warning)
 
   def handle(method: RelayMethod, segments: Seq[String]): RelayResponse =
-    MavenPath.fromSegments(segments) match
+    handlePath(method, MavenPath.fromSegments(segments))
+
+  def handleRawPath(method: RelayMethod, rawPath: String): RelayResponse =
+    handlePath(method, MavenPath.fromRawPath(rawPath))
+
+  private def handlePath(
+      method: RelayMethod,
+      parsedPath: Either[String, String]
+  ): RelayResponse =
+    parsedPath match
       case Left(reason) => textResponse(400, reason)
       case Right(mavenPath) =>
         method match
@@ -812,7 +845,7 @@ case class MavenRelayRoutes(service: MavenRelayService)(implicit
       RelayMethod.fromHttp(request.exchange.getRequestMethod.toString)
     val response =
       if segments.value.isEmpty then rootResponse(method)
-      else service.handle(method, segments.value)
+      else service.handleRawPath(method, request.exchange.getRequestURI)
 
     cask.Response(
       toCaskData(response.body),
