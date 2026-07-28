@@ -267,6 +267,15 @@ mutation or rebuild deliberately with `--fresh` into a clean `--repo-dir`.
 Schema version 3 introduced artifact NAR hashes. Regenerate older locks with
 `mif archive --fresh` before using them with the current `mkMavenRepository`.
 
+The relay still captures files individually. Maven clients request a JAR, POM,
+checksum, parent POM, or BOM as independent HTTP paths, and while the build is
+running the relay cannot know whether another file for the same coordinate will
+be requested. After the command and relay stop, MIF groups the captured files by
+their containing Maven coordinate directory and computes that directory's NAR
+hash. In this context, an “artifact” is the fixed-output fetch unit represented
+by one Maven repository directory; it does not imply that the relay observed a
+single dependency-resolution event.
+
 ### `mif relay`
 
 `mif relay` starts the Maven-compatible relay manually. This is mainly useful for

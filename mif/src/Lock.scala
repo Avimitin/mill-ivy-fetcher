@@ -49,6 +49,13 @@ case class LockedFile(
     runs: Vector[String]
 )
 
+/** The relay observes independent Maven file requests, so the in-memory lock
+  * remains file-oriented during capture. Only after the build command finishes
+  * can archive treat the requested files under one Maven coordinate directory
+  * as a complete artifact output. `artifactNarHashes` is the resulting
+  * coordinate-directory-to-NAR-hash index; keeping it separate avoids repeating
+  * the same hash on every `LockedFile`.
+  */
 case class MifLock(
     version: Int,
     kind: String,
