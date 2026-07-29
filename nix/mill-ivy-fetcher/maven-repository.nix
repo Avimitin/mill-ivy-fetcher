@@ -86,7 +86,7 @@ let
             passthru.mavenPath = dir;
           }
           ''
-            export SSL_CERT_FILE="''${NIX_SSL_CERT_FILE:-${cacert}/etc/ssl/certs/ca-bundle.crt}"
+            source ${./select-certificate-file.sh} ${cacert}/etc/ssl/certs/ca-bundle.crt
             mavenDir=${lib.escapeShellArg dir}
             install -d -m755 "$out/$mavenDir"
             ${downloadFiles}

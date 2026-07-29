@@ -75,13 +75,27 @@
               assert pkgs.lib.assertMsg (
                 representativeArtifact.impureEnvVars == pkgs.lib.fetchers.proxyImpureEnvVars
               ) "Maven artifact fetches must inherit Nix's proxy and custom CA environment";
-              assert pkgs.lib.assertMsg (
-                pkgs.lib.hasInfix "NIX_SSL_CERT_FILE:-" representativeArtifact.buildCommand
-                && pkgs.lib.hasInfix "/etc/ssl/certs/ca-bundle.crt" representativeArtifact.buildCommand
-              ) "Maven artifact fetches must prefer NIX_SSL_CERT_FILE and fall back to cacert";
-              pkgs.runCommand "maven-fetch-environment-check" { } ''
-                touch "$out"
-              '';
+              assert pkgs.lib.assertMsg
+                (pkgs.lib.hasInfix "select-certificate-file.sh" representativeArtifact.buildCommand)
+                "Maven artifact fetches must select a readable certificate file";
+              pkgs.runCommand "maven-fetch-environment-check"
+                {
+                  # Reproduce the sentinel supplied by a Nix daemon without a
+                  # certificate file available inside the build sandbox.
+                  NIX_SSL_CERT_FILE = "/no-cert-file.crt";
+                }
+                ''
+                    source ${./nix/mill-ivy-fetcher/select-certificate-file.sh} ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
+                    test "$SSL_CERT_FILE" = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
+
+                    customCertificate="$TMPDIR/custom-ca.crt"
+                    touch "$customCertificate"
+                    NIX_SSL_CERT_FILE="$customCertificate"
+                    source ${./nix/mill-ivy-fetcher/select-certificate-file.sh} ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
+                    test "$SSL_CERT_FILE" = "$customCertificate"
+
+                  touch "$out"
+                '';
 
             devShells.default = pkgs.mkShell {
               nativeBuildInputs = [

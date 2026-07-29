@@ -25,9 +25,9 @@ Projects using or continuously tested with MIF:
 - [Zaozi](https://github.com/xinpian-tech/zaozi) — imports MIF in its Nix flake,
   maintains a generated Mill dependency lock, and builds its Scala 3 hardware
   design framework offline.
-- [Chisel](https://github.com/chipsalliance/chisel) — the weekly integration
-  test captures a large real-world Mill dependency graph and publishes Chisel
-  from the resulting offline repository.
+- [Chisel](https://github.com/chipsalliance/chisel) — pull-request and weekly
+  integration tests capture a large real-world Mill dependency graph and
+  publish Chisel from the resulting offline repository.
 
 ---
 
