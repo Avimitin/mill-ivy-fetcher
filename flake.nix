@@ -74,28 +74,16 @@
             checks.maven-fetch-environment =
               assert pkgs.lib.assertMsg (
                 representativeArtifact.impureEnvVars == pkgs.lib.fetchers.proxyImpureEnvVars
-              ) "Maven artifact fetches must inherit Nix's proxy and custom CA environment";
+              ) "Maven artifact fetches must inherit Nix fetcher's impure environment";
+              assert pkgs.lib.assertMsg (
+                representativeArtifact.SSL_CERT_FILE == "/no-cert-file.crt"
+              ) "Maven fixed-output fetches must use fetchurl's no-certificate sentinel";
               assert pkgs.lib.assertMsg
-                (pkgs.lib.hasInfix "select-certificate-file.sh" representativeArtifact.buildCommand)
-                "Maven artifact fetches must select a readable certificate file";
-              pkgs.runCommand "maven-fetch-environment-check"
-                {
-                  # Reproduce the sentinel supplied by a Nix daemon without a
-                  # certificate file available inside the build sandbox.
-                  NIX_SSL_CERT_FILE = "/no-cert-file.crt";
-                }
-                ''
-                    source ${./nix/mill-ivy-fetcher/select-certificate-file.sh} ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
-                    test "$SSL_CERT_FILE" = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
-
-                    customCertificate="$TMPDIR/custom-ca.crt"
-                    touch "$customCertificate"
-                    NIX_SSL_CERT_FILE="$customCertificate"
-                    source ${./nix/mill-ivy-fetcher/select-certificate-file.sh} ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
-                    test "$SSL_CERT_FILE" = "$customCertificate"
-
-                  touch "$out"
-                '';
+                (pkgs.lib.hasInfix "curl+=(--insecure)" representativeArtifact.buildCommand)
+                "Maven fixed-output fetches must disable TLS verification when the certificate file is absent";
+              pkgs.runCommand "maven-fetch-environment-check" { } ''
+                touch "$out"
+              '';
 
             devShells.default = pkgs.mkShell {
               nativeBuildInputs = [
