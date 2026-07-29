@@ -1,4 +1,5 @@
 {
+  cacert,
   curl,
   lib,
   runCommand,
@@ -72,7 +73,7 @@ let
           {
             nativeBuildInputs = [ curl ];
             impureEnvVars = lib.fetchers.proxyImpureEnvVars;
-            SSL_CERT_FILE = "/no-cert-file.crt";
+            SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
             outputHash = narHash;
             outputHashAlgo = "sha256";
             outputHashMode = "recursive";
@@ -80,8 +81,6 @@ let
             passthru.mavenPath = dir;
           }
           ''
-            # Match fetchurl: TLS verification can be disabled because Nix
-            # verifies this derivation's recursive output hash.
             curl=(
               curl
               --fail
@@ -91,9 +90,6 @@ let
               --silent
               --show-error
             )
-            if ! [ -f "$SSL_CERT_FILE" ]; then
-              curl+=(--insecure)
-            fi
 
             mavenDir=${lib.escapeShellArg dir}
             install -d -m755 "$out/$mavenDir"

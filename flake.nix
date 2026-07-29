@@ -76,11 +76,11 @@
                 representativeArtifact.impureEnvVars == pkgs.lib.fetchers.proxyImpureEnvVars
               ) "Maven artifact fetches must inherit Nix fetcher's impure environment";
               assert pkgs.lib.assertMsg (
-                representativeArtifact.SSL_CERT_FILE == "/no-cert-file.crt"
-              ) "Maven fixed-output fetches must use fetchurl's no-certificate sentinel";
-              assert pkgs.lib.assertMsg
-                (pkgs.lib.hasInfix "curl+=(--insecure)" representativeArtifact.buildCommand)
-                "Maven fixed-output fetches must disable TLS verification when the certificate file is absent";
+                representativeArtifact.SSL_CERT_FILE == "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
+              ) "Maven artifact fetches must use the pinned CA bundle";
+              assert pkgs.lib.assertMsg (
+                !pkgs.lib.hasInfix "--insecure" representativeArtifact.buildCommand
+              ) "Maven artifact fetches must keep TLS verification enabled";
               pkgs.runCommand "maven-fetch-environment-check" { } ''
                 touch "$out"
               '';
