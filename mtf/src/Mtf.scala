@@ -1,8 +1,8 @@
-package in.avimit.dev.mif
+package in.avimit.dev.mtf
 
 import mainargs.{main, ParserForMethods, arg, TokensReader, Flag, Leftover}
 
-object MillIvyFetcher {
+object MvnTraceForge {
   val VERSION = "0.3.0"
 
   implicit object PathRead extends TokensReader.Simple[os.Path]:
@@ -19,7 +19,7 @@ object MillIvyFetcher {
     Logger.error(reason)
     sys.exit(1)
 
-  private[mif] def archiveCommandArgs(command: Leftover[String]): Seq[String] =
+  private[mtf] def archiveCommandArgs(command: Leftover[String]): Seq[String] =
     val args = command.value match
       case Seq("--", args*) => args
       case args             => args
@@ -30,7 +30,7 @@ object MillIvyFetcher {
 
   @main
   def version(): Unit = {
-    println(s"mill-ivy-fetcher version ${VERSION}")
+    println(s"mtf version ${VERSION}")
   }
 
   @main()
@@ -44,7 +44,7 @@ object MillIvyFetcher {
         name = "repo-dir",
         doc = "Local Maven repository directory used to archive files"
       )
-      repoDir: os.Path = os.pwd / ".mif" / "repository",
+      repoDir: os.Path = os.pwd / ".mtf" / "repository",
       @arg(
         short = 'u',
         name = "upstream",
@@ -86,14 +86,14 @@ object MillIvyFetcher {
       @arg(
         name = "lock",
         doc =
-          "JSON lock file to create or append, default <project-dir>/mif.lock.json"
+          "JSON lock file to create or append, default <project-dir>/mtf.lock.json"
       )
       lock: Option[os.Path],
       @arg(
         short = 'r',
         name = "repo-dir",
         doc =
-          "Local Maven repository directory used to archive files, default <project-dir>/.mif/repository"
+          "Local Maven repository directory used to archive files, default <project-dir>/.mtf/repository"
       )
       repoDir: Option[os.Path],
       @arg(name = "host", doc = "Host interface for the archive relay")
@@ -159,7 +159,7 @@ object MillIvyFetcher {
     val lockPath = lock.getOrElse(projectDirPath / Lock.DefaultFileName)
     val params = ArchiveParams(
       projectDir = projectDirPath,
-      repoDir = repoDir.getOrElse(projectDirPath / ".mif" / "repository"),
+      repoDir = repoDir.getOrElse(projectDirPath / ".mtf" / "repository"),
       lockPath = lockPath,
       upstream = upstream,
       proxyUrl = proxy,

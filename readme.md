@@ -1,10 +1,10 @@
-# Mill Ivy Fetcher
+# Mvn Trace Forge
 
 > **Record once. Review what was fetched. Rebuild Scala projects offline with
 > Nix.**
 
-`mif` observes the Maven downloads made by a real build and writes their exact
-repository paths and SHA-256 hashes to `mif.lock.json`. This **local lock** is a
+`mtf` observes the Maven downloads made by a real build and writes their exact
+repository paths and SHA-256 hashes to `mtf.lock.json`. This **local lock** is a
 small, reviewable record of the build's remote inputs: commit it instead of
 vendoring JARs or maintaining a shared dependency cache. Nix can then fetch the
 locked files, materialize a standard `file://` Maven repository in the Nix store,
@@ -17,12 +17,12 @@ Supported build systems:
 - [Scala CLI](https://scala-cli.virtuslab.org/) — main and test dependency
   capture through a daemon-free compilation.
 
-Projects using or continuously tested with MIF:
+Projects using or continuously tested with MTF:
 
-- [Mill Ivy Fetcher](https://github.com/Avimitin/mill-ivy-fetcher) — builds its
-  own package from the committed `mif.lock.json`, making the project a
+- [Mvn Trace Forge](https://github.com/Avimitin/mvn-trace-forge) — builds its
+  own package from the committed `mtf.lock.json`, making the project a
   self-hosting Mill example.
-- [Zaozi](https://github.com/xinpian-tech/zaozi) — imports MIF in its Nix flake,
+- [Zaozi](https://github.com/xinpian-tech/zaozi) — imports MTF in its Nix flake,
   maintains a generated Mill dependency lock, and builds its Scala 3 hardware
   design framework offline.
 - [Chisel](https://github.com/chipsalliance/chisel) — pull-request and weekly
@@ -31,19 +31,19 @@ Projects using or continuously tested with MIF:
 
 ---
 
-Mill Ivy Fetcher (`mif`) records the Maven artifacts requested by a Scala build
+Mvn Trace Forge (`mtf`) records the Maven artifacts requested by a Scala build
 and turns them into a Nix-consumable lock file. The lock can then be converted
 into a local Maven repository derivation, allowing Mill or Scala CLI builds that
 use Coursier to run in a Nix sandbox without network access.
 
 This repository includes a Chisel integration test (`.#ci-test`) that publishes
-Chisel locally from a locked Maven repository, proving that `mif` can capture a
+Chisel locally from a locked Maven repository, proving that `mtf` can capture a
 large real-world Mill build and replay it offline through Nix.
 
 The workflow is:
 
-1. Run `mif archive` around one or more build commands.
-2. Commit the generated `mif.lock.json`.
+1. Run `mtf archive` around one or more build commands.
+2. Commit the generated `mtf.lock.json`.
 3. Use `mkMavenRepository` in Nix to materialize the locked Maven repository.
 4. Put that repository in a derivation's inputs so Coursier resolves from the
    Nix store instead of the network.
@@ -56,19 +56,19 @@ The workflow is:
 - Scala CLI for Scala CLI projects
 - Linux: `bubblewrap` is required for the default archive sandbox
 
-This repository's default dev shell includes `mif`, Mill, and Metals. On Linux,
-the packaged `mif` wrapper also puts `bubblewrap` on `PATH` for archive
+This repository's default dev shell includes `mtf`, Mill, and Metals. On Linux,
+the packaged `mtf` wrapper also puts `bubblewrap` on `PATH` for archive
 sandboxing:
 
 ```bash
 nix develop
-mif --help
+mtf --help
 ```
 
 You can also run the packaged CLI directly:
 
 ```bash
-nix run .#mif -- --help
+nix run .#mtf -- --help
 ```
 
 ## Quick start for Mill projects
@@ -77,8 +77,8 @@ Generate a lock from a Mill project by archiving the targets that force dependen
 resolution. For typical Mill projects, run both commands:
 
 ```bash
-mif archive -p path/to/project -- mill --no-daemon __.prepareOffline
-mif archive -p path/to/project -- mill --no-daemon __.scalaCompilerClasspath
+mtf archive -p path/to/project -- mill --no-daemon __.prepareOffline
+mtf archive -p path/to/project -- mill --no-daemon __.scalaCompilerClasspath
 ```
 
 `__.prepareOffline` records most dependencies, but it does not force every Scala
@@ -86,17 +86,17 @@ compiler classpath to be resolved. In particular, Scala 3 compiler artifacts
 referenced by `build.mill` can be missed unless `__.scalaCompilerClasspath` is
 evaluated explicitly.
 
-`mif archive` appends to the same lock by default, so the final
-`path/to/project/mif.lock.json` contains the union of both runs. Commit that lock
-file. The relay repository under `path/to/project/.mif/repository` is disposable
+`mtf archive` appends to the same lock by default, so the final
+`path/to/project/mtf.lock.json` contains the union of both runs. Commit that lock
+file. The relay repository under `path/to/project/.mtf/repository` is disposable
 local state and should normally stay out of git.
 
 If you are developing this repository and want to run the assembled jar directly,
 the equivalent commands are:
 
 ```bash
-java -jar ./out/mif/assembly.dest/out.jar archive -- mill --no-daemon __.prepareOffline
-java -jar ./out/mif/assembly.dest/out.jar archive -- mill --no-daemon __.scalaCompilerClasspath
+java -jar ./out/mtf/assembly.dest/out.jar archive -- mill --no-daemon __.prepareOffline
+java -jar ./out/mtf/assembly.dest/out.jar archive -- mill --no-daemon __.scalaCompilerClasspath
 ```
 
 ## Quick start for Scala CLI projects
@@ -106,22 +106,22 @@ through the archive:
 
 ```bash
 scala-cli clean path/to/project
-mif archive -p path/to/project -- scala-cli compile --test --server=false .
+mtf archive -p path/to/project -- scala-cli compile --test --server=false .
 ```
 
 Scala CLI does not provide a dedicated dependency-fetch command, so compiling
 both scopes is the closest equivalent. `--server=false` avoids resolving the
 large Bloop build-server dependency graph and makes this a daemon-free one-shot
 capture. Use the same flag when replaying the build because it changes the
-required artifacts. MIF warns when it is omitted but does not block the command.
+required artifacts. MTF warns when it is omitted but does not block the command.
 
 Like Mill, Scala CLI can use additional repositories or download a selected JVM
 outside Maven Central. Those downloads are not captured; use a Nix-provided JDK
-and keep dependency repositories within the configured MIF upstream.
+and keep dependency repositories within the configured MTF upstream.
 
 ## Using a lock from Nix
 
-The overlay exposes `mkMavenRepository`, which reads `mif.lock.json`, fetches each
+The overlay exposes `mkMavenRepository`, which reads `mtf.lock.json`, fetches each
 locked Maven artifact as one recursive fixed-output derivation, and joins them
 into a standard Maven repository layout. This keeps the cache reusable at Maven
 dependency granularity without creating a separate Nix derivation for every
@@ -132,7 +132,7 @@ JAR, POM, and checksum file.
 
 let
   m2 = pkgs.mkMavenRepository {
-    lockFile = ./mif.lock.json;
+    lockFile = ./mtf.lock.json;
   };
 in
 pkgs.stdenv.mkDerivation {
@@ -181,7 +181,7 @@ with another derivation that already provides the same Maven repository path:
 
 ```nix
 let
-  m2 = pkgs.mkMavenRepository { lockFile = ./mif.lock.json; };
+  m2 = pkgs.mkMavenRepository { lockFile = ./mtf.lock.json; };
 in
 m2.override {
   "software/amazon/awssdk/aws-sdk-java-pom/2.33.4" = myAwsSdkPom;
@@ -190,21 +190,21 @@ m2.override {
 
 ## CLI reference
 
-### `mif archive`
+### `mtf archive`
 
-`mif archive` starts a local Maven relay on a free port, creates a clean build
+`mtf archive` starts a local Maven relay on a free port, creates a clean build
 environment whose Coursier mirror points Maven Central at that relay, runs the
 command after `--`, and writes every file served by the relay into a JSON lock.
 
 ```bash
-mif archive [options] -- <mill|scala-cli> <arguments>
+mtf archive [options] -- <mill|scala-cli> <arguments>
 ```
 
 If a build needs selected variables from the invoking environment, export them
 explicitly. The option is repeatable:
 
 ```bash
-mif archive --export-env BUILD_PROFILE --export-env MILL_OPTS -- \
+mtf archive --export-env BUILD_PROFILE --export-env MILL_OPTS -- \
   mill --no-daemon __.prepareOffline
 ```
 
@@ -213,9 +213,9 @@ Important options:
 - `-p, --project-dir <path>`: project directory. Defaults to the current working
   directory.
 - `--lock <path>`: JSON lock file to create or append. Defaults to
-  `<project-dir>/mif.lock.json`.
+  `<project-dir>/mtf.lock.json`.
 - `-r, --repo-dir <path>`: local relay repository. Defaults to
-  `<project-dir>/.mif/repository`.
+  `<project-dir>/.mtf/repository`.
 - `-u, --upstream <url>`: Maven-compatible upstream. Defaults to Maven Central.
 - `--fresh`: rebuild the lock from this run only instead of appending.
 - `--sandbox <bwrap|none>`: choose the archive sandbox mode.
@@ -225,7 +225,7 @@ Important options:
 - `--keep-workdir`: keep the temporary sandbox home for debugging.
 - `--proxy <url>`: HTTP proxy for upstream relay requests.
 
-Everything after `--` is executed inside the project directory. `mif archive`
+Everything after `--` is executed inside the project directory. `mtf archive`
 supports Mill and Scala CLI commands. It warns about daemon or build-server use
 and persisted compilation state that should be cleaned before capture.
 
@@ -234,7 +234,7 @@ A lock has this shape:
 ```json
 {
   "version": 3,
-  "kind": "mif-maven-lock",
+  "kind": "mtf-maven-lock",
   "repositories": {
     "central": "https://repo1.maven.org/maven2"
   },
@@ -256,8 +256,8 @@ A lock has this shape:
 }
 ```
 
-Archive runs append: run `mif archive` once per target and the lock unions the
-results. MIF uses `nix hash path` to record the recursive NAR hash of every
+Archive runs append: run `mtf archive` once per target and the lock unions the
+results. MTF uses `nix hash path` to record the recursive NAR hash of every
 artifact directory. Entries are sorted, re-running a command against the same
 repository is a no-op, and each artifact records the run ids that requested it.
 If an already locked path comes back with different content, archive refuses to
@@ -272,20 +272,20 @@ the lock with the current `mkMavenRepository`.
 The relay still captures files individually. Maven clients request a JAR, POM,
 checksum, parent POM, or BOM as independent HTTP paths, and while the build is
 running the relay cannot know whether another file for the same coordinate will
-be requested. After the command and relay stop, MIF groups the captured files by
+be requested. After the command and relay stop, MTF groups the captured files by
 their containing Maven coordinate directory and computes that directory's NAR
 hash. In this context, an “artifact” is the fixed-output fetch unit represented
 by one Maven repository directory; it does not imply that the relay observed a
 single dependency-resolution event.
 
-### `mif relay`
+### `mtf relay`
 
-`mif relay` starts the Maven-compatible relay manually. This is mainly useful for
+`mtf relay` starts the Maven-compatible relay manually. This is mainly useful for
 inspecting or debugging repository traffic; normal lock generation should use
-`mif archive`, which starts and stops the relay for you.
+`mtf archive`, which starts and stops the relay for you.
 
 ```bash
-mif relay --port 8081 --repo-dir .mif/repository
+mtf relay --port 8081 --repo-dir .mtf/repository
 ```
 
 By default the relay listens on `127.0.0.1:8081` and fetches missing files from
@@ -302,58 +302,58 @@ central.from=https://repo1.maven.org/maven2
 central.to=http://127.0.0.1:8081
 ```
 
-The relay stores downloaded files under `.mif/repository` using standard Maven
+The relay stores downloaded files under `.mtf/repository` using standard Maven
 repository paths, and maintains an internal SQLite database at:
 
 ```text
-.mif/repository/.mif/repository.sqlite
+.mtf/repository/.mtf/repository.sqlite
 ```
 
 The database is a relay implementation detail. It is not the Nix-facing lock.
 
-`mif relay` can use another Maven-compatible upstream or an HTTP proxy:
+`mtf relay` can use another Maven-compatible upstream or an HTTP proxy:
 
 ```bash
-mif relay \
+mtf relay \
   --port 8082 \
-  --repo-dir .mif/repository \
+  --repo-dir .mtf/repository \
   --upstream http://127.0.0.1:8081
 
-mif relay --proxy http://127.0.0.1:8080
+mtf relay --proxy http://127.0.0.1:8080
 ```
 
-### `mif version`
+### `mtf version`
 
 ```bash
-mif version
+mtf version
 ```
 
-Prints the packaged MIF version.
+Prints the packaged MTF version.
 
 ## Flake outputs
 
 This flake exposes:
 
-- `packages.default` / `packages.mif`: the wrapped `mif` executable.
-- `packages.mif-jar`: compatibility alias for the same package.
-- `packages.mif-maven-repository`: the Maven repository generated from this
-  repository's own `mif.lock.json`.
+- `packages.default` / `packages.mtf`: the wrapped `mtf` executable.
+- `packages.mtf-jar`: compatibility alias for the same package.
+- `packages.mtf-maven-repository`: the Maven repository generated from this
+  repository's own `mtf.lock.json`.
 - `overlays.default`: adds `mkMavenRepository`, `millVersions`, and
   `addDeterminismHook` to nixpkgs.
-- `devShells.default`: development shell with `mif`, Mill, Metals, and
+- `devShells.default`: development shell with `mtf`, Mill, Metals, and
   `bubblewrap` on Linux.
 
 Build the packaged CLI:
 
 ```bash
-nix build .#mif
-./result/bin/mif --help
+nix build .#mtf
+./result/bin/mtf --help
 ```
 
 Run it from the dev shell:
 
 ```bash
-nix develop -c mif --help
+nix develop -c mtf --help
 ```
 
 ## Mill versions overlay
@@ -369,34 +369,34 @@ Example flake usage:
 
 ```nix
 {
-  inputs.mill-ivy-fetcher.url = "github:Avimitin/mill-ivy-fetcher";
+  inputs.mvn-trace-forge.url = "github:Avimitin/mvn-trace-forge";
 
   outputs =
-    { nixpkgs, mill-ivy-fetcher, ... }:
+    { nixpkgs, mvn-trace-forge, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
-        overlays = [ mill-ivy-fetcher.overlays.default ];
+        overlays = [ mvn-trace-forge.overlays.default ];
       };
     in
     {
       devShells.${system}.default = pkgs.mkShell {
         nativeBuildInputs = [
           pkgs.millVersions.mill_1_1_2
-          mill-ivy-fetcher.packages.${system}.mif
+          mvn-trace-forge.packages.${system}.mtf
         ];
       };
     };
 }
 ```
 
-If you need the `mif` package from this flake in another flake, prefer referring
-to `mill-ivy-fetcher.packages.${system}.mif` directly.
+If you need the `mtf` package from this flake in another flake, prefer referring
+to `mvn-trace-forge.packages.${system}.mtf` directly.
 
 ## Sandboxing and limitations
 
-- `mif archive` captures only requests to the configured upstream. By default it
+- `mtf archive` captures only requests to the configured upstream. By default it
   mirrors Maven Central and its common alias, but repositories other than the
   configured upstream bypass the relay and will be missing from the lock.
 - Mill distribution bootstrapping and `.mill-jvm-version` JVM downloads do not go
@@ -436,7 +436,7 @@ Useful commands:
 
 ```bash
 nix fmt
-nix build .#mif
-nix develop -c mif --help
-mill --no-daemon mif.test
+nix build .#mtf
+nix develop -c mtf --help
+mill --no-daemon mtf.test
 ```

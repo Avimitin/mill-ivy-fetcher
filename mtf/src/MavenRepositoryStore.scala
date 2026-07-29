@@ -1,4 +1,4 @@
-package in.avimit.dev.mif
+package in.avimit.dev.mtf
 
 import scala.util.control.NonFatal
 import scalasql.*
@@ -26,7 +26,7 @@ object CachedArtifact extends Table[CachedArtifact]:
   override def tableName = "cached_artifacts"
 
 object MavenRepositoryStore:
-  val MetadataDirectoryName = ".mif"
+  val MetadataDirectoryName = ".mtf"
   val DatabaseFileName = "repository.sqlite"
 
   def databasePath(repoDir: os.Path): os.Path =

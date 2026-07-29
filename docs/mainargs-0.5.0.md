@@ -17,7 +17,7 @@ import mainargs.{main, arg, ParserForMethods, TokensReader, Flag}
 
 ## Usage notes
 
-Small annotation-based command-line parser used by `MillIvyFetcher` for `@main`, `@arg`, flags, and custom argument readers.
+Small annotation-based command-line parser used by `MvnTraceForge` for `@main`, `@arg`, flags, and custom argument readers.
 
 ```scala
 import mainargs.{main, arg, ParserForMethods, TokensReader, Flag}

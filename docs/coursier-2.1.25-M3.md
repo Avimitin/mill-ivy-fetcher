@@ -36,7 +36,7 @@ val dep = Dependency(
 val result = Fetch()
   .addDependencies(dep)
   .withRepositories(Seq(Repositories.central))
-  .withCache(FileCache().withLocation((os.pwd / ".mif" / "coursier-cache").toIO))
+  .withCache(FileCache().withLocation((os.pwd / ".mtf" / "coursier-cache").toIO))
   .runResult()
 ```
 

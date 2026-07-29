@@ -1,4 +1,4 @@
-package in.avimit.dev.mif
+package in.avimit.dev.mtf
 
 import java.util.Locale
 
@@ -42,7 +42,7 @@ object SandboxStrategy:
     * Linux is strict: an unusable bwrap is an error rather than a silent
     * downgrade, because a degraded run can record an incomplete lock.
     */
-  private[mif] def resolve(
+  private[mtf] def resolve(
       mode: SandboxMode,
       isLinux: Boolean,
       probe: () => Either[String, Unit]
@@ -121,7 +121,7 @@ object SandboxEnv:
     * launchers such as Scala CLI do not necessarily derive Coursier or XDG
     * locations from the JVM's `user.home` property.
     */
-  private[mif] def buildBwrap(
+  private[mtf] def buildBwrap(
       parentEnv: Map[String, String],
       sandboxHome: os.Path,
       exportEnv: Seq[String] = Seq.empty
@@ -136,7 +136,7 @@ object SandboxEnv:
   /** Explicit unsafe fallback mode. This still has to redirect Coursier through
     * environment variables because no filesystem sandbox is present.
     */
-  private[mif] def buildCleanEnv(
+  private[mtf] def buildCleanEnv(
       parentEnv: Map[String, String],
       sandboxHome: os.Path,
       exportEnv: Seq[String] = Seq.empty
@@ -197,7 +197,7 @@ object SandboxEnv:
   private def quoteIfNeeded(option: String): String =
     if option.exists(_.isWhitespace) then s"\"${option}\"" else option
 
-  val bwrapHome: os.Path = os.Path("/mif")
+  val bwrapHome: os.Path = os.Path("/mtf")
 
   val bwrapWorkDir: os.Path = os.Path("/workdir")
 
@@ -210,8 +210,8 @@ object BubblewrapSandbox:
   )
 
   /** The bwrap invocation starts from an empty tmpfs root. The project is
-    * mounted at /workdir and mif's generated home/cache/config tree is mounted
-    * at /mif. Host toolchain roots are exposed read-only so commands from the
+    * mounted at /workdir and mtf's generated home/cache/config tree is mounted
+    * at /mtf. Host toolchain roots are exposed read-only so commands from the
     * inherited PATH still work for normal system and Nix dev-shell binaries,
     * without exposing the whole host filesystem.
     *
@@ -286,7 +286,7 @@ object BubblewrapSandbox:
     }
 
   private def createProbeDir(): Either[String, os.Path] =
-    try Right(os.temp.dir(prefix = "mif-bwrap-probe-"))
+    try Right(os.temp.dir(prefix = "mtf-bwrap-probe-"))
     catch case NonFatal(e) => Left(errorMessage(e))
 
   private def runProbe(

@@ -1,4 +1,4 @@
-package in.avimit.dev.mif
+package in.avimit.dev.mtf
 
 import utest._
 
@@ -16,8 +16,8 @@ object ArtifactNarHashTests extends TestSuite:
       runs = Vector(run.id)
     )
 
-  private def lock(files: Vector[LockedFile]): MifLock =
-    MifLock(
+  private def lock(files: Vector[LockedFile]): MtfLock =
+    MtfLock(
       version = Lock.Version,
       kind = Lock.Kind,
       repositories = Vector(
@@ -63,7 +63,7 @@ object ArtifactNarHashTests extends TestSuite:
 
   val tests = Tests {
     test("hashMissing produces the NAR of each exact Maven subtree") {
-      val tempDir = os.temp.dir(prefix = "mif-nar-hash-test_")
+      val tempDir = os.temp.dir(prefix = "mtf-nar-hash-test_")
       val repoDir = tempDir / "repository"
       val jarPath = "com/example/a/1.0.0/a-1.0.0.jar"
       val pomPath = "com/example/a/1.0.0/a-1.0.0.pom"
@@ -100,7 +100,7 @@ object ArtifactNarHashTests extends TestSuite:
     }
 
     test("hashMissing skips finalized artifacts") {
-      val tempDir = os.temp.dir(prefix = "mif-nar-hash-test_")
+      val tempDir = os.temp.dir(prefix = "mtf-nar-hash-test_")
       val repoDir = tempDir / "repository"
       val path = "com/example/a/1.0.0/a-1.0.0.pom"
       val pending = lock(Vector(lockedFile(path, "pom")))
@@ -117,7 +117,7 @@ object ArtifactNarHashTests extends TestSuite:
     }
 
     test("hashMissing reports a locked file absent from the relay cache") {
-      val tempDir = os.temp.dir(prefix = "mif-nar-hash-test_")
+      val tempDir = os.temp.dir(prefix = "mtf-nar-hash-test_")
       val repoDir = tempDir / "repository"
       val path = "com/example/a/1.0.0/a-1.0.0.pom"
 
@@ -130,7 +130,7 @@ object ArtifactNarHashTests extends TestSuite:
     }
 
     test("hashMissing rejects cache content that differs from the lock") {
-      val tempDir = os.temp.dir(prefix = "mif-nar-hash-test_")
+      val tempDir = os.temp.dir(prefix = "mtf-nar-hash-test_")
       val repoDir = tempDir / "repository"
       val path = "com/example/a/1.0.0/a-1.0.0.pom"
       writeRepositoryFile(repoDir, path, "mutated")

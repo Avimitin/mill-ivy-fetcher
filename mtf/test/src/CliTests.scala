@@ -1,4 +1,4 @@
-package in.avimit.dev.mif
+package in.avimit.dev.mtf
 
 import mainargs.{arg, Leftover, ParserForMethods, main}
 import utest._
@@ -23,7 +23,7 @@ object CliTests extends TestSuite {
 
   val tests = Tests {
     test("version command outputs version") {
-      assert(MillIvyFetcher.VERSION == "0.3.0")
+      assert(MvnTraceForge.VERSION == "0.3.0")
     }
 
     test("archive command accepts build command as leftover arguments") {
@@ -33,17 +33,17 @@ object CliTests extends TestSuite {
 
       assert(result == Right(Seq("--", "mill", "run", "--", "--app-flag")))
       assert(
-        MillIvyFetcher.archiveCommandArgs(
+        MvnTraceForge.archiveCommandArgs(
           Leftover("--", "mill", "run", "--", "--app-flag")
         ) == Seq("mill", "run", "--", "--app-flag")
       )
       assert(
-        MillIvyFetcher.archiveCommandArgs(
+        MvnTraceForge.archiveCommandArgs(
           Leftover("--", "mill", "bad\narg", "__.compile", "bad\u0000arg")
         ) == Seq("mill", "__.compile")
       )
       assert(
-        MillIvyFetcher
+        MvnTraceForge
           .archiveCommandArgs(
             Leftover("--", "bad\narg", "bad\u0000arg")
           )

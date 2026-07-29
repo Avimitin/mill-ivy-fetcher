@@ -1,4 +1,4 @@
-package in.avimit.dev.mif
+package in.avimit.dev.mtf
 
 import utest._
 
@@ -27,7 +27,7 @@ object ArchiveTests extends TestSuite:
 
   private def hashArtifacts(
       repoDir: os.Path,
-      lock: MifLock
+      lock: MtfLock
   ): Either[String, Map[String, String]] =
     val _ = repoDir
     Right(
@@ -57,8 +57,8 @@ object ArchiveTests extends TestSuite:
 
   val tests = Tests {
     test("updateLock creates a lock from one run") {
-      val tempDir = os.temp.dir(prefix = "mif-archive-test_")
-      val lockPath = tempDir / "mif.lock.json"
+      val tempDir = os.temp.dir(prefix = "mtf-archive-test_")
+      val lockPath = tempDir / "mtf.lock.json"
       val files = Seq(
         repoFile("com/example/a/1.0.0/a-1.0.0.pom"),
         repoFile("com/example/a/1.0.0/a-1.0.0.jar")
@@ -82,8 +82,8 @@ object ArchiveTests extends TestSuite:
     }
 
     test("updateLock appends a second command into the same lock") {
-      val tempDir = os.temp.dir(prefix = "mif-archive-test_")
-      val lockPath = tempDir / "mif.lock.json"
+      val tempDir = os.temp.dir(prefix = "mtf-archive-test_")
+      val lockPath = tempDir / "mtf.lock.json"
       val shared = repoFile("com/example/shared/1.0.0/shared-1.0.0.jar")
 
       val first = unwrap(
@@ -117,8 +117,8 @@ object ArchiveTests extends TestSuite:
     }
 
     test("updateLock records the run even when it adds no new files") {
-      val tempDir = os.temp.dir(prefix = "mif-archive-test_")
-      val lockPath = tempDir / "mif.lock.json"
+      val tempDir = os.temp.dir(prefix = "mtf-archive-test_")
+      val lockPath = tempDir / "mtf.lock.json"
       val files = Seq(repoFile("com/example/a/1.0.0/a-1.0.0.pom"))
 
       unwrap(
@@ -153,8 +153,8 @@ object ArchiveTests extends TestSuite:
     }
 
     test("updateLock refuses conflicts and leaves the lock byte-identical") {
-      val tempDir = os.temp.dir(prefix = "mif-archive-test_")
-      val lockPath = tempDir / "mif.lock.json"
+      val tempDir = os.temp.dir(prefix = "mtf-archive-test_")
+      val lockPath = tempDir / "mtf.lock.json"
       val file = repoFile("com/example/a/1.0.0/a-1.0.0.pom")
 
       unwrap(
@@ -181,8 +181,8 @@ object ArchiveTests extends TestSuite:
     }
 
     test("updateLock with fresh rebuilds the lock from this run only") {
-      val tempDir = os.temp.dir(prefix = "mif-archive-test_")
-      val lockPath = tempDir / "mif.lock.json"
+      val tempDir = os.temp.dir(prefix = "mtf-archive-test_")
+      val lockPath = tempDir / "mtf.lock.json"
 
       unwrap(
         updateLock(
@@ -212,13 +212,13 @@ object ArchiveTests extends TestSuite:
     }
 
     test("archive rejects an old lock before building unless fresh") {
-      val tempDir = os.temp.dir(prefix = "mif-archive-test_")
-      val lockPath = tempDir / "mif.lock.json"
+      val tempDir = os.temp.dir(prefix = "mtf-archive-test_")
+      val lockPath = tempDir / "mtf.lock.json"
       os.write(
         lockPath,
         """{
           |  "version": 2,
-          |  "kind": "mif-maven-lock",
+          |  "kind": "mtf-maven-lock",
           |  "repositories": {},
           |  "runs": {},
           |  "artifacts": {}
@@ -234,7 +234,7 @@ object ArchiveTests extends TestSuite:
     }
 
     test("lookupFiles resolves accessed paths through the repository store") {
-      val tempDir = os.temp.dir(prefix = "mif-archive-test_")
+      val tempDir = os.temp.dir(prefix = "mtf-archive-test_")
       val repoDir = tempDir / "repository"
       val recorded = repoFile("com/example/a/1.0.0/a-1.0.0.pom")
 

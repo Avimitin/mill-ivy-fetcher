@@ -10,7 +10,7 @@ import mill.scalalib.TestModule.Utest
 import mill.scalalib.publish._
 
 
-trait MIFModule extends ScalaModule with ScalafmtModule with PublishModule {
+trait MtfModule extends ScalaModule with ScalafmtModule with PublishModule {
   val mainargs = mvn"com.lihaoyi::mainargs:0.5.0"
   val oslib    = mvn"com.lihaoyi::os-lib:0.10.0"
   val upickle  = mvn"com.lihaoyi::upickle:3.3.1"
@@ -34,11 +34,11 @@ trait MIFModule extends ScalaModule with ScalafmtModule with PublishModule {
   )
 
   def pomSettings = PomSettings(
-    description = "MIF is a project to help you generate Nix lock from a Mill project",
+    description = "Capture Maven repository traffic as reproducible Nix locks",
     organization = "dev.avimit.in",
-    url = "https://github.com/Avimitin/mill-ivy-fetcher",
+    url = "https://github.com/Avimitin/mvn-trace-forge",
     licenses = Seq(License.`Apache-2.0`),
-    versionControl = VersionControl.github("Avimitin", "mill-ivy-fetcher"),
+    versionControl = VersionControl.github("Avimitin", "mvn-trace-forge"),
     developers = Seq(
       Developer("Avimitin", "Avimitin Lu", "https://github.com/Avimitin"),
     )
@@ -48,9 +48,9 @@ trait MIFModule extends ScalaModule with ScalafmtModule with PublishModule {
 }
 
 
-def testSrcs = Task.Sources("build.mill", "mif")
+def testSrcs = Task.Sources("build.mill", "mtf")
 
-object mif extends MIFModule {
+object mtf extends MtfModule {
   object test extends ScalaTests {
     def mvnDeps = Seq(mvn"com.lihaoyi::utest:0.8.5")
     def testFramework = "utest.runner.Framework"

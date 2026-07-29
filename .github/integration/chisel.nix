@@ -5,7 +5,7 @@
   git,
   gnused,
   lib,
-  mif,
+  mtf,
   millVersions,
   mkMavenRepository,
   stdenvNoCC,
@@ -83,7 +83,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       runtimeInputs = [
         coreutils
         gnused
-        mif
+        mtf
         millVersions.mill_1_1_2
       ];
       text = ''
@@ -96,13 +96,13 @@ stdenvNoCC.mkDerivation (finalAttrs: {
         cp -R --no-preserve=mode,ownership "${src}/." "$workdir/"
         sed -i '1i //| mill-jvm-version: system' "$workdir/build.mill"
 
-        mif archive \
+        mtf archive \
           -p "$workdir" \
           --lock .github/integration/chisel-lock.json \
           --fresh \
           -- mill --no-daemon __.prepareOffline
 
-        mif archive \
+        mtf archive \
           -p "$workdir" \
           --lock .github/integration/chisel-lock.json \
           -- mill --no-daemon __.scalaCompilerClasspath
@@ -111,7 +111,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   };
 
   meta = {
-    description = "Chisel integration test for mill-ivy-fetcher offline packaging";
+    description = "Chisel integration test for mvn-trace-forge offline packaging";
     homepage = "https://github.com/chipsalliance/chisel";
     license = lib.licenses.asl20;
     platforms = lib.platforms.unix;

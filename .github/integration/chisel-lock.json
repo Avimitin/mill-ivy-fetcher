@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "kind": "mif-maven-lock",
+  "kind": "mtf-maven-lock",
   "repositories": {
     "central": "https://repo1.maven.org/maven2"
   },

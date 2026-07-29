@@ -7,3 +7,4 @@ result
 chisel/
 .direnv/
 .mif/
+.mtf/

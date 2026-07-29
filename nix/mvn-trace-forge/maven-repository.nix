@@ -10,7 +10,7 @@ let
   mkMavenRepository =
     {
       lockFile,
-      name ? "mif-maven-repository",
+      name ? "mtf-maven-repository",
       ...
     }@args:
     let
@@ -20,37 +20,37 @@ let
         "name"
       ];
 
-      hasSchema = (lock.version or null) == 3 && (lock.kind or null) == "mif-maven-lock";
+      hasSchema = (lock.version or null) == 3 && (lock.kind or null) == "mtf-maven-lock";
 
       trimTrailingSlash = url: lib.removeSuffix "/" url;
 
       artifactRunIds =
         artifact:
         let
-          artifactRuns = artifact.runs or (throw "MIF artifact does not define runs");
+          artifactRuns = artifact.runs or (throw "MTF artifact does not define runs");
         in
-        if artifactRuns == [ ] then throw "MIF artifact has no runs" else artifactRuns;
+        if artifactRuns == [ ] then throw "MTF artifact has no runs" else artifactRuns;
 
       artifactRepository =
         artifact:
         let
           runId = builtins.head (artifactRunIds artifact);
         in
-        lock.runs.${runId}.repository or (throw "unknown MIF run id '${runId}'");
+        lock.runs.${runId}.repository or (throw "unknown MTF run id '${runId}'");
 
       artifactRepositoryUrl =
         artifact:
         let
           repository = artifactRepository artifact;
         in
-        lock.repositories.${repository} or (throw "unknown MIF repository id '${repository}'");
+        lock.repositories.${repository} or (throw "unknown MTF repository id '${repository}'");
 
       fetchMavenArtifact =
         dir: artifact:
         let
           repositoryUrl = artifactRepositoryUrl artifact;
-          files = artifact.files or (throw "MIF artifact '${dir}' does not define files");
-          narHash = artifact.narHash or (throw "MIF artifact '${dir}' does not define narHash");
+          files = artifact.files or (throw "MTF artifact '${dir}' does not define files");
+          narHash = artifact.narHash or (throw "MTF artifact '${dir}' does not define narHash");
           curlWrapper = lib.escapeShellArgs [
             (lib.getExe curl)
             "--fail"
@@ -79,7 +79,7 @@ let
         # Download the whole Maven coordinate in one fixed-output derivation.
         # Nix verifies the recursive NAR hash; the per-file hashes remain in the
         # lock for review and diagnostics.
-        runCommand "mif-maven-artifact-${lib.strings.sanitizeDerivationName dir}"
+        runCommand "mtf-maven-artifact-${lib.strings.sanitizeDerivationName dir}"
           {
             impureEnvVars = lib.fetchers.proxyImpureEnvVars;
             SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
@@ -98,7 +98,7 @@ let
       defaultArtifacts = lib.mapAttrs fetchMavenArtifact lock.artifacts;
       artifacts = defaultArtifacts // artifactOverrides;
     in
-    assert lib.assertMsg hasSchema "${toString lockFile} is not a version 3 mif-maven-lock file";
+    assert lib.assertMsg hasSchema "${toString lockFile} is not a version 3 mtf-maven-lock file";
     symlinkJoin {
       inherit name;
       paths = builtins.attrValues artifacts;

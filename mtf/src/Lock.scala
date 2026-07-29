@@ -1,4 +1,4 @@
-package in.avimit.dev.mif
+package in.avimit.dev.mtf
 
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
@@ -56,7 +56,7 @@ case class LockedFile(
   * coordinate-directory-to-NAR-hash index; keeping it separate avoids repeating
   * the same hash on every `LockedFile`.
   */
-case class MifLock(
+case class MtfLock(
     version: Int,
     kind: String,
     repositories: Vector[LockRepository],
@@ -67,8 +67,8 @@ case class MifLock(
 
 object Lock:
   val Version = 3
-  val Kind = "mif-maven-lock"
-  val DefaultFileName = "mif.lock.json"
+  val Kind = "mtf-maven-lock"
+  val DefaultFileName = "mtf.lock.json"
 
   private val sriPattern = "^sha256-[A-Za-z0-9+/]{43}=$".r
   private val runIdPattern = "^[0-9a-f]{12}$".r
@@ -94,8 +94,8 @@ object Lock:
       files: Map[String, String]
   ) derives ReadWriter
 
-  def empty: MifLock =
-    MifLock(
+  def empty: MtfLock =
+    MtfLock(
       version = Version,
       kind = Kind,
       repositories = Vector.empty,
@@ -132,7 +132,7 @@ object Lock:
       .reverse
     if slug.isEmpty then "repository" else slug
 
-  def parse(text: String): Either[String, MifLock] =
+  def parse(text: String): Either[String, MtfLock] =
     for
       version <- decodeVersion(text)
       _ <- validateVersion(version)
@@ -144,12 +144,12 @@ object Lock:
     try Right(upickle.default.read[LockJsonVersion](text).version)
     catch case NonFatal(e) => Left(s"invalid lock JSON: ${errorMessage(e)}")
 
-  private def decode(text: String): Either[String, MifLock] =
+  private def decode(text: String): Either[String, MtfLock] =
     try Right(fromJson(upickle.default.read[LockJson](text)))
     catch case NonFatal(e) => Left(s"invalid lock JSON: ${errorMessage(e)}")
 
-  private def fromJson(document: LockJson): MifLock =
-    MifLock(
+  private def fromJson(document: LockJson): MtfLock =
+    MtfLock(
       version = document.version,
       kind = document.kind,
       repositories = document.repositories.toVector.map { case (id, url) =>
@@ -183,7 +183,7 @@ object Lock:
       .headOption
       .getOrElse("")
 
-  private def validate(lock: MifLock): Either[String, MifLock] =
+  private def validate(lock: MtfLock): Either[String, MtfLock] =
     for
       _ <- validateHeader(lock)
       _ <- validateRepositories(lock.repositories)
@@ -192,7 +192,7 @@ object Lock:
       _ <- validateArtifactNarHashes(lock)
     yield lock
 
-  private def validateHeader(lock: MifLock): Either[String, Unit] =
+  private def validateHeader(lock: MtfLock): Either[String, Unit] =
     validateVersion(lock.version).flatMap: _ =>
       if lock.kind != Kind then
         Left(s"unsupported lock kind '${lock.kind}'; expected '${Kind}'")
@@ -201,11 +201,11 @@ object Lock:
   private def validateVersion(version: Int): Either[String, Unit] =
     if version < Version then
       Left(
-        s"unsupported lock version ${version}; this mif understands version ${Version}. Regenerate the lock by rerunning the complete archive command sequence, using --fresh on the first command only"
+        s"unsupported lock version ${version}; this mtf understands version ${Version}. Regenerate the lock by rerunning the complete archive command sequence, using --fresh on the first command only"
       )
     else if version > Version then
       Left(
-        s"unsupported lock version ${version}; this mif understands version ${Version}, upgrade mif to read this lock"
+        s"unsupported lock version ${version}; this mtf understands version ${Version}, upgrade mtf to read this lock"
       )
     else Right(())
 
@@ -245,7 +245,7 @@ object Lock:
       case Some(id) => Left(s"duplicate run id '${id}'")
       case None     => invalid.toLeft(())
 
-  private def validateFiles(lock: MifLock): Either[String, Unit] =
+  private def validateFiles(lock: MtfLock): Either[String, Unit] =
     val repositoryIds = lock.repositories.map(_.id).toSet
     val runIds = lock.runs.map(_.id).toSet
     val duplicate =
@@ -273,7 +273,7 @@ object Lock:
       case Some(path) => Left(s"duplicate lock entry for maven path '${path}'")
       case None       => invalid.orElse(invalidRunRepository).toLeft(())
 
-  private def validateArtifactNarHashes(lock: MifLock): Either[String, Unit] =
+  private def validateArtifactNarHashes(lock: MtfLock): Either[String, Unit] =
     val expected = artifactDirectories(lock.files).toSet
     val actual = lock.artifactNarHashes.keySet
     val missing = (expected -- actual).toVector.sorted
@@ -294,7 +294,7 @@ object Lock:
   /** Deterministic form: entry order never depends on sqlite collation or
     * insertion order, so appends produce minimal diffs.
     */
-  private def canonicalize(lock: MifLock): MifLock =
+  private def canonicalize(lock: MtfLock): MtfLock =
     lock.copy(
       repositories = lock.repositories.sortBy(_.id),
       runs = lock.runs.sortBy(_.command.mkString("\n")),
@@ -305,10 +305,10 @@ object Lock:
         VectorMap.from(lock.artifactNarHashes.toVector.sortBy(_._1))
     )
 
-  def render(lock: MifLock): String =
+  def render(lock: MtfLock): String =
     upickle.default.write(toJson(canonicalize(lock)), indent = 2) + "\n"
 
-  private def toJson(lock: MifLock): LockJson =
+  private def toJson(lock: MtfLock): LockJson =
     LockJson(
       version = lock.version,
       kind = lock.kind,
@@ -330,7 +330,7 @@ object Lock:
       artifacts = artifacts(lock.files, lock.artifactNarHashes)
     )
 
-  private[mif] def splitMavenPath(path: String): (String, String) =
+  private[mtf] def splitMavenPath(path: String): (String, String) =
     val index = path.lastIndexOf('/')
     if index < 0 then ("", path)
     else (path.take(index), path.drop(index + 1))
@@ -369,7 +369,7 @@ object Lock:
         }
     )
 
-  private[mif] def artifactDirectories(
+  private[mtf] def artifactDirectories(
       files: Seq[LockedFile]
   ): Vector[String] =
     files.iterator
@@ -378,13 +378,13 @@ object Lock:
       .distinct
       .sorted
 
-  private[mif] def missingArtifactNarHashes(lock: MifLock): Vector[String] =
+  private[mtf] def missingArtifactNarHashes(lock: MtfLock): Vector[String] =
     artifactDirectories(lock.files).filterNot(lock.artifactNarHashes.contains)
 
-  private[mif] def withArtifactNarHashes(
-      lock: MifLock,
+  private[mtf] def withArtifactNarHashes(
+      lock: MtfLock,
       hashes: Map[String, String]
-  ): Either[String, MifLock] =
+  ): Either[String, MtfLock] =
     val updated = canonicalize(
       lock.copy(artifactNarHashes = lock.artifactNarHashes ++ hashes)
     )
@@ -393,7 +393,7 @@ object Lock:
   private def runsForArtifact(files: Vector[LockedFile]): Vector[String] =
     files.flatMap(_.runs).distinct.sorted
 
-  def read(file: os.Path): Either[String, Option[MifLock]] =
+  def read(file: os.Path): Either[String, Option[MtfLock]] =
     if !os.exists(file) then Right(None)
     else
       val text =
@@ -407,7 +407,7 @@ object Lock:
         .left
         .map(reason => s"${file}: ${reason}")
 
-  def write(file: os.Path, lock: MifLock): Either[String, Unit] =
+  def write(file: os.Path, lock: MtfLock): Either[String, Unit] =
     validate(lock).flatMap: validated =>
       val rendered = render(validated)
       createTempFile(file).flatMap { tmp =>
@@ -457,11 +457,11 @@ object Lock:
     * content; every mismatch is reported and the lock is left untouched.
     */
   def merge(
-      existing: MifLock,
+      existing: MtfLock,
       upstream: LockRepository,
       runFiles: Seq[MavenRepositoryFile],
       command: Seq[String]
-  ): Either[String, MifLock] =
+  ): Either[String, MtfLock] =
     val (repositories, repositoryId) =
       assignRepository(existing.repositories, upstream)
     val run = LockRun.fromCommand(command, repositoryId)
@@ -506,7 +506,7 @@ object Lock:
 
       Right(
         canonicalize(
-          MifLock(
+          MtfLock(
             version = Version,
             kind = Kind,
             repositories = repositories,

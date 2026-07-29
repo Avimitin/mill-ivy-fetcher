@@ -20,7 +20,7 @@ import os.* // usually accessed as os.pwd, os.Path, os.read, os.write, os.proc, 
 Filesystem, subprocess, path, and environment helper library used throughout this project via the `os` package object.
 
 ```scala
-val repo = os.pwd / ".mif" / "repository"
+val repo = os.pwd / ".mtf" / "repository"
 val pom = repo / os.RelPath("com/example/app/1.0.0/app-1.0.0.pom")
 
 os.makeDir.all(pom / os.up)

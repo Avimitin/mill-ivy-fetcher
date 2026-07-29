@@ -21,7 +21,7 @@ Synchronous HTTP client used by the relay for upstream requests. APIs include on
 
 ```scala
 val session = requests.Session(
-  headers = Map("User-Agent" -> "mif/0.3.0", "Accept" -> "*/*"),
+  headers = Map("User-Agent" -> "mtf/0.3.0", "Accept" -> "*/*"),
   readTimeout = 120000,
   connectTimeout = 30000
 )

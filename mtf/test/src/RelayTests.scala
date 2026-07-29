@@ -1,4 +1,4 @@
-package in.avimit.dev.mif
+package in.avimit.dev.mtf
 
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -148,10 +148,10 @@ object RelayTests extends TestSuite:
     }
 
     test("MavenPath rejects dot-leading segments that name relay internals") {
-      // The relay's own state lives under dot-leading names (.mif metadata
+      // The relay's own state lives under dot-leading names (.mtf metadata
       // directory and .<name>.*.tmp downloads); serving them as artifacts would
       // let a request read or delete internals.
-      assert(MavenPath.fromSegments(Seq(".mif", "repository.sqlite")).isLeft)
+      assert(MavenPath.fromSegments(Seq(".mtf", "repository.sqlite")).isLeft)
       assert(MavenPath.fromSegments(Seq("com", ".hidden", "foo.pom")).isLeft)
       assert(MavenPath.fromSegments(Seq(".foo-1.0.0.pom.abc.tmp")).isLeft)
     }
@@ -186,7 +186,7 @@ object RelayTests extends TestSuite:
     }
 
     test("repository store records files") {
-      val tempDir = os.temp.dir(prefix = "mif-repository-store-test_")
+      val tempDir = os.temp.dir(prefix = "mtf-repository-store-test_")
       val repoDir = tempDir / "repository"
       val store1 = openStore(repoDir)
       val store2 = openStore(repoDir)
@@ -236,7 +236,7 @@ object RelayTests extends TestSuite:
 
     test("route decorator rejects unsupported artifact methods") {
       Logger.withLevel(LogLevel.Quiet) {
-        val tempDir = os.temp.dir(prefix = "mif-relay-test_")
+        val tempDir = os.temp.dir(prefix = "mtf-relay-test_")
         val config = MavenRelayConfig(
           repoDir = tempDir / "repository",
           upstreamBaseUrl = MavenRelayServer.DefaultUpstream,
@@ -267,7 +267,7 @@ object RelayTests extends TestSuite:
           .getBytes(StandardCharsets.UTF_8)
 
         withLocalUpstream(sampleMavenPath, upstreamContent) { upstreamBaseUrl =>
-          val tempDir = os.temp.dir(prefix = "mif-relay-test_")
+          val tempDir = os.temp.dir(prefix = "mtf-relay-test_")
           val repoDir = tempDir / "repository"
           val artifact = repoDir / os.RelPath(sampleMavenPath)
 
@@ -310,7 +310,7 @@ object RelayTests extends TestSuite:
         val content =
           "<project>upstream</project>".getBytes(StandardCharsets.UTF_8)
         withLocalUpstream(sampleMavenPath, content) { upstreamBaseUrl =>
-          val tempDir = os.temp.dir(prefix = "mif-relay-test_")
+          val tempDir = os.temp.dir(prefix = "mtf-relay-test_")
           val repoDir = tempDir / "repository"
           val service = newService(
             MavenRelayConfig(
@@ -369,7 +369,7 @@ object RelayTests extends TestSuite:
           "<project>upstream</project>".getBytes(StandardCharsets.UTF_8)
 
         withLocalUpstream(sampleMavenPath, content) { upstreamBaseUrl =>
-          val tempDir = os.temp.dir(prefix = "mif-relay-test_")
+          val tempDir = os.temp.dir(prefix = "mtf-relay-test_")
           val repoDir = tempDir / "repository"
           val service = newService(
             MavenRelayConfig(
@@ -402,7 +402,7 @@ object RelayTests extends TestSuite:
 
         withLocalUpstream(sampleMavenPath, listing, contentType = "text/html") {
           upstreamBaseUrl =>
-            val tempDir = os.temp.dir(prefix = "mif-relay-test_")
+            val tempDir = os.temp.dir(prefix = "mtf-relay-test_")
             val repoDir = tempDir / "repository"
             val service = newService(
               MavenRelayConfig(
@@ -428,7 +428,7 @@ object RelayTests extends TestSuite:
 
     test("relay started on port 0 reports the actually bound port") {
       Logger.withLevel(LogLevel.Quiet) {
-        val tempDir = os.temp.dir(prefix = "mif-relay-test_")
+        val tempDir = os.temp.dir(prefix = "mtf-relay-test_")
         val config = MavenRelayConfig(
           repoDir = tempDir / "repository",
           upstreamBaseUrl = MavenRelayServer.DefaultUpstream,
@@ -457,7 +457,7 @@ object RelayTests extends TestSuite:
 
         withLocalUpstream(MavenPath.encodeForUri(mavenPath), content) {
           upstreamBaseUrl =>
-            val tempDir = os.temp.dir(prefix = "mif-relay-test_")
+            val tempDir = os.temp.dir(prefix = "mtf-relay-test_")
             val config = MavenRelayConfig(
               repoDir = tempDir / "repository",
               upstreamBaseUrl = upstreamBaseUrl,
@@ -486,7 +486,7 @@ object RelayTests extends TestSuite:
         val content =
           "<project>upstream</project>".getBytes(StandardCharsets.UTF_8)
         withLocalUpstream(sampleMavenPath, content) { upstreamBaseUrl =>
-          val tempDir = os.temp.dir(prefix = "mif-relay-test_")
+          val tempDir = os.temp.dir(prefix = "mtf-relay-test_")
           val repoDir = tempDir / "repository"
           val config = MavenRelayConfig(
             repoDir = repoDir,
@@ -547,7 +547,7 @@ object RelayTests extends TestSuite:
           .getBytes(StandardCharsets.UTF_8)
 
         withLocalUpstream(sampleMavenPath, content) { upstreamBaseUrl =>
-          val tempDir = os.temp.dir(prefix = "mif-relay-test_")
+          val tempDir = os.temp.dir(prefix = "mtf-relay-test_")
           val repoDir = tempDir / "repository"
           val artifact = repoDir / os.RelPath(sampleMavenPath)
           val service = newService(

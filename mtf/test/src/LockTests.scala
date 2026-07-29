@@ -1,4 +1,4 @@
-package in.avimit.dev.mif
+package in.avimit.dev.mtf
 
 import utest._
 
@@ -33,11 +33,11 @@ object LockTests extends TestSuite:
     Sha256.sri(dir.getBytes("UTF-8"))
 
   private def merge(
-      existing: MifLock,
+      existing: MtfLock,
       upstream: LockRepository,
       runFiles: Seq[MavenRepositoryFile],
       command: Seq[String]
-  ): Either[String, MifLock] =
+  ): Either[String, MtfLock] =
     Lock
       .merge(existing, upstream, runFiles, command)
       .flatMap: lock =>
@@ -100,7 +100,7 @@ object LockTests extends TestSuite:
       val golden =
         s"""{
            |  "version": 3,
-           |  "kind": "mif-maven-lock",
+           |  "kind": "mtf-maven-lock",
            |  "repositories": {
            |    "central": "https://repo1.maven.org/maven2"
            |  },
@@ -189,7 +189,7 @@ object LockTests extends TestSuite:
       val json =
         s"""{
            |  "version": 3,
-           |  "kind": "mif-maven-lock",
+           |  "kind": "mtf-maven-lock",
            |  "repositories": {
            |    "central": "https://repo1.maven.org/maven2",
            |    "mirror": "https://mirror.example.com/maven2"
@@ -227,7 +227,7 @@ object LockTests extends TestSuite:
       val json =
         s"""{
            |  "version": 2,
-           |  "kind": "mif-maven-lock",
+           |  "kind": "mtf-maven-lock",
            |  "repositories": {
            |    "central": "https://repo1.maven.org/maven2"
            |  },
@@ -271,7 +271,7 @@ object LockTests extends TestSuite:
       assert(Lock.parse("not json").isLeft)
       assert(Lock.parse("""{"version":1}""").isLeft)
 
-      def renderWith(change: MifLock => MifLock): String =
+      def renderWith(change: MtfLock => MtfLock): String =
         Lock.render(change(base))
 
       val badVersion = Lock.parse(renderWith(_.copy(version = 1)))
@@ -331,13 +331,13 @@ object LockTests extends TestSuite:
     }
 
     test("read returns None for a missing lock file") {
-      val tempDir = os.temp.dir(prefix = "mif-lock-test_")
-      assert(Lock.read(tempDir / "mif.lock.json") == Right(None))
+      val tempDir = os.temp.dir(prefix = "mtf-lock-test_")
+      assert(Lock.read(tempDir / "mtf.lock.json") == Right(None))
     }
 
     test("write is atomic and round-trips through read") {
-      val tempDir = os.temp.dir(prefix = "mif-lock-test_")
-      val lockPath = tempDir / "nested" / "mif.lock.json"
+      val tempDir = os.temp.dir(prefix = "mtf-lock-test_")
+      val lockPath = tempDir / "nested" / "mtf.lock.json"
       val lock = unwrap(
         merge(
           Lock.empty,

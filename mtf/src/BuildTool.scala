@@ -1,6 +1,6 @@
-package in.avimit.dev.mif
+package in.avimit.dev.mtf
 
-/** Build-tool specific behavior for `mif archive`. Implementations only advise;
+/** Build-tool specific behavior for `mtf archive`. Implementations only advise;
   * they never block a run.
   */
 trait BuildToolSupport:
@@ -86,7 +86,7 @@ object BuildTools:
     command.headOption match
       case None =>
         Left(
-          "missing build command; usage: mif archive [flags] -- <build-tool> <arguments>"
+          "missing build command; usage: mtf archive [flags] -- <build-tool> <arguments>"
         )
       case Some(executable) =>
         val name = executable.split('/').last
@@ -122,6 +122,6 @@ object CoursierMirror:
         val to = relayBaseUrl.stripSuffix("/")
         froms.zipWithIndex
           .map((from, index) =>
-            s"mif${index}.from=${from}\nmif${index}.to=${to}\n"
+            s"mtf${index}.from=${from}\nmtf${index}.to=${to}\n"
           )
           .mkString

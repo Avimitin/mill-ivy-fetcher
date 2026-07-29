@@ -1,5 +1,5 @@
 {
-  description = "Generic devshell setup";
+  description = "Mvn Trace Forge: capture Maven repository traffic as reproducible Nix locks";
 
   nixConfig.minimumVersion = "2.28";
 
@@ -20,13 +20,13 @@
     flake-parts.lib.mkFlake { inherit inputs; } (
       { getSystem, ... }:
       let
-        millOverlay = import ./nix/mill-overlay.nix;
+        mtfOverlay = import ./nix/mtf-overlay.nix;
       in
       {
         flake = {
           overlays = {
-            default = millOverlay;
-            mill-overlay = millOverlay;
+            default = mtfOverlay;
+            mtf-overlay = mtfOverlay;
           };
         };
 
@@ -46,13 +46,13 @@
             pkgs = import inputs.nixpkgs {
               inherit system;
               overlays = [
-                millOverlay
+                mtfOverlay
               ];
             };
-            mifPackage = pkgs.callPackage ./package.nix { };
-            ciTest = pkgs.callPackage ./.github/integration/chisel.nix { mif = mifPackage; };
+            mtfPackage = pkgs.callPackage ./package.nix { };
+            ciTest = pkgs.callPackage ./.github/integration/chisel.nix { mtf = mtfPackage; };
             mavenRepository = pkgs.mkMavenRepository {
-              lockFile = ./mif.lock.json;
+              lockFile = ./mtf.lock.json;
             };
             representativeArtifact = builtins.head (builtins.attrValues mavenRepository.artifacts);
           in
@@ -61,13 +61,13 @@
 
             legacyPackages = pkgs;
 
-            packages.default = mifPackage;
+            packages.default = mtfPackage;
 
-            packages.mif = mifPackage;
+            packages.mtf = mtfPackage;
 
-            packages.mif-maven-repository = mavenRepository;
+            packages.mtf-maven-repository = mavenRepository;
 
-            packages.mif-jar = mifPackage;
+            packages.mtf-jar = mtfPackage;
 
             packages.ci-test = ciTest;
 
@@ -87,17 +87,17 @@
 
             devShells.default = pkgs.mkShell {
               nativeBuildInputs = [
-                mifPackage
+                mtfPackage
                 pkgs.millVersions.mill_1_1_2
                 pkgs.metals
               ]
-              # `mif archive` sandboxes build commands with bubblewrap;
+              # `mtf archive` sandboxes build commands with bubblewrap;
               # bubblewrap is Linux-only.
               ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [ pkgs.bubblewrap ];
             };
 
             # CI unit tests only need Mill and its bundled JRE. Keep the full
-            # mif package, offline Maven repository, Metals, and bubblewrap out
+            # mtf package, offline Maven repository, Metals, and bubblewrap out
             # of this shell so test startup does not materialize them.
             devShells.ci = pkgs.mkShell {
               nativeBuildInputs = [ pkgs.millVersions.mill_1_1_2 ];

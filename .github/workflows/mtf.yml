@@ -1,4 +1,4 @@
-name: MIF
+name: Mvn Trace Forge
 
 on:
   push:
@@ -21,5 +21,5 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: DeterminateSystems/nix-installer-action@main
-    - name: Run MIF tests
-      run: nix develop .#ci --command mill --no-daemon mif.test
+    - name: Run MTF tests
+      run: nix develop .#ci --command mill --no-daemon mtf.test

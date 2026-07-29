@@ -1,4 +1,4 @@
-package in.avimit.dev.mif
+package in.avimit.dev.mtf
 
 import scala.util.control.NonFatal
 
@@ -11,7 +11,7 @@ import scala.util.control.NonFatal
 object ArtifactNarHash:
   def hashMissing(
       repoDir: os.Path,
-      lock: MifLock
+      lock: MtfLock
   ): Either[String, Map[String, String]] =
     val artifactDirs = Lock.missingArtifactNarHashes(lock)
     if artifactDirs.isEmpty then Right(Map.empty)

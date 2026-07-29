@@ -14,7 +14,7 @@ let
   # The local Maven repository generated from the lock. It ships a setup hook,
   # so listing it in buildInputs is enough to make Mill/Coursier resolve every
   # dependency from here, fully offline.
-  m2 = mkMavenRepository { lockFile = ./mif.lock.json; };
+  m2 = mkMavenRepository { lockFile = ./mtf.lock.json; };
 
   runtimePath = [ nix ] ++ lib.optionals stdenvNoCC.hostPlatform.isLinux [ bubblewrap ];
   wrapperPathArgs = [
@@ -25,14 +25,14 @@ let
   ];
 in
 stdenvNoCC.mkDerivation (finalAttrs: {
-  pname = "mif";
+  pname = "mtf";
   version = "0.3.0";
 
   src = lib.fileset.toSource {
     root = ./.;
     fileset = lib.fileset.unions [
       ./build.mill
-      ./mif
+      ./mtf
     ];
   };
 
@@ -48,7 +48,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   buildPhase = ''
     runHook preBuild
 
-    mill --no-daemon mif.assembly
+    mill --no-daemon mtf.assembly
 
     runHook postBuild
   '';
@@ -56,19 +56,19 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
 
-    install -Dm644 out/mif/assembly.dest/*.jar "$out/lib/mif.jar"
-    makeWrapper ${zulu}/bin/java "$out/bin/mif" \
-      --add-flags "-jar $out/lib/mif.jar" \
+    install -Dm644 out/mtf/assembly.dest/*.jar "$out/lib/mtf.jar"
+    makeWrapper ${zulu}/bin/java "$out/bin/mtf" \
+      --add-flags "-jar $out/lib/mtf.jar" \
       ${lib.escapeShellArgs wrapperPathArgs}
 
     runHook postInstall
   '';
 
   meta = {
-    description = "Generate Nix locks from Mill Ivy dependencies";
-    homepage = "https://github.com/Avimitin/mill-ivy-fetcher";
+    description = "Capture Maven repository traffic as reproducible Nix locks";
+    homepage = "https://github.com/Avimitin/mvn-trace-forge";
     license = lib.licenses.asl20;
-    mainProgram = "mif";
+    mainProgram = "mtf";
     platforms = lib.platforms.unix;
   };
 })

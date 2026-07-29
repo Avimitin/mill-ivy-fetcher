@@ -1,4 +1,4 @@
-package in.avimit.dev.mif
+package in.avimit.dev.mtf
 
 import utest._
 
@@ -31,7 +31,7 @@ object ProcessRunnerTests extends TestSuite {
 
     test("runStreaming returns Left when the command cannot start") {
       val result = ProcessRunner.runStreaming(
-        Seq("mif-no-such-binary-for-tests"),
+        Seq("mtf-no-such-binary-for-tests"),
         cwd = os.pwd
       )
       assert(result.isLeft)
@@ -57,9 +57,9 @@ object ProcessRunnerTests extends TestSuite {
       assert(scrubbedHome == Right(0))
 
       val markerVisible = ProcessRunner.runStreaming(
-        Seq("/bin/sh", "-c", "test \"$MIF_TEST_MARKER\" = yes"),
+        Seq("/bin/sh", "-c", "test \"$MTF_TEST_MARKER\" = yes"),
         cwd = os.pwd,
-        env = Map("MIF_TEST_MARKER" -> "yes"),
+        env = Map("MTF_TEST_MARKER" -> "yes"),
         propagateEnv = false
       )
       assert(markerVisible == Right(0))

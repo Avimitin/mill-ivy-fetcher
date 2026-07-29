@@ -24,7 +24,7 @@ No-operation SLF4J service provider/binding. It normally is not called directly;
 val slf4jNop = mvn"org.slf4j:slf4j-nop:2.0.13"
 
 // Optional direct sanity check, though normal application code should not need it:
-val logger = org.slf4j.LoggerFactory.getLogger("mif")
+val logger = org.slf4j.LoggerFactory.getLogger("mtf")
 logger.info("discarded by slf4j-nop")
 ```
 

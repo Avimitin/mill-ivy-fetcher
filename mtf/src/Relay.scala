@@ -1,4 +1,4 @@
-package in.avimit.dev.mif
+package in.avimit.dev.mtf
 
 import java.io.OutputStream
 import java.net.URI
@@ -86,7 +86,7 @@ object MavenPath:
         )
 
   // Reserve the empty segment and any dot-leading segment. Dot-leading names are
-  // where the relay keeps its own state -- the .mif metadata directory holding the
+  // where the relay keeps its own state -- the .mtf metadata directory holding the
   // SQLite database, and the .<name>.*.tmp download files -- so serving them as
   // artifacts would let a request read or delete relay internals. Legitimate Maven
   // coordinates never begin a path segment with a dot.
@@ -280,7 +280,7 @@ class MavenRelayService private (
   private val accessedGetPaths = ConcurrentHashMap.newKeySet[String]()
   private val upstreamSession = requests.Session(
     headers = Map(
-      "User-Agent" -> s"mif/${MillIvyFetcher.VERSION}",
+      "User-Agent" -> s"mtf/${MvnTraceForge.VERSION}",
       "Accept" -> "*/*",
       // Cache raw artifact bytes only: ask upstream not to content-encode the
       // body, and reject any encoded 200 at cache time (see isCacheableArtifact)
@@ -861,7 +861,7 @@ case class MavenRelayRoutes(service: MavenRelayService)(implicit
 
   private def rootResponse(method: RelayMethod): RelayResponse =
     val messageBytes =
-      "mif Maven relay is running\n".getBytes(StandardCharsets.UTF_8)
+      "mtf Maven relay is running\n".getBytes(StandardCharsets.UTF_8)
     val headers = Seq(
       "Content-Type" -> "text/plain; charset=utf-8",
       "Content-Length" -> messageBytes.length.toString

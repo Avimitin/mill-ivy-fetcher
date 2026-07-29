@@ -1,9 +1,9 @@
-package in.avimit.dev.mif
+package in.avimit.dev.mtf
 
 import utest._
 
 object SandboxTests extends TestSuite:
-  private val home = os.Path("/tmp/mif-test-home")
+  private val home = os.Path("/tmp/mtf-test-home")
 
   val tests = Tests {
     test("SandboxMode parses the documented values") {
@@ -48,7 +48,7 @@ object SandboxTests extends TestSuite:
     }
 
     test("MillSupport warns about daemon reuse") {
-      val tempDir = os.temp.dir(prefix = "mif-sandbox-test_")
+      val tempDir = os.temp.dir(prefix = "mtf-sandbox-test_")
 
       val noFlag =
         MillSupport.preflightWarnings(tempDir, Seq("mill", "__.compile"))
@@ -69,7 +69,7 @@ object SandboxTests extends TestSuite:
     }
 
     test("ScalaCliSupport warns about generated build state") {
-      val tempDir = os.temp.dir(prefix = "mif-scala-cli-test_")
+      val tempDir = os.temp.dir(prefix = "mtf-scala-cli-test_")
       val command = Seq("scala-cli", "compile", "--test", ".")
 
       val defaultServer = ScalaCliSupport.preflightWarnings(tempDir, command)
@@ -97,10 +97,10 @@ object SandboxTests extends TestSuite:
         "http://127.0.0.1:43217/"
       )
       val golden =
-        """mif0.from=https://repo1.maven.org/maven2
-          |mif0.to=http://127.0.0.1:43217
-          |mif1.from=https://repo.maven.apache.org/maven2
-          |mif1.to=http://127.0.0.1:43217
+        """mtf0.from=https://repo1.maven.org/maven2
+          |mtf0.to=http://127.0.0.1:43217
+          |mtf1.from=https://repo.maven.apache.org/maven2
+          |mtf1.to=http://127.0.0.1:43217
           |""".stripMargin
       assert(rendered == Right(golden))
 
@@ -111,8 +111,8 @@ object SandboxTests extends TestSuite:
       assert(
         aliased == Right(
           golden.replaceFirst(
-            "mif0.from=https://repo1.maven.org/maven2",
-            "mif0.from=https://repo1.maven.org/maven2"
+            "mtf0.from=https://repo1.maven.org/maven2",
+            "mtf0.from=https://repo1.maven.org/maven2"
           )
         )
       )
@@ -123,7 +123,7 @@ object SandboxTests extends TestSuite:
       )
       assert(
         custom == Right(
-          "mif0.from=https://nexus.example.com/maven2\nmif0.to=http://127.0.0.1:43217\n"
+          "mtf0.from=https://nexus.example.com/maven2\nmtf0.to=http://127.0.0.1:43217\n"
         )
       )
 
@@ -150,13 +150,13 @@ object SandboxTests extends TestSuite:
       assert(env("JAVA_HOME") == "/nix/store/jdk")
       assert(!env.contains("TERM"))
       assert(!env.contains("LANG"))
-      assert(env("XDG_CACHE_HOME") == "/mif/.cache")
-      assert(env("XDG_CONFIG_HOME") == "/mif/.config")
-      assert(env("XDG_DATA_HOME") == "/mif/.local/share")
-      assert(env("COURSIER_CACHE") == "/mif/.cache/coursier")
+      assert(env("XDG_CACHE_HOME") == "/mtf/.cache")
+      assert(env("XDG_CONFIG_HOME") == "/mtf/.config")
+      assert(env("XDG_DATA_HOME") == "/mtf/.local/share")
+      assert(env("COURSIER_CACHE") == "/mtf/.cache/coursier")
       assert(!env.contains("COURSIER_CONFIG_DIR"))
       assert(
-        env("COURSIER_MIRRORS") == "/mif/.config/coursier/mirror.properties"
+        env("COURSIER_MIRRORS") == "/mtf/.config/coursier/mirror.properties"
       )
       assert(!env.contains("SECRET_TOKEN"))
 
@@ -237,14 +237,14 @@ object SandboxTests extends TestSuite:
     }
 
     test("SandboxEnv quotes java options containing spaces") {
-      val spacedHome = os.Path("/tmp/mif test home")
+      val spacedHome = os.Path("/tmp/mtf test home")
       val options = SandboxEnv.javaToolOptions(spacedHome)
-      assert(options.contains("\"-Duser.home=/tmp/mif test home\""))
+      assert(options.contains("\"-Duser.home=/tmp/mtf test home\""))
     }
 
     test("BubblewrapSandbox argv has load-bearing mount ordering") {
       val projectDir = os.Path("/home/user/project")
-      val sandboxHome = os.Path("/tmp/mif-archive-home-x")
+      val sandboxHome = os.Path("/tmp/mtf-archive-home-x")
       val spec = BubblewrapSandbox.Spec(
         projectDir = projectDir,
         sandboxHome = sandboxHome,
@@ -308,14 +308,14 @@ object SandboxTests extends TestSuite:
         "/home/user/project",
         "/workdir",
         "--bind",
-        "/tmp/mif-archive-home-x",
-        "/mif",
+        "/tmp/mtf-archive-home-x",
+        "/mtf",
         "--chdir",
         "/workdir",
         "--clearenv",
         "--setenv",
         "HOME",
-        "/mif",
+        "/mtf",
         "--setenv",
         "PATH",
         "/bin",

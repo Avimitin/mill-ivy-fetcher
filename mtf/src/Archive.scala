@@ -1,4 +1,4 @@
-package in.avimit.dev.mif
+package in.avimit.dev.mtf
 
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -59,7 +59,7 @@ object ArchiveRunner:
   /** Rejects an unreadable or obsolete lock before starting the potentially
     * expensive sandboxed build. A fresh run deliberately replaces that lock.
     */
-  private[mif] def validateExistingLock(
+  private[mtf] def validateExistingLock(
       lockPath: os.Path,
       fresh: Boolean
   ): Either[String, Unit] =
@@ -164,7 +164,7 @@ object ArchiveRunner:
           propagateEnv = false
         )
 
-  private[mif] def lookupFiles(
+  private[mtf] def lookupFiles(
       repoDir: os.Path,
       paths: Seq[String]
   ): Either[String, Seq[MavenRepositoryFile]] =
@@ -193,7 +193,7 @@ object ArchiveRunner:
   private def createSandboxHome(): Either[String, os.Path] =
     try
       val home =
-        os.temp.dir(prefix = "mif-archive-home-", deleteOnExit = false)
+        os.temp.dir(prefix = "mtf-archive-home-", deleteOnExit = false)
       os.makeDir.all(SandboxEnv.mirrorFile(home) / os.up)
       os.makeDir.all(SandboxEnv.coursierCache(home))
       os.makeDir.all(home / ".local" / "share")
@@ -239,7 +239,7 @@ object ArchiveRunner:
       command: Seq[String],
       fresh: Boolean,
       repoDir: os.Path,
-      hashArtifacts: (os.Path, MifLock) => Either[String, Map[String, String]] =
+      hashArtifacts: (os.Path, MtfLock) => Either[String, Map[String, String]] =
         ArtifactNarHash.hashMissing
   ): Either[String, LockUpdateSummary] =
     for
