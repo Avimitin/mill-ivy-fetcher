@@ -51,6 +51,16 @@ let
           repositoryUrl = artifactRepositoryUrl artifact;
           files = artifact.files or (throw "MIF artifact '${dir}' does not define files");
           narHash = artifact.narHash or (throw "MIF artifact '${dir}' does not define narHash");
+          curlWrapper = lib.escapeShellArgs [
+            (lib.getExe curl)
+            "--fail"
+            "--location"
+            "--retry"
+            "3"
+            "--retry-all-errors"
+            "--silent"
+            "--show-error"
+          ];
           downloadFiles = lib.concatMapStringsSep "\n" (
             fileName:
             let
@@ -59,7 +69,7 @@ let
             in
             ''
               fileName=${lib.escapeShellArg fileName}
-              "''${curl[@]}" \
+              ${curlWrapper} \
                 --output "$out/$mavenDir/$fileName" \
                 ${lib.escapeShellArg url}
               chmod 0444 "$out/$mavenDir/$fileName"
@@ -71,7 +81,6 @@ let
         # lock for review and diagnostics.
         runCommand "mif-maven-artifact-${lib.strings.sanitizeDerivationName dir}"
           {
-            nativeBuildInputs = [ curl ];
             impureEnvVars = lib.fetchers.proxyImpureEnvVars;
             SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
             outputHash = narHash;
@@ -81,16 +90,6 @@ let
             passthru.mavenPath = dir;
           }
           ''
-            curl=(
-              curl
-              --fail
-              --location
-              --retry 3
-              --retry-all-errors
-              --silent
-              --show-error
-            )
-
             mavenDir=${lib.escapeShellArg dir}
             install -d -m755 "$out/$mavenDir"
             ${downloadFiles}
