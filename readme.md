@@ -1,3 +1,5 @@
+
+
 # Mvn Trace Forge
 
 > **Record once. Review what was fetched. Rebuild Scala projects offline with
@@ -400,8 +402,10 @@ to `mvn-trace-forge.packages.${system}.mtf` directly.
   mirrors Maven Central and its common alias, but repositories other than the
   configured upstream bypass the relay and will be missing from the lock.
 - Mill distribution bootstrapping and `.mill-jvm-version` JVM downloads do not go
-  through Maven Central. Use a Nix-provided Mill and `//| mill-jvm-version:
-  system` in `build.mill` so the build only needs Maven artifacts.
+  through Maven Central. The Mill versions provided by this overlay are automatically
+  wrapped to use the Nix-provided JDK, preventing stray downloads. For other setups,
+  set `//| mill-jvm-version: system` in `build.mill` so the build only needs Maven
+  artifacts.
 - Private repository authentication and proxy authentication are not supported
   yet.
 - Mutable Maven metadata such as `maven-metadata.xml` and SNAPSHOT metadata has
